@@ -1,0 +1,46 @@
+plugins {
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'ohtu.Main'
+
+javafx {
+    version = '11'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile "org.testfx:testfx-core:4.0.+"
+    testCompile "org.testfx:testfx-junit:4.0.+"    
+    testCompile "org.testfx:openjfx-monocle:jdk-11+26"
+}
+
+test {
+  // set a system property for the test JVM(s)
+  systemProperty 'testfx.robot', 'glass'
+  systemProperty 'testfx.headless', 'true' // set false to see test running
+  systemProperty 'prism.order', 'sw'
+  systemProperty 'prism.text', 't2k'
+  systemProperty 'java.awt.headless', 'true'
+
+  // listen to events in the test execution lifecycle
+  beforeTest { descriptor ->
+     logger.lifecycle("Running test: " + descriptor)
+  }
+
+  // Fail the 'test' task on the first test failure
+  failFast = true
+
+  // listen to standard out and standard error of the test JVM(s)
+  onOutput { descriptor, event ->
+     logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+  }
+}
