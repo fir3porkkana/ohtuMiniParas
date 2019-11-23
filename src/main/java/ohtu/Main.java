@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage stage) {
 
         Bookmarks bookmarks = new Bookmarks();
-        bookmarks.addBookmark(new Book("1984", "Georrge Orwell"));
+        bookmarks.addBookmark(new Book("Violence", "Slavoj Žižek"));
         bookmarks.addBookmark(new Book("Of mice and men", "John Steinbeck"));
 
         Label authorLabel = new Label("Author");
@@ -48,6 +48,7 @@ public class Main extends Application {
         gridPane.setHgap(5);
 
         VBox bookList = new VBox();
+        bookList.setId("bookList");
         bookList.setSpacing(10);
 
         bookmarks.getBookmarks().forEach(book -> {
