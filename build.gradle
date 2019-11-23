@@ -14,6 +14,7 @@ javafx {
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -21,6 +22,7 @@ dependencies {
     testCompile "org.testfx:testfx-core:4.0.+"
     testCompile "org.testfx:testfx-junit:4.0.+"    
     testCompile "org.testfx:openjfx-monocle:jdk-11+26"
+    compile group:'org.xerial', name:'sqlite-jdbc', version:'3.8.11.2'
 }
 
 test {
