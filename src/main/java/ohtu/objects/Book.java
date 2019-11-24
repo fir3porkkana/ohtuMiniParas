@@ -1,4 +1,4 @@
-package ohtu;
+package ohtu.objects;
 
 public class Book {
   private String author;

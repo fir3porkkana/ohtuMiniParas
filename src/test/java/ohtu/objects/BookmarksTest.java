@@ -1,4 +1,4 @@
-package ohtu;
+package ohtu.objects;
 
 import static org.junit.Assert.assertEquals;
 

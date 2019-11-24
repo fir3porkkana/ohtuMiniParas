@@ -1,4 +1,4 @@
-package ohtu;
+package ohtu.objects;
 
 import java.util.HashSet;;
 
