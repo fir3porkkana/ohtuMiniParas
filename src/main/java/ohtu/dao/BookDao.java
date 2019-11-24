@@ -13,6 +13,11 @@ public class BookDao implements Dao<Book, String> {
 
   public BookDao() {
     this.url = "jdbc:sqlite:./books.db";
+    try {
+      createNewTable();
+    } catch (Exception e) {
+      System.out.println("Error creating or connecting to database: \n" + e);
+    }
   }
 
   public void createNewTable() throws SQLException {

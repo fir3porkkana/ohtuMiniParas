@@ -1,15 +1,35 @@
 package ohtu.objects;
 
-import java.util.HashSet;;
+import java.util.ArrayList;
+import java.util.List;
+
+import ohtu.dao.*;
 
 public class Bookmarks {
-  private HashSet<Book> bookmarks;
+  private List<Book> bookmarks;
+  private BookDao bookDao;
 
   public Bookmarks() {
-    this.bookmarks = new HashSet<>();
+    this.bookDao = new BookDao();
+    this.bookmarks = new ArrayList<>();
+  }
+
+  public void init() {
+
+    try {
+
+      bookmarks = bookDao.list();
+    } catch (Exception e) {
+      System.out.println("Error retrieving books from database: \n" + e);
+    }
   }
 
   public void addBookmark(Book book) {
+    try {
+      bookDao.create(book);
+    } catch (Exception e) {
+      System.out.println("Error adding book to database: " + e);
+    }
     bookmarks.add(book);
   }
 
@@ -20,7 +40,7 @@ public class Bookmarks {
   /**
    * @return the bookmarks
    */
-  public HashSet<Book> getBookmarks() {
+  public List<Book> getBookmarks() {
     return bookmarks;
   }
 }
