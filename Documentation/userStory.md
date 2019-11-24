@@ -10,9 +10,11 @@
 
 ---
 
-#### Pystyn lisäämään kursseja lukuvinkkeihin
+#### Pystyn lisäämään lukuvinkkeihin aiheeseen liittyviä opintojaksoja 
 
 #### Pystyn merkitsemään lukuvinkin luetuksi
+
+#### Pystyn lisäämään lukemisen ajankohdan
 
 #### Pystyn lisäämään kommentin lukuvinkkiin
 
