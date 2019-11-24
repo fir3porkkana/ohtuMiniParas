@@ -11,12 +11,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ohtu.dao.BookDao;
 import ohtu.objects.*;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        BookDao bookDao = new BookDao();
+
+        try {
+            bookDao.createNewTable();
+
+        } catch (Exception e) {
+            System.out.println("error creating table: " + e);
+        }
 
         Bookmarks bookmarks = new Bookmarks();
         bookmarks.addBookmark(new Book("Violence", "Slavoj Žižek"));
@@ -52,6 +61,14 @@ public class Main extends Application {
         bookList.setId("bookList");
         bookList.setSpacing(10);
 
+        try {
+            bookDao.list().forEach(book -> {
+                Label bookLabel = new Label(book.toString());
+                bookList.getChildren().add(bookLabel);
+            });
+        } catch (Exception e) {
+
+        }
         bookmarks.getBookmarks().forEach(book -> {
             Label bookLabel = new Label(book.toString());
             bookList.getChildren().add(bookLabel);
@@ -70,6 +87,13 @@ public class Main extends Application {
             bookmarks.addBookmark(book);
 
             bookList.getChildren().add(new Label(book.toString()));
+
+            try {
+                bookDao.create(book);
+
+            } catch (Exception e) {
+                System.out.println("adding book: " + e);
+            }
             authorInput.setText("");
             titleInput.setText("");
         });
@@ -83,6 +107,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+
         launch(Main.class);
 
         // bookmarks.getBookmarks().forEach(b -> System.out.println(b.toString()));
