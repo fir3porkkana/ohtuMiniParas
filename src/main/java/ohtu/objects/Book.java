@@ -28,4 +28,10 @@ public class Book {
   public String toString() {
     return title + " by: " + author;
   }
+  
+
+  
+  public Boolean equals(Book book) {
+      return (book.getAuthor().equals(author) && book.getTitle().equals(title));
+  }
 }

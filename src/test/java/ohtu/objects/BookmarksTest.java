@@ -1,4 +1,5 @@
 package ohtu.objects;
+import ohtu.dao.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,7 +11,7 @@ public class BookmarksTest {
 
     @Before
     public void setUp() {
-        bookmarks = new Bookmarks();
+        bookmarks = new Bookmarks(new BookDao());
     }
 
     @Test

@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ohtu.dao.*;
+import ohtu.interfaces.*;
 
 public class Bookmarks {
   private List<Book> bookmarks;
-  private BookDao bookDao;
+  private Dao dao;
 
-  public Bookmarks() {
-    this.bookDao = new BookDao();
+  public Bookmarks(Dao dao) {
+    this.dao = dao;
     this.bookmarks = new ArrayList<>();
   }
 
@@ -18,7 +19,7 @@ public class Bookmarks {
 
     try {
 
-      bookmarks = bookDao.list();
+      bookmarks = dao.list();
     } catch (Exception e) {
       System.out.println("Error retrieving books from database: \n" + e);
     }
@@ -26,7 +27,7 @@ public class Bookmarks {
 
   public void addBookmark(Book book) {
     try {
-      bookDao.create(book);
+      dao.create(book);
     } catch (Exception e) {
       System.out.println("Error adding book to database: " + e);
     }
