@@ -63,8 +63,14 @@ public class BookDao implements Dao<Book, String> {
 
   @Override
   public void delete(String key) throws SQLException {
-    // TODO Auto-generated method stub
+    Connection connection = DriverManager.getConnection("jdbc:sqlite:./books.db");
 
+    PreparedStatement stmt = connection.prepareStatement("DELETE FROM Books WHERE id=(?)");
+    stmt.setString(1, key);
+
+    stmt.executeUpdate();
+    stmt.close();
+    connection.close();
   }
 
   @Override
