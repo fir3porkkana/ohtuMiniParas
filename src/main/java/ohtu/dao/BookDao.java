@@ -7,7 +7,7 @@ import java.util.List;
 import ohtu.interfaces.*;
 import ohtu.objects.Book;
 
-public class BookDao implements Dao<Book, Integer> {
+public class BookDao implements Dao<Book, String> {
 
   String url;
 
@@ -50,7 +50,7 @@ public class BookDao implements Dao<Book, Integer> {
   }
 
   @Override
-  public Book read(Integer key) throws SQLException {
+  public Book read(String key) throws SQLException {
     // TODO Auto-generated method stub
     return null;
   }
