@@ -18,7 +18,6 @@ public class Bookmarks {
   public void init() {
 
     try {
-
       bookmarks = dao.list();
     } catch (Exception e) {
       System.out.println("Error retrieving books from database: \n" + e);
@@ -35,6 +34,11 @@ public class Bookmarks {
   }
 
   public void removeBookmark(Book book) {
+      try {
+          dao.delete(book);
+      } catch (Exception e) {
+          System.out.println("Error removing book from database: " + e);
+      }
     bookmarks.remove(book);
   }
 

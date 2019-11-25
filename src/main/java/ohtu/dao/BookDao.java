@@ -7,7 +7,7 @@ import java.util.List;
 import ohtu.interfaces.*;
 import ohtu.objects.Book;
 
-public class BookDao implements Dao<Book, String> {
+public class BookDao implements Dao<Book, Integer> {
 
   String url;
 
@@ -50,7 +50,7 @@ public class BookDao implements Dao<Book, String> {
   }
 
   @Override
-  public Book read(String key) throws SQLException {
+  public Book read(Integer key) throws SQLException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -62,11 +62,12 @@ public class BookDao implements Dao<Book, String> {
   }
 
   @Override
-  public void delete(String key) throws SQLException {
+  public void delete(Book book) throws SQLException {
     Connection connection = DriverManager.getConnection("jdbc:sqlite:./books.db");
 
-    PreparedStatement stmt = connection.prepareStatement("DELETE FROM Books WHERE id=(?)");
-    stmt.setString(1, key);
+    PreparedStatement stmt = connection.prepareStatement("DELETE FROM Books WHERE title = ? AND author= ?");
+    stmt.setString(1, book.getTitle());
+    stmt.setString(2, book.getAuthor());
 
     stmt.executeUpdate();
     stmt.close();
