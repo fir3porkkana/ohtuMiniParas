@@ -1,6 +1,8 @@
 # Ohjelmistotuotannon miniprojekti
 
-Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä.
+## Sovellus
+
+Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä. Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa.
 
 Toteutuskieli: Java
 
