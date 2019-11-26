@@ -19,3 +19,11 @@
 #### Pystyn lisäämään kommentin lukuvinkkiin
 
 #### Pystyn filtteröimään lukuvinkkejä
+
+#### Pystyn lisäämään blogipostauksen
+
+#### Pystyn lisäämään podcastin
+
+#### Pystyn lisäämään videon
+
+
