@@ -80,17 +80,17 @@ public class BookList extends GridPane {
         this.add(bookListView, 0, 3);
         this.add(selectedBookDisplay, 1, 3);
 
+        //Set actions for buttons and listview
         addBookButton.setOnAction(this::addBookAction);
         deleteBookButton.setOnAction(this::deleteBookAction);
         editBookButton.setOnAction(this::editBookAction);
-
         bookListView.setOnMouseClicked(this::bookSelectedAction);
 
         refreshBookmarks();
     }
 
     private void bookSelectedAction(javafx.scene.input.MouseEvent e){
-        Book selectedBook = bookListView.getSelectionModel().getSelectedItem();
+        Book selectedBook = getSelectedBook();
         if(selectedBook == null) return;
         setBookInfoText(selectedBook.getAuthor(), selectedBook.getTitle());
     }
@@ -99,7 +99,7 @@ public class BookList extends GridPane {
         Book book = new Book(titleInput.getText(), authorInput.getText());
         if (checkBook(book)) {
             refreshBookmarks();
-            setBookInputText("","");
+            clearBookInput();
         } else {
             showNewAlert("Book exists","The database already contains this book");
         }
@@ -110,10 +110,17 @@ public class BookList extends GridPane {
 
         if (selectedBook == null) {
             showNewAlert("Not selected","No book has been selected");
+        } else if ("".equals(editTitleField.getText()) && "".equals(editAuthorField.getText())){
+            showNewAlert("No title or author","Title or author missing");
         } else {
-            editBook(selectedBook, new Book(editTitleField.getText(), editAuthorField.getText()));
+            String newTitle = !"".equals(editTitleField.getText()) ? editTitleField.getText() : selectedBook.getTitle();
+            String newAuthor = !"".equals(editAuthorField.getText()) ? editAuthorField.getText() : selectedBook.getAuthor();
+            Book newBook = new Book(newTitle, newAuthor);
+
+            editBook(selectedBook, newBook);
             refreshBookmarks();
-            setBookInfoText(editTitleField.getText(), editAuthorField.getText());
+            setBookInfoText(newBook.getAuthor(), newBook.getTitle());
+            clearBookEditText();
         }
     }
 
@@ -127,9 +134,14 @@ public class BookList extends GridPane {
         }
     }
 
-    private void setBookInputText(String author, String title){
-        authorInput.setText(author);
-        titleInput.setText(title);
+    private void clearBookEditText(){
+        editAuthorField.setText("");
+        editTitleField.setText("");
+    }
+
+    private void clearBookInput(){
+        authorInput.setText("");
+        titleInput.setText("");
     }
 
     private void setBookInfoText(String author, String title){
@@ -154,18 +166,20 @@ public class BookList extends GridPane {
         bookListView.getItems().addAll(bookmarks.getBookmarks());
     }
     
-    public Boolean checkBook(Book book) {
-        if(bookmarks.getBookmarks().contains(book))
-            return false;
-        bookmarks.addBookmark(book);
-        return true;
+    private Boolean checkBook(Book book) {
+        if(!bookmarks.getBookmarks().contains(book)){
+            bookmarks.addBookmark(book);
+            return true;
+        }
+        return false;
     }
 
     private Boolean deleteBook(Book book){
-        if(!bookmarks.getBookmarks().contains(book))
-            return false;
-        bookmarks.removeBookmark(book);
-        return true;
+        if(bookmarks.getBookmarks().contains(book)){
+            bookmarks.removeBookmark(book);
+            return true;
+        }
+        return false;
     }
     
     private void editBook(Book book, Book updatedBook) {

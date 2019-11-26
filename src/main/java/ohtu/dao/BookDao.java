@@ -74,6 +74,7 @@ public class BookDao implements Dao<Book, String> {
   public void delete(Book book) throws SQLException {
     Connection connection = DriverManager.getConnection("jdbc:sqlite:./books.db");
 
+    //Remove book from database, based on combination of title and author.
     PreparedStatement stmt = connection.prepareStatement("DELETE FROM Books WHERE title = ? AND author= ?");
     stmt.setString(1, book.getTitle());
     stmt.setString(2, book.getAuthor());
