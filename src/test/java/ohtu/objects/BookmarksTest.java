@@ -1,5 +1,6 @@
 package ohtu.objects;
 import ohtu.dao.*;
+import ohtu.interfaces.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,13 +8,41 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BookmarksTest {
     Bookmarks bookmarks;
+    
+        Dao fakeDao = new Dao<Book,String>() {
+            ArrayList<Book> books = new ArrayList<>();
+            
+
+            
+            public void create(Book book) {
+                books.add(book);
+            }
+            
+            public Book read(String s) {  
+                return new Book (s, null);
+            }
+            
+            public void update(Book b, Book updatedBook) {   
+                int index = books.indexOf(b);
+                books.set(index, updatedBook);
+            }    
+            
+            public void delete(Book b) {
+                books.remove(b);
+            }
+
+            public List<Book> list() {
+                return books;
+            }
+    };
 
     @Before
     public void setUp() {
-        bookmarks = new Bookmarks(new BookDao());
+        bookmarks = new Bookmarks(fakeDao);
     }
 
     @Test
@@ -109,4 +138,6 @@ public class BookmarksTest {
         
         assertEquals(bookmarks.getBookmarks(), correctList);
     }
+    
+
 }

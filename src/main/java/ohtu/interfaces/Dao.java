@@ -1,7 +1,7 @@
 package ohtu.interfaces;
 
 import java.util.List;
-import java.sql.SQLException;;
+import java.sql.SQLException;
 
 public interface Dao<T, K> {
   void create(T object) throws SQLException;
