@@ -9,10 +9,11 @@ public class Book {
         this.title = title;
         this.author = author;
     }
+
     public Book(int id, String title, String author) {
         this.id = id;
-        this.title = title;
-        this.author = author;
+        this.title = title.trim();
+        this.author = author.trim();
     }
 
     /**
@@ -27,6 +28,13 @@ public class Book {
      */
     public String getTitle() {
         return title;
+    }
+
+    public boolean isEmpty() {
+        if (this.author.isEmpty() || this.title.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
     @Override

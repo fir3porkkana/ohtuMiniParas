@@ -1,8 +1,11 @@
 package ohtu.app.components;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import ohtu.objects.Book;
 import ohtu.objects.Bookmarks;
@@ -80,6 +83,7 @@ public class BookList extends GridPane {
 
         // Set actions for buttons and listview
         addBookButton.setOnAction(this::addBookAction);
+        authorInput.setOnKeyPressed(this::onEnterKeyPress);
         deleteBookButton.setOnAction(this::deleteBookAction);
         editBookButton.setOnAction(this::editBookAction);
         bookListView.setOnMouseClicked(this::bookSelectedAction);
@@ -94,13 +98,21 @@ public class BookList extends GridPane {
         setBookInfoText(selectedBook.getAuthor(), selectedBook.getTitle());
     }
 
-    private void addBookAction(ActionEvent e) {
+    private void onEnterKeyPress(KeyEvent e) {
+        if (e.getCode().equals(KeyCode.ENTER)) {
+            addBookAction(e);
+        }
+    }
+
+    private void addBookAction(Event e) {
         Book book = new Book(titleInput.getText(), authorInput.getText());
-        if (checkBook(book)) {
-            refreshBookmarks();
-            clearBookInput();
-        } else {
-            showNewAlert("Book exists", "The database already contains this book");
+        if (!book.isEmpty()) {
+            if (checkBook(book)) {
+                refreshBookmarks();
+                clearBookInput();
+            } else {
+                showNewAlert("Book exists", "The database already contains this book");
+            }
         }
     }
 
