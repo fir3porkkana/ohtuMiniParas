@@ -111,10 +111,11 @@ public class BookList extends GridPane {
         if (selectedBook == null) {
             showNewAlert("Not selected","No book has been selected");
         } else if ("".equals(editTitleField.getText()) && "".equals(editAuthorField.getText())){
-            showNewAlert("No title or author","Title or author missing");
+            showNewAlert("Fields are empty","Title and/or author missing");
         } else {
-            String newTitle = !"".equals(editTitleField.getText()) ? editTitleField.getText() : selectedBook.getTitle();
-            String newAuthor = !"".equals(editAuthorField.getText()) ? editAuthorField.getText() : selectedBook.getAuthor();
+            //If a field is empty, old value is kept
+            String newTitle = !editTitleField.getText().isBlank() ? editTitleField.getText() : selectedBook.getTitle();
+            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
             Book newBook = new Book(newTitle, newAuthor);
 
             editBook(selectedBook, newBook);
