@@ -1,11 +1,7 @@
 package ohtu.app.components;
 
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,7 +12,6 @@ import ohtu.dao.*;
 public class BookList extends GridPane {
 
     private Bookmarks bookmarks;
-    private Book selectedBook = null;
 
     public BookList() {
 
@@ -69,14 +64,14 @@ public class BookList extends GridPane {
         this.setVgap(5);
         this.setHgap(5);
 
-        VBox bookList = new VBox();
+        ListView<Book> bookList = new ListView<Book>();
         bookList.setId("bookList");
-        bookList.setSpacing(10);
+        //bookList.setSpacing(10);
         
-        ScrollPane scrollableBookList = new ScrollPane(bookList);
-        scrollableBookList.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollableBookList.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollableBookList.setPrefSize(300, 2000);
+        //ScrollPane scrollableBookList = new ScrollPane(bookList);
+        //scrollableBookList.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        //scrollableBookList.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        //scrollableBookList.setPrefSize(300, 2000);
 
         // Arranging all the nodes in the grid
         this.add(titleLabel, 0, 0);
@@ -84,51 +79,39 @@ public class BookList extends GridPane {
         this.add(authorLabel, 0, 1);
         this.add(authorInput, 1, 1);
         this.add(submitButton, 0, 2);
-        this.add(scrollableBookList, 0, 3);
+        this.add(bookList, 0, 3);
         this.add(selectedBookDisplay, 1, 3);
 
         submitButton.setOnAction((event) -> {
             Book book = new Book(titleInput.getText(), authorInput.getText());
             if (checkBook(book)) {
                 refreshBookmarks(bookList, bookAuthor, bookTitle);
-                //bookList.getChildren().add(new Label(book.toString()));
                 authorInput.setText("");
                 titleInput.setText("");
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Book exists");
-                alert.setHeaderText(null);
-                alert.setContentText("The database already contains this book");
-                alert.showAndWait();
+                showNewAlert("Book exists","The database already contains this book");
             }
         });
 
         deleteBook.setOnAction(e->{
+            Book selectedBook = bookList.getSelectionModel().getSelectedItem();
             if(selectedBook == null) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Not selected");
-                alert.setHeaderText(null);
-                alert.setContentText("No book has been selected");
-                alert.showAndWait();
-                return;
-            };
-
-            if(deleteBook(selectedBook)){
-                selectedBook = null;
-                refreshBookmarks(bookList, bookAuthor, bookTitle);
-                bookAuthor.setText("");
-                bookTitle.setText("");
+                showNewAlert("Not selected","No book has been selected");
+            } else {
+                if(deleteBook(selectedBook)){
+                    selectedBook = null;
+                    refreshBookmarks(bookList, bookAuthor, bookTitle);
+                    bookAuthor.setText("");
+                    bookTitle.setText("");
+                }
             }
         });
         
         editBook.setOnAction(e -> {
+            Book selectedBook = bookList.getSelectionModel().getSelectedItem();
+
             if (selectedBook == null) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Not selected");
-                alert.setHeaderText(null);
-                alert.setContentText("No book has been selected");
-                alert.showAndWait();
-                return;
+                showNewAlert("Not selected","No book has been selected");
             } else {
                 editBook(selectedBook, new Book(editTitleField.getText(), editAuthorField.getText()));
                 refreshBookmarks(bookList, bookAuthor, bookTitle);
@@ -137,21 +120,30 @@ public class BookList extends GridPane {
             }
         });
 
+        bookList.setOnMouseClicked(e->{
+            Book selectedBook = bookList.getSelectionModel().getSelectedItem();
+            if(selectedBook == null) return;
+
+            bookAuthor.setText(selectedBook.getAuthor());
+            bookTitle.setText(selectedBook.getTitle());
+        });
+
         refreshBookmarks(bookList, bookAuthor, bookTitle);
     }
 
-    private void refreshBookmarks(VBox bookList, Label bookAuthor, Label bookTitle){
-        bookList.getChildren().removeAll(bookList.getChildren());
+    private void showNewAlert(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void refreshBookmarks(ListView<Book> bookList, Label bookAuthor, Label bookTitle){
+        bookList.getItems().clear();
 
         bookmarks.getBookmarks().forEach(book -> {
-            Label bookLabel = new Label(book.toString());
-            bookLabel.setOnMouseClicked(e->{
-                selectedBook = book;
-                bookAuthor.setText(book.getAuthor());
-                bookTitle.setText(book.getTitle());
-            });
-
-            bookList.getChildren().add(bookLabel);
+            bookList.getItems().add(book);
         });
     }
     
