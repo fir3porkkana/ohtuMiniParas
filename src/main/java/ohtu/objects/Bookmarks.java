@@ -27,19 +27,32 @@ public class Bookmarks {
   public void addBookmark(Book book) {
     try {
       dao.create(book);
+      bookmarks.add(book);
     } catch (Exception e) {
       System.out.println("Error adding book to database: " + e);
     }
-    bookmarks.add(book);
+    
   }
 
   public void removeBookmark(Book book) {
       try {
           dao.delete(book);
+          bookmarks.remove(book);
       } catch (Exception e) {
           System.out.println("Error removing book from database: " + e);
       }
-    bookmarks.remove(book);
+    
+  }
+  
+  public void updateBookmark(Book book, Book updatedBook) {
+      try {
+          dao.update(book, updatedBook);
+          int index = bookmarks.indexOf(book);
+          bookmarks.set(index, updatedBook);
+      } catch (Exception e) {
+          System.out.println("Error updating book: " + e);
+      }
+    
   }
 
   /**

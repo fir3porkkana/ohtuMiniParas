@@ -40,13 +40,22 @@ public class BookList extends GridPane {
         //Display for selected book
         GridPane selectedBookDisplay = new GridPane();
         Button deleteBook = new Button("Delete book");
+        Button editBook = new Button("Edit book");
         Label bookAuthor = new Label("");
         Label bookTitle = new Label("");
+        TextField editAuthorField = new TextField();
+        editAuthorField.setPromptText("Set new Author");
+        TextField editTitleField = new TextField();
+        editTitleField.setPromptText("Set new Title");
         selectedBookDisplay.add(new Label("Author"), 0, 0);
         selectedBookDisplay.add(new Label("Title"), 0, 1);
         selectedBookDisplay.add(bookAuthor, 1, 0);
         selectedBookDisplay.add(bookTitle, 1, 1);
         selectedBookDisplay.add(deleteBook, 0,2);
+        selectedBookDisplay.add(editAuthorField, 0, 3);
+        selectedBookDisplay.add(editTitleField, 1, 3);
+        selectedBookDisplay.add(editBook, 0, 4);
+        
 
         selectedBookDisplay.setPadding(new Insets(10, 10, 10, 10));
 
@@ -111,6 +120,22 @@ public class BookList extends GridPane {
                 bookTitle.setText("");
             }
         });
+        
+        editBook.setOnAction(e -> {
+            if (selectedBook == null) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Not selected");
+                alert.setHeaderText(null);
+                alert.setContentText("No book has been selected");
+                alert.showAndWait();
+                return;
+            } else {
+                editBook(selectedBook, new Book(editTitleField.getText(), editAuthorField.getText()));
+                refreshBookmarks(bookList, bookAuthor, bookTitle);
+                bookAuthor.setText(editAuthorField.getText());
+                bookTitle.setText(editTitleField.getText());
+            }
+        });
 
         refreshBookmarks(bookList, bookAuthor, bookTitle);
     }
@@ -145,6 +170,10 @@ public class BookList extends GridPane {
 
         bookmarks.removeBookmark(book);
         return true;
+    }
+    
+    private void editBook(Book book, Book updatedBook) {
+        bookmarks.updateBookmark(book, updatedBook);
     }
 
     public Bookmarks getBookmarks() {

@@ -56,9 +56,18 @@ public class BookDao implements Dao<Book, String> {
   }
 
   @Override
-  public Book update(Book object) throws SQLException {
-    // TODO Auto-generated method stub
-    return null;
+  public void update(Book book, Book updatedBook) throws SQLException {
+    Connection connection = DriverManager.getConnection("jdbc:sqlite:./books.db");
+    PreparedStatement stmt = connection.prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
+    stmt.setString(1, updatedBook.getTitle());
+    stmt.setString(2, updatedBook.getTitle());
+    stmt.setString(3, book.getTitle());
+    stmt.setString(4, book.getAuthor());
+    
+    stmt.executeUpdate();
+    stmt.close();
+    connection.close();
+    
   }
 
   @Override

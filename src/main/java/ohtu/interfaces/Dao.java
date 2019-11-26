@@ -8,7 +8,7 @@ public interface Dao<T, K> {
 
   T read(K key) throws SQLException;
 
-  T update(T object) throws SQLException;
+  void update(T object, T secondObject) throws SQLException;
 
   void delete(T object) throws SQLException;
 
