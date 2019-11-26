@@ -110,7 +110,7 @@ public class BookList extends GridPane {
 
         if (selectedBook == null) {
             showNewAlert("Not selected","No book has been selected");
-        } else if ("".equals(editTitleField.getText()) && "".equals(editAuthorField.getText())){
+        } else if (editTitleField.getText().isBlank() && editAuthorField.getText().isBlank()){
             showNewAlert("Fields are empty","Title and/or author missing");
         } else {
             //If a field is empty, old value is kept
