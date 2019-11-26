@@ -1,6 +1,6 @@
 # Ohjelmistotuotannon miniprojekti
 
-## Sovellus
+## Sovelluksen määrittely
 
 Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä. Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa.
 
