@@ -8,7 +8,13 @@ Toteutuskieli: Java
 
 Käyttöliittymä: Paikallinen komentoriviltä suoritettava, graafinen
 
-## [Backlog](https://docs.google.com/spreadsheets/d/1xw16uQBEmb93MxG8sn8DBW7L4hb3ol44io-by8Mnahs/edit?usp=sharing)
+## Seuranta
+
+[Product Backlog](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/userStory.md)
+
+[Sprint Backlog](https://docs.google.com/spreadsheets/d/1xw16uQBEmb93MxG8sn8DBW7L4hb3ol44io-by8Mnahs/edit?usp=sharing)
+
+[Definition of Done](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/definitionOfDone.md)
 
 ## Testaus
 
