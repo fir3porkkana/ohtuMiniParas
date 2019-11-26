@@ -1,19 +1,34 @@
 package ohtu.objects;
+
 import ohtu.dao.*;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import java.util.ArrayList;
 
 public class BookmarksTest {
-    Bookmarks bookmarks;
+    static Bookmarks bookmarks;
+    static BookDao bookDao;
 
     @Before
     public void setUp() {
-        bookmarks = new Bookmarks(new BookDao());
+        bookmarks = new Bookmarks(bookDao);
+        try {
+            bookDao.emptyTable();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    @BeforeClass
+    public static void setUpClass() {
+        bookDao = new BookDao("test.db");
+
     }
 
     @Test
@@ -37,7 +52,7 @@ public class BookmarksTest {
 
         assertEquals(1, bookmarks.getBookmarks().size());
     }
-    
+
     @Test
     public void removingANonExistingBookDoesntDecrementSize() {
         Book testBook = new Book("The Conquest of Bread", "Peter Kropotkin");
@@ -46,12 +61,12 @@ public class BookmarksTest {
         bookmarks.addBookmark(anotherTestBook);
 
         assertEquals(2, bookmarks.getBookmarks().size());
-        
+
         bookmarks.removeBookmark(new Book("Why socialism?", "Albert Einstein"));
 
         assertEquals(2, bookmarks.getBookmarks().size());
     }
-    
+
     @Test
     public void addingABookAddsItToTheBookmarksList() {
         Book anotherTestBook = new Book("yes", "on");
@@ -61,7 +76,7 @@ public class BookmarksTest {
 
         Assert.assertTrue(bookmarks.getBookmarks().contains(testBook));
     }
-    
+
     @Test
     public void removingABookRemovesItFromTheBookmarksList() {
         Book anotherTestBook = new Book("yes", "on");
@@ -72,7 +87,7 @@ public class BookmarksTest {
 
         Assert.assertFalse(bookmarks.getBookmarks().contains(testBook));
     }
-    
+
     @Test
     public void updatingABookRemovesOld() {
         Book anotherTestBook = new Book("yes", "on");
@@ -83,7 +98,7 @@ public class BookmarksTest {
 
         Assert.assertFalse(bookmarks.getBookmarks().contains(testBook));
     }
-    
+
     @Test
     public void updatingABookAddsNew() {
         Book anotherTestBook = new Book("yes", "on");
@@ -96,7 +111,7 @@ public class BookmarksTest {
 
         Assert.assertTrue(bookmarks.getBookmarks().contains(updatedBook));
     }
-    
+
     @Test
     public void getBookmarksReturnsCorrectList() {
         ArrayList<Book> correctList = new ArrayList<>();
@@ -106,7 +121,8 @@ public class BookmarksTest {
         bookmarks.addBookmark(anotherTestBook);
         correctList.add(testBook);
         correctList.add(anotherTestBook);
-        
+        System.out.println("inBookMarks: " + bookmarks.getBookmarks());
+
         assertEquals(bookmarks.getBookmarks(), correctList);
     }
 }

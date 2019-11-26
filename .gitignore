@@ -3,4 +3,5 @@ build/
 \.gradle/
 /.nb-gradle/
 books.db
+test.db
 \.idea*
