@@ -121,7 +121,7 @@ public class BookList extends GridPane {
             editBook(selectedBook, newBook);
             refreshBookmarks();
             setBookInfoText(newBook.getAuthor(), newBook.getTitle());
-            clearBookEditText();
+            clearBookEditInput();
         }
     }
 
@@ -135,7 +135,7 @@ public class BookList extends GridPane {
         }
     }
 
-    private void clearBookEditText(){
+    private void clearBookEditInput(){
         editAuthorField.setText("");
         editTitleField.setText("");
     }

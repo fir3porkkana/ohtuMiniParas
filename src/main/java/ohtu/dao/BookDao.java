@@ -9,7 +9,7 @@ import ohtu.objects.Book;
 
 public class BookDao implements Dao<Book, String> {
 
-  String url;
+  private String url;
 
   public BookDao() {
     this.url = "jdbc:sqlite:./books.db";
@@ -38,7 +38,7 @@ public class BookDao implements Dao<Book, String> {
 
   @Override
   public void create(Book book) throws SQLException {
-    Connection connection = DriverManager.getConnection("jdbc:sqlite:./books.db");
+    Connection connection = DriverManager.getConnection(url);
 
     PreparedStatement stmt = connection.prepareStatement("INSERT INTO Books (title, author) VALUES (?, ?)");
     stmt.setString(1, book.getTitle());
@@ -57,7 +57,7 @@ public class BookDao implements Dao<Book, String> {
 
   @Override
   public void update(Book book, Book updatedBook) throws SQLException {
-    Connection connection = DriverManager.getConnection("jdbc:sqlite:./books.db");
+    Connection connection = DriverManager.getConnection(url);
     PreparedStatement stmt = connection.prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
     stmt.setString(1, updatedBook.getTitle());
     stmt.setString(2, updatedBook.getTitle());
@@ -72,9 +72,9 @@ public class BookDao implements Dao<Book, String> {
 
   @Override
   public void delete(Book book) throws SQLException {
-    Connection connection = DriverManager.getConnection("jdbc:sqlite:./books.db");
+    Connection connection = DriverManager.getConnection(url);
 
-    //Remove book from database, based on combination of title and author.
+    //Remove book from database, based on combination of fields title and author.
     PreparedStatement stmt = connection.prepareStatement("DELETE FROM Books WHERE title = ? AND author= ?");
     stmt.setString(1, book.getTitle());
     stmt.setString(2, book.getAuthor());
@@ -87,7 +87,7 @@ public class BookDao implements Dao<Book, String> {
   @Override
   public List<Book> list() throws SQLException {
     List<Book> list = new ArrayList<>();
-    Connection connection = DriverManager.getConnection("jdbc:sqlite:./books.db");
+    Connection connection = DriverManager.getConnection(url);
     PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Books");
     ResultSet resultSet = stmt.executeQuery();
     while (resultSet.next()) {
