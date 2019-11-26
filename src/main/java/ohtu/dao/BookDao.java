@@ -11,8 +11,8 @@ public class BookDao implements Dao<Book, String> {
 
   private String url;
 
-  public BookDao() {
-    this.url = "jdbc:sqlite:./books.db";
+  public BookDao(String DBFileName) {
+    this.url = "jdbc:sqlite:./" + DBFileName;
     try {
       createNewTable();
     } catch (Exception e) {
@@ -34,6 +34,17 @@ public class BookDao implements Dao<Book, String> {
     stmt.close();
     conn.close();
 
+  }
+
+  public void emptyTable() throws SQLException {
+    String sql = "DELETE FROM books";
+
+    Connection conn = DriverManager.getConnection(url);
+    PreparedStatement stmt = conn.prepareStatement(sql);
+    // create a new table
+    stmt.executeUpdate();
+    stmt.close();
+    conn.close();
   }
 
   @Override
@@ -58,23 +69,24 @@ public class BookDao implements Dao<Book, String> {
   @Override
   public void update(Book book, Book updatedBook) throws SQLException {
     Connection connection = DriverManager.getConnection(url);
-    PreparedStatement stmt = connection.prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
+    PreparedStatement stmt = connection
+        .prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
     stmt.setString(1, updatedBook.getTitle());
     stmt.setString(2, updatedBook.getTitle());
     stmt.setString(3, book.getTitle());
     stmt.setString(4, book.getAuthor());
-    
+
     stmt.executeUpdate();
     stmt.close();
     connection.close();
-    
+
   }
 
   @Override
   public void delete(Book book) throws SQLException {
     Connection connection = DriverManager.getConnection(url);
 
-    //Remove book from database, based on combination of fields title and author.
+    // Remove book from database, based on combination of fields title and author.
     PreparedStatement stmt = connection.prepareStatement("DELETE FROM Books WHERE title = ? AND author= ?");
     stmt.setString(1, book.getTitle());
     stmt.setString(2, book.getAuthor());

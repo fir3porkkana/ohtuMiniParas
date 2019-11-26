@@ -8,7 +8,6 @@ import ohtu.objects.Book;
 import ohtu.objects.Bookmarks;
 import ohtu.dao.*;
 
-
 public class BookList extends GridPane {
 
     private Bookmarks bookmarks;
@@ -24,10 +23,9 @@ public class BookList extends GridPane {
     private TextField editAuthorField = new TextField();
     private TextField editTitleField = new TextField();
 
-    public BookList() {
+    public BookList(Bookmarks bookmarks) {
 
-        bookmarks = new Bookmarks(new BookDao());
-        bookmarks.init();
+        this.bookmarks = bookmarks;
 
         Label authorLabel = new Label("Author");
         authorInput.setId("author_input");
@@ -40,7 +38,7 @@ public class BookList extends GridPane {
         Button addBookButton = new Button("Add book");
         addBookButton.setId("submit_button");
 
-        //Display for selected book
+        // Display for selected book
         GridPane selectedBookDisplay = new GridPane();
         selectedBookDisplay.setPadding(new Insets(10, 10, 10, 10));
 
@@ -54,7 +52,7 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(new Label("Title"), 0, 1);
         selectedBookDisplay.add(bookInfoAuthor, 1, 0);
         selectedBookDisplay.add(bookInfoTitle, 1, 1);
-        selectedBookDisplay.add(deleteBookButton, 0,2);
+        selectedBookDisplay.add(deleteBookButton, 0, 2);
         selectedBookDisplay.add(editAuthorField, 0, 3);
         selectedBookDisplay.add(editTitleField, 1, 3);
         selectedBookDisplay.add(editBookButton, 0, 4);
@@ -80,7 +78,7 @@ public class BookList extends GridPane {
         this.add(bookListView, 0, 3);
         this.add(selectedBookDisplay, 1, 3);
 
-        //Set actions for buttons and listview
+        // Set actions for buttons and listview
         addBookButton.setOnAction(this::addBookAction);
         deleteBookButton.setOnAction(this::deleteBookAction);
         editBookButton.setOnAction(this::editBookAction);
@@ -89,33 +87,35 @@ public class BookList extends GridPane {
         refreshBookmarks();
     }
 
-    private void bookSelectedAction(javafx.scene.input.MouseEvent e){
+    private void bookSelectedAction(javafx.scene.input.MouseEvent e) {
         Book selectedBook = getSelectedBook();
-        if(selectedBook == null) return;
+        if (selectedBook == null)
+            return;
         setBookInfoText(selectedBook.getAuthor(), selectedBook.getTitle());
     }
 
-    private void addBookAction(ActionEvent e){
+    private void addBookAction(ActionEvent e) {
         Book book = new Book(titleInput.getText(), authorInput.getText());
         if (checkBook(book)) {
             refreshBookmarks();
             clearBookInput();
         } else {
-            showNewAlert("Book exists","The database already contains this book");
+            showNewAlert("Book exists", "The database already contains this book");
         }
     }
 
-    private void editBookAction(ActionEvent e){
+    private void editBookAction(ActionEvent e) {
         Book selectedBook = getSelectedBook();
 
         if (selectedBook == null) {
-            showNewAlert("Not selected","No book has been selected");
-        } else if (editTitleField.getText().isBlank() && editAuthorField.getText().isBlank()){
-            showNewAlert("Fields are empty","Title and/or author missing");
+            showNewAlert("Not selected", "No book has been selected");
+        } else if (editTitleField.getText().isBlank() && editAuthorField.getText().isBlank()) {
+            showNewAlert("Fields are empty", "Title and/or author missing");
         } else {
-            //If a field is empty, old value is kept
+            // If a field is empty, old value is kept
             String newTitle = !editTitleField.getText().isBlank() ? editTitleField.getText() : selectedBook.getTitle();
-            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
+            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText()
+                    : selectedBook.getAuthor();
             Book newBook = new Book(newTitle, newAuthor);
 
             editBook(selectedBook, newBook);
@@ -125,36 +125,36 @@ public class BookList extends GridPane {
         }
     }
 
-    private void deleteBookAction(ActionEvent e){
+    private void deleteBookAction(ActionEvent e) {
         Book selectedBook = getSelectedBook();
-        if(selectedBook == null) {
-            showNewAlert("Not selected","No book has been selected");
+        if (selectedBook == null) {
+            showNewAlert("Not selected", "No book has been selected");
         } else if (deleteBook(selectedBook)) {
             refreshBookmarks();
             setBookInfoText("", "");
         }
     }
 
-    private void clearBookEditInput(){
+    private void clearBookEditInput() {
         editAuthorField.setText("");
         editTitleField.setText("");
     }
 
-    private void clearBookInput(){
+    private void clearBookInput() {
         authorInput.setText("");
         titleInput.setText("");
     }
 
-    private void setBookInfoText(String author, String title){
+    private void setBookInfoText(String author, String title) {
         bookInfoAuthor.setText(author);
         bookInfoTitle.setText(title);
     }
 
-    private Book getSelectedBook(){
+    private Book getSelectedBook() {
         return bookListView.getSelectionModel().getSelectedItem();
     }
 
-    private void showNewAlert(String title, String content){
+    private void showNewAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -162,27 +162,27 @@ public class BookList extends GridPane {
         alert.showAndWait();
     }
 
-    private void refreshBookmarks(){
+    private void refreshBookmarks() {
         bookListView.getItems().clear();
         bookListView.getItems().addAll(bookmarks.getBookmarks());
     }
-    
+
     private Boolean checkBook(Book book) {
-        if(!bookmarks.getBookmarks().contains(book)){
+        if (!bookmarks.getBookmarks().contains(book)) {
             bookmarks.addBookmark(book);
             return true;
         }
         return false;
     }
 
-    private Boolean deleteBook(Book book){
-        if(bookmarks.getBookmarks().contains(book)){
+    private Boolean deleteBook(Book book) {
+        if (bookmarks.getBookmarks().contains(book)) {
             bookmarks.removeBookmark(book);
             return true;
         }
         return false;
     }
-    
+
     private void editBook(Book book, Book updatedBook) {
         bookmarks.updateBookmark(book, updatedBook);
     }
