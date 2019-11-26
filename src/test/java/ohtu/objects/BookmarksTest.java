@@ -3,6 +3,7 @@ import ohtu.dao.*;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
@@ -57,13 +58,8 @@ public class BookmarksTest {
         Book testBook = new Book("The Conquest of Bread", "Peter Kropotkin");
         bookmarks.addBookmark(anotherTestBook);
         bookmarks.addBookmark(testBook);
-        Boolean loytyi = false;
-        for (Book book : bookmarks.getBookmarks()) {
-            if (book.equals(testBook)) {
-                loytyi = true;
-            }
-        }
-        assertEquals(loytyi, true);
+
+        Assert.assertTrue(bookmarks.getBookmarks().contains(testBook));
     }
     
     @Test
@@ -72,15 +68,9 @@ public class BookmarksTest {
         Book testBook = new Book("The Conquest of Bread", "Peter Kropotkin");
         bookmarks.addBookmark(testBook);
         bookmarks.addBookmark(anotherTestBook);
-        Boolean loytyi = false;
         bookmarks.removeBookmark(testBook);
-        
-        for (Book book : bookmarks.getBookmarks()) {
-            if (book.equals(testBook)) {
-                loytyi = true;
-            }
-        }
-        assertEquals(loytyi, false);
+
+        Assert.assertFalse(bookmarks.getBookmarks().contains(testBook));
     }
     
     @Test
@@ -90,37 +80,21 @@ public class BookmarksTest {
         bookmarks.addBookmark(testBook);
         bookmarks.addBookmark(anotherTestBook);
         bookmarks.updateBookmark(testBook, new Book("Why socialism", "Albert Einstein"));
-        
-        Boolean loytyi = false;
-        bookmarks.removeBookmark(testBook);
-        
-        for (Book book : bookmarks.getBookmarks()) {
-            if (book.equals(testBook)) {
-                loytyi = true;
-            }
-        }
-        
-        assertEquals(loytyi, false);    
+
+        Assert.assertFalse(bookmarks.getBookmarks().contains(testBook));
     }
     
     @Test
     public void updatingABookAddsNew() {
         Book anotherTestBook = new Book("yes", "on");
         Book testBook = new Book("The Conquest of Bread", "Peter Kropotkin");
+        Book updatedBook = new Book("Why socialism", "Albert Einstein");
         bookmarks.addBookmark(testBook);
         bookmarks.addBookmark(anotherTestBook);
-        bookmarks.updateBookmark(testBook, new Book("Why socialism", "Albert Einstein"));
-        
-        Boolean loytyi = false;
+        bookmarks.updateBookmark(testBook, updatedBook);
         bookmarks.removeBookmark(testBook);
-        
-        for (Book book : bookmarks.getBookmarks()) {
-            if (book.equals(new Book("Why socialism", "Albert Einstein"))) {
-                loytyi = true;
-            }
-        }
-        
-        assertEquals(loytyi, true);    
+
+        Assert.assertTrue(bookmarks.getBookmarks().contains(updatedBook));
     }
     
     @Test
