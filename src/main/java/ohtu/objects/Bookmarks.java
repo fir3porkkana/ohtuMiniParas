@@ -35,12 +35,7 @@ public class Bookmarks {
   }
 
   public boolean contains(Book book) {
-    for (int i = 0; i < bookmarks.size(); i++) {
-      if (book.equals(bookmarks.get(i))) {
-        return true;
-      }
-    }
-    return false;
+    return bookmarks.contains(book);
   }
 
   public void removeBookmark(Book book) {

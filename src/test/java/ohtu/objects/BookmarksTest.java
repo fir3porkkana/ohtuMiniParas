@@ -4,6 +4,8 @@ import ohtu.dao.*;
 import ohtu.interfaces.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,60 +16,50 @@ import java.util.List;
 
 public class BookmarksTest {
     Bookmarks bookmarks;
-    
-        Dao fakeDao = new Dao<Book,String>() {
-            ArrayList<Book> books = new ArrayList<>();
-            
 
-            
-            public void create(Book book) {
-                books.add(book);
-            }
-            
-            public Book read(String s) {  
-                return new Book (s, null);
-            }
-            
-            public void update(Book b, Book updatedBook) {   
-                int index = books.indexOf(b);
-                books.set(index, updatedBook);
-            }    
-            
-            public void delete(Book b) {
-                books.remove(b);
-            }
+    Dao fakeDao = new Dao<Book, String>() {
+        ArrayList<Book> books = new ArrayList<>();
 
-            public List<Book> list() {
-                return books;
-            }
+        public void create(Book book) {
+            books.add(book);
+        }
+
+        public Book read(String s) {
+            return new Book(s, null);
+        }
+
+        public void update(Book b, Book updatedBook) {
+            int index = books.indexOf(b);
+            books.set(index, updatedBook);
+        }
+
+        public void delete(Book b) {
+            books.remove(b);
+        }
+
+        public List<Book> list() {
+            return books;
+        }
     };
 
     @Before
     public void setUp() {
         bookmarks = new Bookmarks(fakeDao);
     }
-/*
-    static Bookmarks bookmarks;
-    static BookDao bookDao;
 
-    @Before
-    public void setUp() {
-        bookmarks = new Bookmarks(bookDao);
-        try {
-            bookDao.emptyTable();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-        bookDao = new BookDao("test.db");
-
->>>>>>> 66267e4e851b00dcdc28ea63a26bf653607ff27d
-    }
-*/
+    /*
+     * static Bookmarks bookmarks; static BookDao bookDao;
+     * 
+     * @Before public void setUp() { bookmarks = new Bookmarks(bookDao); try {
+     * bookDao.emptyTable();
+     * 
+     * } catch (Exception e) { // TODO: handle exception } }
+     * 
+     * @BeforeClass public static void setUpClass() { bookDao = new
+     * BookDao("test.db");
+     * 
+     * >>>>>>> 66267e4e851b00dcdc28ea63a26bf653607ff27d }
+     */
     @Test
     public void addingABookIncrementsSizeByOne() {
         Book testBook = new Book("Why socialism?", "Albert Einstein");
@@ -158,10 +150,21 @@ public class BookmarksTest {
         bookmarks.addBookmark(anotherTestBook);
         correctList.add(testBook);
         correctList.add(anotherTestBook);
-        //System.out.println("inBookMarks: " + bookmarks.getBookmarks());
+        // System.out.println("inBookMarks: " + bookmarks.getBookmarks());
 
         assertEquals(bookmarks.getBookmarks(), correctList);
     }
-    
+
+    @Test
+    public void bookmarksContainsReturnsRigthValue() {
+        Book testBook = new Book("The Conquest of Bread", "Peter Kropotkin");
+        bookmarks.addBookmark(testBook);
+
+        assertTrue(bookmarks.contains(testBook));
+
+        Book anotherTestBook = new Book("Democracy for the Few", "Michael Parenti");
+
+        assertFalse(bookmarks.contains(anotherTestBook));
+    }
 
 }
