@@ -20,8 +20,8 @@ public class BookList extends GridPane {
 
     private ListView<Book> bookListView = new ListView<>();
 
-    private Label bookInfoAuthor = new Label("");
-    private Label bookInfoTitle = new Label("");
+    //private Label bookInfoAuthor = new Label("");
+    //private Label bookInfoTitle = new Label("");
 
     private TextField editAuthorField = new TextField();
     private TextField editTitleField = new TextField();
@@ -46,18 +46,18 @@ public class BookList extends GridPane {
         selectedBookDisplay.setPadding(new Insets(10, 10, 10, 10));
 
         Button deleteBookButton = new Button("Delete book");
-        Button editBookButton = new Button("Edit book");
+        Button editBookButton = new Button("Save change");
 
         editAuthorField.setPromptText("Set new Author");
         editTitleField.setPromptText("Set new Title");
 
         selectedBookDisplay.add(new Label("Author"), 0, 0);
         selectedBookDisplay.add(new Label("Title"), 0, 1);
-        selectedBookDisplay.add(bookInfoAuthor, 1, 0);
-        selectedBookDisplay.add(bookInfoTitle, 1, 1);
+        selectedBookDisplay.add(editAuthorField, 1, 0);
+        selectedBookDisplay.add(editTitleField, 1, 1);
         selectedBookDisplay.add(deleteBookButton, 0, 2);
-        selectedBookDisplay.add(editAuthorField, 0, 3);
-        selectedBookDisplay.add(editTitleField, 1, 3);
+        //selectedBookDisplay.add(editAuthorField, 0, 3);
+        //selectedBookDisplay.add(editTitleField, 1, 3);
         selectedBookDisplay.add(editBookButton, 0, 4);
 
         // Setting size for the pane
@@ -126,14 +126,13 @@ public class BookList extends GridPane {
         } else {
             // If a field is empty, old value is kept
             String newTitle = !editTitleField.getText().isBlank() ? editTitleField.getText() : selectedBook.getTitle();
-            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText()
-                    : selectedBook.getAuthor();
+            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
             Book newBook = new Book(newTitle, newAuthor);
 
             editBook(selectedBook, newBook);
             refreshBookmarks();
             setBookInfoText(newBook.getAuthor(), newBook.getTitle());
-            clearBookEditInput();
+            //clearBookEditInput();
         }
     }
 
@@ -158,8 +157,8 @@ public class BookList extends GridPane {
     }
 
     private void setBookInfoText(String author, String title) {
-        bookInfoAuthor.setText(author);
-        bookInfoTitle.setText(title);
+        editAuthorField.setText(author);
+        editTitleField.setText(title);
     }
 
     private Book getSelectedBook() {
