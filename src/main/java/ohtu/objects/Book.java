@@ -42,13 +42,8 @@ public class Book {
         return title + " by: " + author;
     }
 
-    // @Override
     public boolean equals(Book book) {
-        // if (!book.getClass().equals(Book.class)) {
-        // return false;
-        // }
-        // System.out.println(book);
-        // Book compareBook = (Book) (book);
+
         return ((book.getAuthor()).equals(author) && book.getTitle().equals(title));
     }
 }

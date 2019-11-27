@@ -31,28 +31,37 @@ public class Bookmarks {
     } catch (Exception e) {
       System.out.println("Error adding book to database: " + e);
     }
-    
+
+  }
+
+  public boolean contains(Book book) {
+    for (int i = 0; i < bookmarks.size(); i++) {
+      if (book.equals(bookmarks.get(i))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public void removeBookmark(Book book) {
-      try {
-          dao.delete(book);
-          bookmarks.remove(book);
-      } catch (Exception e) {
-          System.out.println("Error removing book from database: " + e);
-      }
-    
+    try {
+      dao.delete(book);
+      bookmarks.remove(book);
+    } catch (Exception e) {
+      System.out.println("Error removing book from database: " + e);
+    }
+
   }
-  
+
   public void updateBookmark(Book book, Book updatedBook) {
-      try {
-          dao.update(book, updatedBook);
-          int index = bookmarks.indexOf(book);
-          bookmarks.set(index, updatedBook);
-      } catch (Exception e) {
-          System.out.println("Error updating book: " + e);
-      }
-    
+    try {
+      dao.update(book, updatedBook);
+      int index = bookmarks.indexOf(book);
+      bookmarks.set(index, updatedBook);
+    } catch (Exception e) {
+      System.out.println("Error updating book: " + e);
+    }
+
   }
 
   /**

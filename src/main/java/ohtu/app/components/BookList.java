@@ -105,14 +105,10 @@ public class BookList extends GridPane {
     private void addBookAction(Event e) {
         Book book = new Book(titleInput.getText(), authorInput.getText());
         if (!book.isEmpty()) {
-            // System.out.println("book not empty");
             if (checkBook(book)) {
-                // System.out.println("checkboock pass");
                 refreshBookmarks();
                 clearBookInput();
             } else {
-                // System.out.println("checkboock fail");
-
                 showNewAlert("Book exists", "The database already contains this book");
             }
         }
@@ -182,7 +178,7 @@ public class BookList extends GridPane {
     }
 
     private Boolean checkBook(Book book) {
-        if (!bookmarks.getBookmarks().contains(book)) {
+        if (!bookmarks.contains(book)) {
             bookmarks.addBookmark(book);
             return true;
         }
@@ -190,7 +186,7 @@ public class BookList extends GridPane {
     }
 
     private Boolean deleteBook(Book book) {
-        if (bookmarks.getBookmarks().contains(book)) {
+        if (bookmarks.contains(book)) {
             bookmarks.removeBookmark(book);
             return true;
         }
