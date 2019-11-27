@@ -1,5 +1,6 @@
 /*.tmp
 build/
+bin/
 \.gradle/
 /.nb-gradle/
 books.db

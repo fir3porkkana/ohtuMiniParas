@@ -42,8 +42,12 @@ public class Book {
         return title + " by: " + author;
     }
 
-    public boolean equals(Book book) {
-
+    @Override
+    public boolean equals(Object b) {
+        if (b == null) {
+            return false;
+        }
+        Book book = (Book) b;
         return ((book.getAuthor()).equals(author) && book.getTitle().equals(title));
     }
 }
