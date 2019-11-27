@@ -158,7 +158,7 @@ public class BookmarksTest {
         bookmarks.addBookmark(anotherTestBook);
         correctList.add(testBook);
         correctList.add(anotherTestBook);
-        System.out.println("inBookMarks: " + bookmarks.getBookmarks());
+        //System.out.println("inBookMarks: " + bookmarks.getBookmarks());
 
         assertEquals(bookmarks.getBookmarks(), correctList);
     }

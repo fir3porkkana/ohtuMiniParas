@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import ohtu.objects.Book;
 import ohtu.objects.Bookmarks;
 import ohtu.dao.*;
@@ -84,6 +85,7 @@ public class BookList extends GridPane {
         // Set actions for buttons and listview
         addBookButton.setOnAction(this::addBookAction);
         authorInput.setOnKeyPressed(this::onEnterKeyPress);
+        titleInput.setOnKeyPressed(this::onEnterKeyPress);
         deleteBookButton.setOnAction(this::deleteBookAction);
         editBookButton.setOnAction(this::editBookAction);
         bookListView.setOnMouseClicked(this::bookSelectedAction);
