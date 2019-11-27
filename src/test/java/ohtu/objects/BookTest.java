@@ -37,6 +37,18 @@ public class BookTest {
         Book book = new Book("", "Jaska J");
         assertEquals(true, book.isEmpty());
     }
+   
+    @Test
+    public void isEmptyWorksBothEmpty() {
+        Book book = new Book("", "");
+        assertEquals(true, book.isEmpty());
+    }
+    
+    @Test
+    public void isEmptyWorksWhenNotEmpty() {
+        Book book = new Book("Jotain", "tekija");
+        assertEquals(false, book.isEmpty());
+    }
     
     @Test
     public void equalsWorksWhenNotEqual() {
