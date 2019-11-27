@@ -57,9 +57,7 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(editAuthorField, 1, 0);
         selectedBookDisplay.add(editTitleField, 1, 1);
         selectedBookDisplay.add(deleteBookButton, 0, 2);
-        //selectedBookDisplay.add(editAuthorField, 0, 3);
-        //selectedBookDisplay.add(editTitleField, 1, 3);
-        selectedBookDisplay.add(editBookButton, 0, 4);
+        selectedBookDisplay.add(editBookButton, 1, 2);
 
         // Setting size for the pane
         this.setMinSize(400, 200);
