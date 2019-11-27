@@ -42,12 +42,13 @@ public class Book {
         return title + " by: " + author;
     }
 
-    @Override
-    public boolean equals(Object book) {
-        if (!book.getClass().equals(this.getClass())) {
-            return false;
-        }
-        Book compareBook = (Book) (book);
-        return ((compareBook.getAuthor()).equals(author) && compareBook.getTitle().equals(title));
+    // @Override
+    public boolean equals(Book book) {
+        // if (!book.getClass().equals(Book.class)) {
+        // return false;
+        // }
+        // System.out.println(book);
+        // Book compareBook = (Book) (book);
+        return ((book.getAuthor()).equals(author) && book.getTitle().equals(title));
     }
 }
