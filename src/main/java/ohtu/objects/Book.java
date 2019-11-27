@@ -6,8 +6,8 @@ public class Book {
     private String title;
 
     public Book(String title, String author) {
-        this.title = title;
-        this.author = author;
+        this.title = title.trim();
+        this.author = author.trim();
     }
 
     public Book(int id, String title, String author) {
