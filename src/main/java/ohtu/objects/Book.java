@@ -42,7 +42,12 @@ public class Book {
         return title + " by: " + author;
     }
 
-    public Boolean equals(Book book) {
-        return (book.getAuthor().equals(author) && book.getTitle().equals(title));
+    @Override
+    public boolean equals(Object book) {
+        if (!book.getClass().equals(this.getClass())) {
+            return false;
+        }
+        Book compareBook = (Book) (book);
+        return ((compareBook.getAuthor()).equals(author) && compareBook.getTitle().equals(title));
     }
 }

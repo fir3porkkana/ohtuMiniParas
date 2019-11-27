@@ -7,10 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import ohtu.objects.Book;
 import ohtu.objects.Bookmarks;
-import ohtu.dao.*;
 
 public class BookList extends GridPane {
 
@@ -21,8 +19,8 @@ public class BookList extends GridPane {
 
     private ListView<Book> bookListView = new ListView<>();
 
-    //private Label bookInfoAuthor = new Label("");
-    //private Label bookInfoTitle = new Label("");
+    // private Label bookInfoAuthor = new Label("");
+    // private Label bookInfoTitle = new Label("");
 
     private TextField editAuthorField = new TextField();
     private TextField editTitleField = new TextField();
@@ -107,10 +105,14 @@ public class BookList extends GridPane {
     private void addBookAction(Event e) {
         Book book = new Book(titleInput.getText(), authorInput.getText());
         if (!book.isEmpty()) {
+            // System.out.println("book not empty");
             if (checkBook(book)) {
+                // System.out.println("checkboock pass");
                 refreshBookmarks();
                 clearBookInput();
             } else {
+                // System.out.println("checkboock fail");
+
                 showNewAlert("Book exists", "The database already contains this book");
             }
         }
@@ -126,13 +128,14 @@ public class BookList extends GridPane {
         } else {
             // If a field is empty, old value is kept
             String newTitle = !editTitleField.getText().isBlank() ? editTitleField.getText() : selectedBook.getTitle();
-            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
+            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText()
+                    : selectedBook.getAuthor();
             Book newBook = new Book(newTitle, newAuthor);
 
             editBook(selectedBook, newBook);
             refreshBookmarks();
             setBookInfoText(newBook.getAuthor(), newBook.getTitle());
-            //clearBookEditInput();
+            // clearBookEditInput();
         }
     }
 
