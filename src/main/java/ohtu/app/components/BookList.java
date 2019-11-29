@@ -54,10 +54,14 @@ public class BookList extends GridPane {
         selectedBookDisplay.setPadding(new Insets(10, 10, 10, 10));
 
         Button deleteBookButton = new Button("Delete book");
+        deleteBookButton.setId("delete_button");
         Button editBookButton = new Button("Save change");
+        editBookButton.setId("edit_button");
 
         editAuthorField.setPromptText("Set new Author");
+        editAuthorField.setId("edit_author");
         editTitleField.setPromptText("Set new Title");
+        editTitleField.setId("edit_title");
 
         selectedBookDisplay.add(new Label("Author"), 0, 0);
         selectedBookDisplay.add(new Label("Title"), 0, 1);
