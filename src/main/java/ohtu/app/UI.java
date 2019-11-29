@@ -15,7 +15,9 @@ public class UI {
 
     public void start(Stage stage) {
 
-        BookList gridPane = new BookList(bookmarks);
+        FileSelector fileSelector = new FileSelector(stage);
+
+        BookList gridPane = new BookList(bookmarks, fileSelector);
 
         Scene bookList = new Scene(gridPane);
 

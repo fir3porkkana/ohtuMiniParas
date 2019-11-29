@@ -1,4 +1,4 @@
-package ohtu.app.components;
+package ohtu.app;
 
 import java.io.File;
 import javafx.stage.FileChooser;
@@ -13,9 +13,7 @@ public class FileSelector {
   public FileSelector(Stage stage) {
     this.stage = stage;
     fileChooser.setTitle("Open Resource File");
-    fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Text Files", "*.txt"),
-        new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
-        new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"), new ExtensionFilter("All Files", "*.*"));
+    fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Audio Files", "*.mp3"));
 
   }
 

@@ -1,5 +1,7 @@
 package ohtu.app.components;
 
+import java.io.File;
+
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Insets;
@@ -8,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import ohtu.app.FileSelector;
 import ohtu.objects.Book;
 import ohtu.objects.Bookmarks;
 
@@ -25,10 +28,12 @@ public class BookList extends GridPane {
 
     private TextField editAuthorField = new TextField();
     private TextField editTitleField = new TextField();
+    private FileSelector fileSelector;
 
-    public BookList(Bookmarks bookmarks) {
+    public BookList(Bookmarks bookmarks, FileSelector fileSelector) {
 
         this.bookmarks = bookmarks;
+        this.fileSelector = fileSelector;
 
         Label authorLabel = new Label("Author");
         authorInput.setId("author_input");
@@ -84,6 +89,7 @@ public class BookList extends GridPane {
 
         // Set actions for buttons and listview
         addBookButton.setOnAction(this::addBookAction);
+        addAudiobookButton.setOnAction(this::addAudiobookAction);
         authorInput.setOnKeyPressed(this::onEnterKeyPress);
         titleInput.setOnKeyPressed(this::onEnterKeyPress);
         deleteBookButton.setOnAction(this::deleteBookAction);
@@ -104,6 +110,13 @@ public class BookList extends GridPane {
         if (e.getCode().equals(KeyCode.ENTER)) {
             addBookAction(e);
         }
+    }
+
+    private void addAudiobookAction(Event e) {
+        File file = fileSelector.openFileBrowser();
+        // Media hit = new Media(file.toURI().toString());
+        // MediaPlayer mediaPlayer = new MediaPlayer(hit);
+        // mediaPlayer.play();
     }
 
     private void addBookAction(Event e) {
