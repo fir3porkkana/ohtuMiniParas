@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import ohtu.objects.Book;
 import ohtu.objects.Bookmarks;
 
@@ -37,8 +38,11 @@ public class BookList extends GridPane {
         titleInput.setId("title_input");
         titleInput.setPromptText("Title");
 
+        HBox addButtons = new HBox(10);
         Button addBookButton = new Button("Add book");
+        Button addAudiobookButton = new Button("Add audiobook");
         addBookButton.setId("submit_button");
+        addButtons.getChildren().addAll(addBookButton, addAudiobookButton);
 
         // Display for selected book
         GridPane selectedBookDisplay = new GridPane();
@@ -74,7 +78,7 @@ public class BookList extends GridPane {
         this.add(titleInput, 1, 0);
         this.add(authorLabel, 0, 1);
         this.add(authorInput, 1, 1);
-        this.add(addBookButton, 0, 2);
+        this.add(addButtons, 0, 2);
         this.add(bookListView, 0, 3);
         this.add(selectedBookDisplay, 1, 3);
 
@@ -145,10 +149,10 @@ public class BookList extends GridPane {
         }
     }
 
-    private void clearBookEditInput() {
-        editAuthorField.setText("");
-        editTitleField.setText("");
-    }
+    // private void clearBookEditInput() {
+    // editAuthorField.setText("");
+    // editTitleField.setText("");
+    // }
 
     private void clearBookInput() {
         authorInput.setText("");
