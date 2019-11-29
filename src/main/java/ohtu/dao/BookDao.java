@@ -21,7 +21,7 @@ public class BookDao implements Dao<Book, String> {
   }
 
   public void createNewTable() throws SQLException {
-    // SQLite connection string
+    // SQLite connection stringfile:///home/stuomela/Documents/ohtuMiniParas/build/reports/tests/test/index.html
 
     // SQL statement for creating a new table
     String sql = "CREATE TABLE IF NOT EXISTS BOOKS "

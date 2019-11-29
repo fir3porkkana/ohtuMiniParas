@@ -58,6 +58,10 @@ public class Bookmarks {
     }
 
   }
+  
+  public void emptyBookmarks() {
+      init();
+  }
 
   /**
    * @return the bookmarks

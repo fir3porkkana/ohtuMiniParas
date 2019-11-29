@@ -29,10 +29,12 @@ public class UITest extends ApplicationTest {
     bookmarks.init();
   }
 
+  
   @Before
-  public void setUp() {
+  public void init() {
     try {
       bookDao.emptyTable();
+      bookmarks.emptyBookmarks();
     } catch (Exception e) {
       // TODO: handle exception
     }
@@ -55,18 +57,35 @@ public class UITest extends ApplicationTest {
 
   @Test
   public void bookGetsAddedToDatabase() {
-    TextField titleText = find("#title_input");
-    titleText.setText("a");
-        
-    TextField authorText = find("#author_input");
-    authorText.setText("a");
-        
-    clickOn("#submit_button");
+    addBook("a", "a");
     ListView listview = find("#bookList");
     System.out.println(listview.getItems());   
     assertThat(listview, ListViewMatchers.hasListCell(new Book("a", "a")));
     }
   
+  @Test
+  public void listviewIsEmptyUponStartOfTests() {
+      ListView listview = find("#bookList");
+      assertThat(listview, ListViewMatchers.hasItems(0));
+  }
+  
+  @Test
+  public void multiplesOfSameBookDontGetAdded() {
+     addBook("b", "b");
+     addBook("b", "b");
+     ListView listview = find("#bookList");
+     assertThat(listview, ListViewMatchers.hasItems(1));
+  }
+  
+  public void addBook(String title, String author) {
+    TextField titleText = find("#title_input");
+    titleText.setText(title);
+        
+    TextField authorText = find("#author_input");
+    authorText.setText(author);
+        
+    clickOn("#submit_button");
+  }
   public <T extends Node> T find(final String query) {
         /** TestFX provides many operations to retrieve elements from the loaded GUI. */
         return lookup(query).query();
