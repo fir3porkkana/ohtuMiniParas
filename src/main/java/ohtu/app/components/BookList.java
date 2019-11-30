@@ -11,7 +11,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import ohtu.app.FileSelector;
+import ohtu.objects.Audiobook;
 import ohtu.objects.Book;
+import ohtu.objects.BookSuper;
 import ohtu.objects.Bookmarks;
 
 public class BookList extends GridPane {
@@ -21,7 +23,7 @@ public class BookList extends GridPane {
     private TextField authorInput = new TextField();
     private TextField titleInput = new TextField();
 
-    private ListView<Book> bookListView = new ListView<>();
+    private ListView<BookSuper> bookListView = new ListView<>();
 
     // private Label bookInfoAuthor = new Label("");
     // private Label bookInfoTitle = new Label("");
@@ -104,7 +106,7 @@ public class BookList extends GridPane {
     }
 
     private void bookSelectedAction(javafx.scene.input.MouseEvent e) {
-        Book selectedBook = getSelectedBook();
+        BookSuper selectedBook = getSelectedBook();
         if (selectedBook == null)
             return;
         setBookInfoText(selectedBook.getAuthor(), selectedBook.getTitle());
@@ -117,7 +119,17 @@ public class BookList extends GridPane {
     }
 
     private void addAudiobookAction(Event e) {
-        File file = fileSelector.openFileBrowser();
+        File mp3 = fileSelector.openFileBrowser();
+        Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3);
+        if (!audiobook.isEmpty()) {
+            System.out.println("yes lol");
+            // if (checkBook(audiobook)) {
+            // refreshBookmarks();
+            // clearBookInput();
+            // } else {
+            // showNewAlert("Book exists", "The database already contains this book");
+            // }
+        }
         // Media hit = new Media(file.toURI().toString());
         // MediaPlayer mediaPlayer = new MediaPlayer(hit);
         // mediaPlayer.play();
@@ -136,7 +148,7 @@ public class BookList extends GridPane {
     }
 
     private void editBookAction(ActionEvent e) {
-        Book selectedBook = getSelectedBook();
+        BookSuper selectedBook = getSelectedBook();
 
         if (selectedBook == null) {
             showNewAlert("Not selected", "No book has been selected");
@@ -157,7 +169,7 @@ public class BookList extends GridPane {
     }
 
     private void deleteBookAction(ActionEvent e) {
-        Book selectedBook = getSelectedBook();
+        BookSuper selectedBook = getSelectedBook();
         if (selectedBook == null) {
             showNewAlert("Not selected", "No book has been selected");
         } else if (deleteBook(selectedBook)) {
@@ -181,7 +193,7 @@ public class BookList extends GridPane {
         editTitleField.setText(title);
     }
 
-    private Book getSelectedBook() {
+    private BookSuper getSelectedBook() {
         return bookListView.getSelectionModel().getSelectedItem();
     }
 
@@ -198,7 +210,7 @@ public class BookList extends GridPane {
         bookListView.getItems().addAll(bookmarks.getBookmarks());
     }
 
-    private Boolean checkBook(Book book) {
+    private Boolean checkBook(BookSuper book) {
         if (!bookmarks.contains(book)) {
             bookmarks.addBookmark(book);
             return true;
@@ -206,16 +218,16 @@ public class BookList extends GridPane {
         return false;
     }
 
-    private Boolean deleteBook(Book book) {
-        if (bookmarks.contains(book)) {
-            bookmarks.removeBookmark(book);
+    private Boolean deleteBook(BookSuper selectedBook) {
+        if (bookmarks.contains(selectedBook)) {
+            bookmarks.removeBookmark(selectedBook);
             return true;
         }
         return false;
     }
 
-    private void editBook(Book book, Book updatedBook) {
-        bookmarks.updateBookmark(book, updatedBook);
+    private void editBook(BookSuper selectedBook, Book updatedBook) {
+        bookmarks.updateBookmark(selectedBook, updatedBook);
     }
 
     public Bookmarks getBookmarks() {
