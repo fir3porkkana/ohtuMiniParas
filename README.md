@@ -12,11 +12,11 @@
 
 ## Asennusohjeet
 
-Lataa uusin release [täältä](todo linkki)
+Lataa uusin release [**bookmark_2.0**](https://github.com/fir3porkkana/ohtuMiniParas/releases/tag/2.0)
 
-Suorita ladattu jar komennolla
+Suorita ladattu jar joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
 
-`java -jar ladatunJarinNimi.jar`
+`java -jar bookmark_2.0.jar`
 
 ## Seuranta
 
