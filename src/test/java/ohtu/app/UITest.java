@@ -138,6 +138,25 @@ public class UITest extends ApplicationTest {
       assertThat(listview, ListViewMatchers.hasListCell(new Book("b", "a")));
   }
   
+  @Test
+  public void titleTextGetsInputCorrectlyOnSelectingBook() {
+      ListView listview = find("#bookList");
+      addBook("a", "b");
+      clickOn("a by: b");
+      
+      TextField titleText = find("#edit_title");
+      assertEquals("a", titleText.getText());
+  }
+  
+  @Test
+  public void authorTextGetsInputCorrectlyOnSelectingBook() {
+      ListView listview = find("#bookList");
+      addBook("a", "b");
+      clickOn("a by: b");
+      
+      TextField authorText = find("#edit_author");
+      assertEquals("b", authorText.getText());
+  }
     
   @Test
   public void editingWorksWithOnlyAuthorInput() {
