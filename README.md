@@ -2,12 +2,21 @@
 
 ## Sovelluksen määrittely
 
-- Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä 
-    - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
+- Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä
+
+  - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
 
 - Toteutuskieli: Java
 
 - Käyttöliittymä: Paikallinen komentoriviltä suoritettava, graafinen
+
+## Asennusohjeet
+
+Lataa uusin release [täältä](todo linkki)
+
+Suorita ladattu jar komennolla
+
+`java -jar ladatunJarinNimi.jar`
 
 ## Seuranta
 
