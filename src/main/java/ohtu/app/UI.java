@@ -7,24 +7,16 @@ import ohtu.objects.Bookmarks;
 import javafx.application.Application;
 import javafx.scene.Scene;
 
-public class UI extends Application {
+public class UI {
 
     private Bookmarks bookmarks;
-    private BookDao bookDao;
 
-    public UI() {
+    public UI(Bookmarks bookmarks) {
 
-        this.bookDao = new BookDao("books.db");
-        this.bookmarks = new Bookmarks(bookDao);
+        this.bookmarks = bookmarks;
         bookmarks.init();
     }
 
-    public static void main(String[] args) {
-        Application.launch(args);
-
-    }
-
-    @Override
     public void start(Stage stage) {
 
         FileSelector fileSelector = new FileSelector(stage);

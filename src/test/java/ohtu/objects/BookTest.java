@@ -15,54 +15,54 @@ import static org.junit.Assert.*;
  * @author Sami
  */
 public class BookTest {
-    
+
     public BookTest() {
     }
-    
+
     @Test
     public void constructorWorksAsExpected() {
-        Book book = new Book(3, "Kirja", "Jaska J");
+        Book book = new Book("Kirja", "Jaska J");
         assertEquals("Kirja", book.getTitle());
         assertEquals("Jaska J", book.getAuthor());
     }
-    
+
     @Test
     public void isEmptyWorksEmptyAuthor() {
         Book book = new Book("Kirja", "");
         assertEquals(true, book.isEmpty());
     }
-    
+
     @Test
     public void isEmptyWorksEmptyTitle() {
         Book book = new Book("", "Jaska J");
         assertEquals(true, book.isEmpty());
     }
-   
+
     @Test
     public void isEmptyWorksBothEmpty() {
         Book book = new Book("", "");
         assertEquals(true, book.isEmpty());
     }
-    
+
     @Test
     public void isEmptyWorksWhenNotEmpty() {
         Book book = new Book("Jotain", "tekija");
         assertEquals(false, book.isEmpty());
     }
-    
+
     @Test
     public void equalsWorksWhenNotEqual() {
         Book book = new Book("Kirja", "Jaska J");
         Book anotherBook = new Book("Kirja", "Jaska");
-        
+
         assertEquals(false, book.equals(anotherBook));
     }
-    
+
     @Test
     public void equalsWorksWhenEqual() {
         Book book = new Book("Kirja", "Jaska J");
         Book anotherBook = new Book("Kirja", "Jaska J");
-        
+
         assertEquals(true, book.equals(anotherBook));
     }
 }
