@@ -7,7 +7,7 @@ import ohtu.dao.*;
 import ohtu.interfaces.*;
 
 public class Bookmarks {
-  private List<Book> bookmarks;
+  private List<BookSuper> bookmarks;
   private Dao dao;
 
   public Bookmarks(Dao dao) {
@@ -24,49 +24,61 @@ public class Bookmarks {
     }
   }
 
-  public void addBookmark(Book book) {
-    try {
-      dao.create(book);
-      bookmarks.add(book);
-    } catch (Exception e) {
-      System.out.println("Error adding book to database: " + e);
+  public void addBookmark(BookSuper book) {
+    if (book instanceof Book) {
+      book = (Book) book;
+      try {
+        dao.create(book);
+        bookmarks.add(book);
+      } catch (Exception e) {
+        System.out.println("Error adding book to database: " + e);
+      }
     }
-
   }
 
-  public boolean contains(Book book) {
+  public boolean contains(BookSuper book) {
+    if (book instanceof Book) {
+      book = (Book) book;
+    }
     return bookmarks.contains(book);
   }
 
-  public void removeBookmark(Book book) {
-    try {
-      dao.delete(book);
-      bookmarks.remove(book);
-    } catch (Exception e) {
-      System.out.println("Error removing book from database: " + e);
+  public void removeBookmark(BookSuper book) {
+
+    if (book instanceof Book) {
+      book = (Book) book;
+      try {
+        dao.delete(book);
+        bookmarks.remove(book);
+      } catch (Exception e) {
+        System.out.println("Error removing book from database: " + e);
+      }
     }
 
   }
 
-  public void updateBookmark(Book book, Book updatedBook) {
-    try {
-      dao.update(book, updatedBook);
-      int index = bookmarks.indexOf(book);
-      bookmarks.set(index, updatedBook);
-    } catch (Exception e) {
-      System.out.println("Error updating book: " + e);
+  public void updateBookmark(BookSuper book, BookSuper updatedBook) {
+    if (book instanceof Book) {
+      book = (Book) book;
+      try {
+        dao.update(book, updatedBook);
+        int index = bookmarks.indexOf(book);
+        bookmarks.set(index, updatedBook);
+      } catch (Exception e) {
+        System.out.println("Error updating book: " + e);
+      }
     }
 
   }
-  
+
   public void emptyBookmarks() {
-      init();
+    init();
   }
 
   /**
    * @return the bookmarks
    */
-  public List<Book> getBookmarks() {
+  public List<BookSuper> getBookmarks() {
     return bookmarks;
   }
 }

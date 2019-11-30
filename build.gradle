@@ -25,6 +25,7 @@ dependencies {
     testCompile "org.testfx:testfx-junit:4.0.+"    
     testCompile "org.testfx:openjfx-monocle:jdk-11+26"
     compile group:'org.xerial', name:'sqlite-jdbc', version:'3.8.11.2'
+    compile group: "com.mpatric", name: "mp3agic", version: "0.9.1"
 }
 
 test {
