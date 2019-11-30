@@ -29,5 +29,6 @@ public class UI {
         stage.setHeight(500);
         stage.setWidth(700);
         stage.show();
+
     }
 }
