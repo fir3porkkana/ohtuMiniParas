@@ -5,6 +5,7 @@
 - Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä
 
   - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
+  - Äänikirjoja voidaan lisätä, kuunnella, muokata ja poistaa
 
 - Toteutuskieli: Java
 
