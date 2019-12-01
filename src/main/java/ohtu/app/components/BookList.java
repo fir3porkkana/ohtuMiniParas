@@ -10,6 +10,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Circle;
 import ohtu.app.FileSelector;
 import ohtu.objects.Audiobook;
 import ohtu.objects.Book;
@@ -31,6 +34,7 @@ public class BookList extends GridPane {
     private TextField editAuthorField = new TextField();
     private TextField editTitleField = new TextField();
     private FileSelector fileSelector;
+    private MediaPlayer mediaPlayer;
 
     public BookList(Bookmarks bookmarks, FileSelector fileSelector) {
 
@@ -54,6 +58,8 @@ public class BookList extends GridPane {
         // Display for selected book
         GridPane selectedBookDisplay = new GridPane();
         selectedBookDisplay.setPadding(new Insets(10, 10, 10, 10));
+        selectedBookDisplay.setVgap(5);
+        selectedBookDisplay.setHgap(5);
 
         Button deleteBookButton = new Button("Delete book");
         deleteBookButton.setId("delete_button");
@@ -65,12 +71,46 @@ public class BookList extends GridPane {
         editTitleField.setPromptText("Set new Title");
         editTitleField.setId("edit_title");
 
+        // Display for audio controls
+        HBox audioControls = new HBox(10);
+        Button playButton = new Button("▶▮▮");
+        Button stopButton = new Button("■");
+
+        playButton.setStyle("-fx-text-alignment: right");
+        playButton.setShape(new Circle(20));
+        playButton.setPadding(Insets.EMPTY);
+
+        playButton.setMinSize(40, 40);
+        playButton.setMaxSize(40, 40);
+        playButton.setOnAction(e -> {
+            if (mediaPlayer != null) {
+                if (mediaPlayer.statusProperty().getValue() == MediaPlayer.Status.PLAYING) {
+                    mediaPlayer.pause();
+                } else {
+                    mediaPlayer.play();
+                }
+            }
+        });
+
+        stopButton.setShape(new Circle(20));
+        stopButton.setMinSize(40, 40);
+        stopButton.setMaxSize(40, 40);
+        stopButton.setOnAction(e -> {
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
+
+        });
+
+        audioControls.getChildren().addAll(playButton, stopButton);
+
         selectedBookDisplay.add(new Label("Author"), 0, 0);
         selectedBookDisplay.add(new Label("Title"), 0, 1);
         selectedBookDisplay.add(editAuthorField, 1, 0);
         selectedBookDisplay.add(editTitleField, 1, 1);
         selectedBookDisplay.add(deleteBookButton, 0, 2);
         selectedBookDisplay.add(editBookButton, 1, 2);
+        selectedBookDisplay.add(audioControls, 0, 3);
 
         // Setting size for the pane
         this.setMinSize(400, 200);
@@ -130,9 +170,10 @@ public class BookList extends GridPane {
             // showNewAlert("Book exists", "The database already contains this book");
             // }
         }
-        // Media hit = new Media(file.toURI().toString());
-        // MediaPlayer mediaPlayer = new MediaPlayer(hit);
-        // mediaPlayer.play();
+        Media hit = new Media(mp3.toURI().toString());
+        mediaPlayer = new MediaPlayer(hit);
+        titleInput.setText(mp3.getName());
+
     }
 
     private void addBookAction(Event e) {

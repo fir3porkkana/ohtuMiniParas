@@ -13,7 +13,7 @@ mainClassName = 'ohtu.Main'
 
 javafx {
     version = '11'
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media' ]
+    modules = [ 'javafx.base','javafx.controls','javafx.graphics', 'javafx.fxml', 'javafx.media' ]
 }
 
 repositories {
