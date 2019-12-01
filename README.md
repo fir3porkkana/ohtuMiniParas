@@ -21,9 +21,9 @@ Suorita ladattu jar joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemist
 
 ## Seuranta
 
-[Product Backlog](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/userStory.md)
+[Product Backlog](https://docs.google.com/spreadsheets/d/1xw16uQBEmb93MxG8sn8DBW7L4hb3ol44io-by8Mnahs/edit?usp=sharing)
 
-[Sprint Backlog](https://docs.google.com/spreadsheets/d/1xw16uQBEmb93MxG8sn8DBW7L4hb3ol44io-by8Mnahs/edit?usp=sharing)
+[Sprint Backlog](https://docs.google.com/spreadsheets/d/1xw16uQBEmb93MxG8sn8DBW7L4hb3ol44io-by8Mnahs/edit#gid=1226506489)
 
 [Definition of Done](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/definitionOfDone.md)
 
