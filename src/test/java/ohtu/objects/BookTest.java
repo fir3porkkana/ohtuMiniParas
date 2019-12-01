@@ -65,4 +65,51 @@ public class BookTest {
 
         assertEquals(true, book.equals(anotherBook));
     }
+
+    @Test
+    public void constructorWorksAsExpectedId() {
+        Book book = new Book(1, "Kirja", "Jaska J");
+        assertEquals("Kirja", book.getTitle());
+        assertEquals("Jaska J", book.getAuthor());
+    }
+
+    @Test
+    public void isEmptyWorksEmptyAuthorId() {
+        Book book = new Book(1, "Kirja", "");
+        assertEquals(true, book.isEmpty());
+    }
+
+    @Test
+    public void isEmptyWorksEmptyTitleId() {
+        Book book = new Book(1, "", "Jaska J");
+        assertEquals(true, book.isEmpty());
+    }
+
+    @Test
+    public void isEmptyWorksBothEmptyId() {
+        Book book = new Book(1, "", "");
+        assertEquals(true, book.isEmpty());
+    }
+
+    @Test
+    public void isEmptyWorksWhenNotEmptyId() {
+        Book book = new Book(1, "Jotain", "tekija");
+        assertEquals(false, book.isEmpty());
+    }
+
+    @Test
+    public void equalsWorksWhenNotEqualId() {
+        Book book = new Book(1, "Kirja", "Jaska J");
+        Book anotherBook = new Book(2, "Kirja", "Jaska");
+
+        assertEquals(false, book.equals(anotherBook));
+    }
+
+    @Test
+    public void equalsWorksWhenEqualId() {
+        Book book = new Book(1, "Kirja", "Jaska J");
+        Book anotherBook = new Book(2, "Kirja", "Jaska J");
+
+        assertEquals(true, book.equals(anotherBook));
+    }
 }
