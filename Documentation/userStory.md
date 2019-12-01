@@ -8,6 +8,14 @@
 
 #### Pystyn muokkaamaan kirjoja
 
+#### Pystyn lisäämään äänikirjan
+
+#### Pystyn kuuntelemaan äänikirjaa
+
+#### Pystyn tallentamaan tallentaa aikaleiman äänikirjasta
+
+#### Pystyn muokkaamaan kirjaa tai äänikirjaa ilman, että tietoja tarvitsee kirjoittaa kokonaan uudestaan
+
 ---
 
 #### Pystyn lisäämään lukuvinkkeihin aiheeseen liittyviä opintojaksoja 
