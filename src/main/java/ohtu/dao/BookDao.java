@@ -69,13 +69,13 @@ public class BookDao implements Dao<BookSuper, String> {
         connection.close();
     }
     if (book instanceof Audiobook) {
-        Audiobook book1 = (Audiobook) book;
+        Audiobook audiobook = (Audiobook) book;
         Connection connection = DriverManager.getConnection(url);
 
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO AUDIOBOOKS (title, author, url) VALUES (?, ?, ?)");
-        stmt.setString(1, book1.getTitle());
-        stmt.setString(2, book1.getAuthor());
-        stmt.setString(3, book1.getMp3().toString());
+        stmt.setString(1, audiobook.getTitle());
+        stmt.setString(2, audiobook.getAuthor());
+        stmt.setString(3, audiobook.getMp3().toString());
 
         stmt.executeUpdate();
         stmt.close();
@@ -91,32 +91,62 @@ public class BookDao implements Dao<BookSuper, String> {
 
   @Override
   public void update(BookSuper book, BookSuper updatedBook) throws SQLException {
-    Connection connection = DriverManager.getConnection(url);
-    PreparedStatement stmt = connection
+    if (book instanceof Book && book instanceof Book) {
+        Connection connection = DriverManager.getConnection(url);
+        PreparedStatement stmt = connection
         .prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
-    stmt.setString(1, updatedBook.getTitle());
-    stmt.setString(2, updatedBook.getTitle());
-    stmt.setString(3, book.getTitle());
-    stmt.setString(4, book.getAuthor());
+        stmt.setString(1, updatedBook.getTitle());
+        stmt.setString(2, updatedBook.getAuthor());
+        stmt.setString(3, book.getTitle());
+        stmt.setString(4, book.getAuthor());
+        stmt.executeUpdate();
+        stmt.close();
+        connection.close();
+    }
+    if (book instanceof Audiobook && updatedBook instanceof Audiobook) {
+        Connection connection = DriverManager.getConnection(url);
+        Audiobook updateBook = (Audiobook) updatedBook;
+        PreparedStatement stmt = connection
+        .prepareStatement("UPDATE Audiobooks SET title = ? , author = ? WHERE title = ? AND author = ?");
+        stmt.setString(1, updateBook.getTitle());
+        stmt.setString(2, updateBook.getAuthor());
+        stmt.setString(3, book.getTitle());
+        stmt.setString(4, book.getAuthor());
 
-    stmt.executeUpdate();
-    stmt.close();
-    connection.close();
+        stmt.executeUpdate();
+        stmt.close();
+        connection.close();
+    }
+    
 
   }
 
   @Override
   public void delete(BookSuper book) throws SQLException {
-    Connection connection = DriverManager.getConnection(url);
+    if (book instanceof Book) {
+        Connection connection = DriverManager.getConnection(url);
 
-    // Remove book from database, based on combination of fields title and author.
-    PreparedStatement stmt = connection.prepareStatement("DELETE FROM Books WHERE title = ? AND author= ?");
-    stmt.setString(1, book.getTitle());
-    stmt.setString(2, book.getAuthor());
+        // Remove book from database, based on combination of fields title and author.
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Books WHERE title = ? AND author= ?");
+        stmt.setString(1, book.getTitle());
+        stmt.setString(2, book.getAuthor());
 
-    stmt.executeUpdate();
-    stmt.close();
-    connection.close();
+        stmt.executeUpdate();
+        stmt.close();
+        connection.close();
+    }
+    if (book instanceof Audiobook) {
+        Connection connection = DriverManager.getConnection(url);
+
+        // Remove book from database, based on combination of fields title and author.
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Audiobooks WHERE title = ? AND author= ?");
+        stmt.setString(1, book.getTitle());
+        stmt.setString(2, book.getAuthor());
+
+        stmt.executeUpdate();
+        stmt.close();
+        connection.close();
+    }
   }
 
   @Override

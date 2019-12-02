@@ -172,6 +172,7 @@ public class BookList extends GridPane {
         if (selectedBook == null)
             return;
         setBookInfoText(selectedBook.getAuthor(), selectedBook.getTitle());
+        System.out.println(bookmarks.getBookmarks());
     }
 
     private void onEnterKeyPress(KeyEvent e) {
@@ -233,15 +234,24 @@ public class BookList extends GridPane {
             // If a field is empty, old value is kept
             String newTitle = !editTitleField.getText().isBlank() ? editTitleField.getText() : selectedBook.getTitle();
             String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
-            Book newBook = new Book(newTitle, newAuthor);
-
-            if(editBook(selectedBook, newBook)){
-                refreshBookmarks();
-                setBookInfoText("", "");
-            } else {
-                showNewAlert("Book conflict", "A book exists with that information already");
+            if (selectedBook instanceof Book) {
+                Book newBook = new Book(newTitle, newAuthor);
+                if(editBook(selectedBook, newBook)){
+                    refreshBookmarks();
+                    setBookInfoText("", "");
+                 } else {
+                    showNewAlert("Book conflict", "A book exists with that information already");
+                }
+            } else if (selectedBook instanceof Audiobook) {
+                Audiobook selectedbook = (Audiobook) selectedBook;
+                Audiobook newBook = new Audiobook(newTitle, newAuthor, selectedbook.getMp3());
+                if(editBook(selectedBook, newBook)){
+                    refreshBookmarks();
+                    setBookInfoText("", "");
+                } else {
+                    showNewAlert("Book conflict", "A book exists with that information already");
+                }
             }
-
         }
     }
 
@@ -308,12 +318,11 @@ public class BookList extends GridPane {
         return false;
     }
 
-    private Boolean editBook(BookSuper selectedBook, Book updatedBook) {
-        if(!bookmarks.contains(updatedBook)){
+    private Boolean editBook(BookSuper selectedBook, BookSuper updatedBook) {
+        if(!bookmarks.contains(updatedBook)) {
             bookmarks.updateBookmark(selectedBook, updatedBook);
             return true;
         }
-
         return false;
     }
 

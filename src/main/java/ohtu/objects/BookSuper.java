@@ -34,7 +34,7 @@ public abstract class BookSuper {
         if (b == null) {
             return false;
         }
-        Book book = (Book) b;
+        BookSuper book = (BookSuper) b;
         return ((book.getAuthor()).equalsIgnoreCase(author) && book.getTitle().equalsIgnoreCase(title));
     }
 

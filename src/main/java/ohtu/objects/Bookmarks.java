@@ -2,12 +2,14 @@ package ohtu.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 import ohtu.dao.*;
 import ohtu.interfaces.*;
 
 public class Bookmarks {
   private List<BookSuper> bookmarks;
+  private Iterator<BookSuper> iterator;
   private Dao dao;
 
   public Bookmarks(Dao dao) {
@@ -80,17 +82,39 @@ public class Bookmarks {
   }
 
   public void removeBookmark(BookSuper book) {
-
+    iterator = bookmarks.iterator();
     if (book instanceof Book) {
       book = (Book) book;
       try {
         dao.delete(book);
-        bookmarks.remove(book);
+        while (iterator.hasNext()) {
+            BookSuper nextBook = iterator.next();
+            if (nextBook instanceof Book) {
+                if (book.equals(nextBook)) {
+                    iterator.remove();
+                }
+            }
+        }
       } catch (Exception e) {
         System.out.println("Error removing book from database: " + e);
       }
     }
-
+    if (book instanceof Audiobook) {
+      Audiobook audiobook = (Audiobook) book;
+      try {
+        dao.delete(audiobook);
+        while (iterator.hasNext()) {
+            BookSuper nextBook = iterator.next();
+            if (nextBook instanceof Audiobook) {
+                if (book.equals(nextBook)) {
+                    iterator.remove();
+                }
+            }
+        }
+      } catch (Exception e) {
+        System.out.println("Error removing book from database: " + e);
+      }
+    }
   }
 
   public void updateBookmark(BookSuper book, BookSuper updatedBook) {
@@ -101,7 +125,18 @@ public class Bookmarks {
         int index = bookmarks.indexOf(book);
         bookmarks.set(index, updatedBook);
       } catch (Exception e) {
-        System.out.println("Error updating book: " + e);
+        System.out.println("Error updating book: 1 " + e);
+      }
+    }
+    if (book instanceof Audiobook) {
+      Audiobook audiobook = (Audiobook) book;
+      Audiobook updatedAudioBook = (Audiobook) updatedBook;
+      try {
+        dao.update(audiobook, updatedAudioBook);
+        int index = bookmarks.indexOf(book);
+        bookmarks.set(index, updatedBook);
+      } catch (Exception e) {
+        System.out.println("Error updating book: 2 " + e);
       }
     }
 

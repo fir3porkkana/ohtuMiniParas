@@ -26,14 +26,7 @@ public class Audiobook extends BookSuper {
         return mp3;
     }
     
-    @Override
-    public boolean equals(Object b) {
-        if (b == null) {
-            return false;
-        }
-        Audiobook book = (Audiobook) b;
-        return ((book.getAuthor()).equals(author) && book.getTitle().equals(title) && book.getMp3().equals(mp3));
-    }
+  
 
     @Override
     public boolean isEmpty() {
