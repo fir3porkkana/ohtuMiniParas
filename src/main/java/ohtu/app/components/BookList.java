@@ -31,8 +31,9 @@ public class BookList extends GridPane {
 
     private ListView<BookSuper> bookListView = new ListView<>();
 
-    private TextField editAuthorField = new TextField();
     private TextField editTitleField = new TextField();
+    private TextField editAuthorField = new TextField();
+    private Label audiobookName = new Label();
     private Button undoDeletionButton;
 
     private FileSelector fileSelector;
@@ -105,9 +106,10 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(new Label("Author"), 0, 1);
         selectedBookDisplay.add(editTitleField, 1, 0);
         selectedBookDisplay.add(editAuthorField, 1, 1);
-        selectedBookDisplay.add(deleteBookButton, 0, 2);
-        selectedBookDisplay.add(editBookButton, 1, 2);
-        selectedBookDisplay.add(undoDeletionButton, 2, 2);
+        selectedBookDisplay.add(audiobookName, 1,2);
+        selectedBookDisplay.add(deleteBookButton, 0, 3);
+        selectedBookDisplay.add(editBookButton, 1, 3);
+        selectedBookDisplay.add(undoDeletionButton, 2, 3);
 
         // Setting size for the pane
         this.setMinSize(400, 200);
@@ -169,9 +171,13 @@ public class BookList extends GridPane {
 
     private void bookSelectedAction(javafx.scene.input.MouseEvent e) {
         BookSuper selectedBook = getSelectedBook();
-        if (selectedBook == null)
-            return;
-        setBookInfoText(selectedBook.getAuthor(), selectedBook.getTitle());
+        if (selectedBook == null) return;
+
+        setBookInfoText(selectedBook);
+
+        if(selectedBook instanceof Audiobook)
+            createNewMediaPlayer((Audiobook)selectedBook);
+
         System.out.println(bookmarks.getBookmarks());
     }
 
@@ -185,22 +191,13 @@ public class BookList extends GridPane {
         File mp3 = fileSelector.openFileBrowser();
         System.out.println(mp3);
         Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3);
-        if (!audiobook.isEmpty()) {
-            System.out.println("yes lol");
-            bookmarks.addBookmark(audiobook);
+
+        if(!audiobook.isEmpty() && addBook(audiobook)){
             refreshBookmarks();
             clearBookInput();
-             /*if (checkBook(audiobook)) {
-             refreshBookmarks();
-             clearBookInput();
-            } else {
-             showNewAlert("Book exists", "The database already contains this book");
-             }*/
-        }
-        Media hit = new Media(mp3.toURI().toString());
-        mediaPlayer = new MediaPlayer(hit);
 
-        mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
+            createNewMediaPlayer(audiobook);
+        }
     }
 
     private void onMediaPlayerTimeChange(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue){
@@ -213,13 +210,14 @@ public class BookList extends GridPane {
 
     private void addBookAction(Event e) {
         Book book = new Book(titleInput.getText(), authorInput.getText());
-        if (!book.isEmpty()) {
-            if (addBook(book)) {
-                refreshBookmarks();
-                clearBookInput();
-            } else {
-                showNewAlert("Book exists", "The database already contains this book");
-            }
+        if (book.isEmpty())
+            return;
+
+        if (addBook(book)) {
+            refreshBookmarks();
+            clearBookInput();
+        } else {
+            showNewAlert("Book exists", "The database already contains this book");
         }
     }
 
@@ -234,23 +232,20 @@ public class BookList extends GridPane {
             // If a field is empty, old value is kept
             String newTitle = !editTitleField.getText().isBlank() ? editTitleField.getText() : selectedBook.getTitle();
             String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
-            if (selectedBook instanceof Book) {
-                Book newBook = new Book(newTitle, newAuthor);
-                if(editBook(selectedBook, newBook)){
-                    refreshBookmarks();
-                    setBookInfoText("", "");
-                 } else {
-                    showNewAlert("Book conflict", "A book exists with that information already");
-                }
-            } else if (selectedBook instanceof Audiobook) {
-                Audiobook selectedbook = (Audiobook) selectedBook;
-                Audiobook newBook = new Audiobook(newTitle, newAuthor, selectedbook.getMp3());
-                if(editBook(selectedBook, newBook)){
-                    refreshBookmarks();
-                    setBookInfoText("", "");
-                } else {
-                    showNewAlert("Book conflict", "A book exists with that information already");
-                }
+
+            BookSuper sBook;
+            if (selectedBook instanceof Audiobook)
+                sBook = new Audiobook(newTitle, newAuthor, ((Audiobook)selectedBook).getMp3());
+            else if (selectedBook instanceof Book)
+                sBook = new Book(newTitle, newAuthor);
+            else
+                throw new Error("Selected book is not of any known book type");
+
+            if(editBook(selectedBook, sBook)){
+                refreshBookmarks();
+                clearBookInfoText();
+            } else {
+                showNewAlert("Book conflict", "A book exists with that information already");
             }
         }
     }
@@ -261,17 +256,18 @@ public class BookList extends GridPane {
             showNewAlert("Not selected", "No book has been selected");
         } else if (deleteBook(selectedBook)) {
             refreshBookmarks();
-            setBookInfoText("", "");
+            clearBookInfoText();
             undoDeletionButton.setVisible(true);
         }
     }
     
     private void undoDeletion(Event e) {
-        if (deletedBook != null) {
-            addBook(deletedBook);
-            refreshBookmarks();
-            undoDeletionButton.setVisible(false);
-        }  
+        if (deletedBook == null)
+            return;
+
+        addBook(deletedBook);
+        refreshBookmarks();
+        undoDeletionButton.setVisible(false);
     }
 
     private void clearBookInput() {
@@ -279,9 +275,20 @@ public class BookList extends GridPane {
         titleInput.setText("");
     }
 
-    private void setBookInfoText(String author, String title) {
+    private void clearBookInfoText() {
+        editAuthorField.setText("");
+        editTitleField.setText("");
+        audiobookName.setText("");
+    }
+
+    private void setBookInfoText(BookSuper book) {
+        String author = book.getAuthor();
+        String title = book.getTitle();
+        String audiobookInfo = book instanceof Audiobook ? ((Audiobook) book).getMp3().getName() : "";
+
         editAuthorField.setText(author);
         editTitleField.setText(title);
+        audiobookName.setText(audiobookInfo);
     }
 
     private BookSuper getSelectedBook() {
@@ -330,7 +337,18 @@ public class BookList extends GridPane {
         return bookmarks;
     }
 
+    private void createNewMediaPlayer(Audiobook audiobook){
+        if(mediaPlayer != null)
+            mediaPlayer.stop();
+
+        Media hit = new Media(audiobook.getMp3().toURI().toString());
+        mediaPlayer = new MediaPlayer(hit);
+        mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
+    }
+
     private String beautifyDuration(Duration duration){
+        if(duration == null) return "0:00:00";
+
         long seconds = (long)duration.toSeconds();
         return String.format("%d:%02d:%02d", seconds/3600, (seconds%3600)/60, (seconds%60));
     }

@@ -25,8 +25,6 @@ public class Audiobook extends BookSuper {
     public File getMp3() {
         return mp3;
     }
-    
-  
 
     @Override
     public boolean isEmpty() {
@@ -34,5 +32,10 @@ public class Audiobook extends BookSuper {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " (audiobook)";
     }
 }
