@@ -31,11 +31,16 @@ public abstract class BookSuper {
 
     @Override
     public boolean equals(Object b) {
-        if (b == null) {
+        if (!(b instanceof BookSuper))
             return false;
-        }
         BookSuper book = (BookSuper) b;
         return ((book.getAuthor()).equalsIgnoreCase(author) && book.getTitle().equalsIgnoreCase(title));
     }
 
+    public boolean equalsCaseSensitive(Object b) {
+        if (!(b instanceof BookSuper))
+            return false;
+        BookSuper book = (BookSuper) b;
+        return ((book.getAuthor()).equals(author) && book.getTitle().equals(title));
+    }
 }

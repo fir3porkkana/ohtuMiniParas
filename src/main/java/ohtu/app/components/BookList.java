@@ -326,7 +326,8 @@ public class BookList extends GridPane {
     }
 
     private Boolean editBook(BookSuper selectedBook, BookSuper updatedBook) {
-        if(!bookmarks.contains(updatedBook)) {
+        //2 duplicates can't exist even if they have different casing, but a books case can be edited
+        if(!bookmarks.contains(updatedBook) || (selectedBook.equals(updatedBook) && !selectedBook.equalsCaseSensitive(updatedBook))) {
             bookmarks.updateBookmark(selectedBook, updatedBook);
             return true;
         }
