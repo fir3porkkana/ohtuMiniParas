@@ -34,6 +34,8 @@ public class BookList extends GridPane {
 
     private TextField editAuthorField = new TextField();
     private TextField editTitleField = new TextField();
+    private Button undoDeletionButton;
+
     private FileSelector fileSelector;
     private MediaPlayer mediaPlayer;
 
@@ -68,8 +70,9 @@ public class BookList extends GridPane {
         deleteBookButton.setId("delete_button");
         Button editBookButton = new Button("Save change");
         editBookButton.setId("edit_button");
-        Button undoDeletionButton = new Button("Undo");
+        undoDeletionButton = new Button("Undo");
         undoDeletionButton.setId("undo_button");
+        undoDeletionButton.setVisible(false);
 
         editAuthorField.setPromptText("Set new Author");
         editAuthorField.setId("edit_author");
@@ -243,6 +246,7 @@ public class BookList extends GridPane {
         } else if (deleteBook(selectedBook)) {
             refreshBookmarks();
             setBookInfoText("", "");
+            undoDeletionButton.setVisible(true);
         }
     }
     
@@ -250,6 +254,7 @@ public class BookList extends GridPane {
         if (deletedBook != null) {
             checkBook(deletedBook);
             refreshBookmarks();
+            undoDeletionButton.setVisible(false);
         }  
     }
 
