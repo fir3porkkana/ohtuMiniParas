@@ -34,6 +34,15 @@ public class Bookmarks {
         System.out.println("Error adding book to database: " + e);
       }
     }
+    if (book instanceof Audiobook) {
+      book = (Audiobook) book;
+      try {
+        dao.create(book);
+        bookmarks.add(book);
+      } catch (Exception e) {
+        System.out.println("Error adding book to database: " + e);
+      }
+    }
   }
 
   public boolean contains(BookSuper book) {
