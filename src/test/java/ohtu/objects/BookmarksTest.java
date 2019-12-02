@@ -60,6 +60,7 @@ public class BookmarksTest {
      * 
      * >>>>>>> 66267e4e851b00dcdc28ea63a26bf653607ff27d }
      */
+
     @Test
     public void addingABookIncrementsSizeByOne() {
         Book testBook = new Book("Why socialism?", "Albert Einstein");
@@ -156,7 +157,7 @@ public class BookmarksTest {
     }
 
     @Test
-    public void bookmarksContainsReturnsRigthValue() {
+    public void bookmarksContainsReturnsRightValue() {
         Book testBook = new Book("The Conquest of Bread", "Peter Kropotkin");
         bookmarks.addBookmark(testBook);
 
