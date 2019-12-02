@@ -34,13 +34,49 @@ public class Bookmarks {
         System.out.println("Error adding book to database: " + e);
       }
     }
+    if (book instanceof Audiobook) {
+      book = (Audiobook) book;
+      try {
+        dao.create(book);
+        bookmarks.add(book);
+      } catch (Exception e) {
+        System.out.println("Error adding book to database: " + e);
+      }
+    }
   }
 
   public boolean contains(BookSuper book) {
     if (book instanceof Book) {
-      book = (Book) book;
+      Book book1 = (Book) book;
+      return containsBook(book1);
     }
-    return bookmarks.contains(book);
+    if (book instanceof Audiobook) {
+      Audiobook audiobook = (Audiobook) book;
+      return containsAudioBook(audiobook);
+    }
+    return false;
+  }
+  
+  public boolean containsBook(Book book) {
+      for (BookSuper normalBook: bookmarks) {
+          if (normalBook instanceof Book) {
+              if (normalBook.equals(book)) {
+                  return true;
+              }
+          }
+      }
+      return false;
+  }
+  
+  public boolean containsAudioBook(Audiobook book) {
+      for (BookSuper audiobook: bookmarks) {
+          if (audiobook instanceof Audiobook) {
+              if (audiobook.equals(book)) {
+                  return true;
+              }
+          }
+      }
+      return false;
   }
 
   public void removeBookmark(BookSuper book) {

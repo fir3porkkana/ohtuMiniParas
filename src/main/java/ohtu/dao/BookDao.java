@@ -3,11 +3,12 @@ package ohtu.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
 
 import ohtu.interfaces.*;
-import ohtu.objects.Book;
+import ohtu.objects.*;
 
-public class BookDao implements Dao<Book, String> {
+public class BookDao implements Dao<BookSuper, String> {
 
   private String url;
 
@@ -32,8 +33,15 @@ public class BookDao implements Dao<Book, String> {
     // create a new table
     stmt.execute();
     stmt.close();
+    
+    sql = "CREATE TABLE IF NOT EXISTS AUDIOBOOKS"
+            + "(id integer PRIMARY KEY, title text NOT NULL, author text NOT NULL, url text NOT NULL);";
+    conn = DriverManager.getConnection(url);
+    stmt = conn.prepareStatement(sql);
+    // create a new table
+    stmt.execute();
+    stmt.close();
     conn.close();
-
   }
 
   public void emptyTable() throws SQLException {
@@ -48,16 +56,31 @@ public class BookDao implements Dao<Book, String> {
   }
 
   @Override
-  public void create(Book book) throws SQLException {
-    Connection connection = DriverManager.getConnection(url);
+  public void create(BookSuper book) throws SQLException {
+    if (book instanceof Book) {
+        Connection connection = DriverManager.getConnection(url);
 
-    PreparedStatement stmt = connection.prepareStatement("INSERT INTO Books (title, author) VALUES (?, ?)");
-    stmt.setString(1, book.getTitle());
-    stmt.setString(2, book.getAuthor());
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Books (title, author) VALUES (?, ?)");
+        stmt.setString(1, book.getTitle());
+        stmt.setString(2, book.getAuthor());
 
-    stmt.executeUpdate();
-    stmt.close();
-    connection.close();
+        stmt.executeUpdate();
+        stmt.close();
+        connection.close();
+    }
+    if (book instanceof Audiobook) {
+        Audiobook book1 = (Audiobook) book;
+        Connection connection = DriverManager.getConnection(url);
+
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO AUDIOBOOKS (title, author, url) VALUES (?, ?, ?)");
+        stmt.setString(1, book1.getTitle());
+        stmt.setString(2, book1.getAuthor());
+        stmt.setString(3, book1.getMp3().toString());
+
+        stmt.executeUpdate();
+        stmt.close();
+        connection.close();
+    }
   }
 
   @Override
@@ -67,7 +90,7 @@ public class BookDao implements Dao<Book, String> {
   }
 
   @Override
-  public void update(Book book, Book updatedBook) throws SQLException {
+  public void update(BookSuper book, BookSuper updatedBook) throws SQLException {
     Connection connection = DriverManager.getConnection(url);
     PreparedStatement stmt = connection
         .prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
@@ -83,7 +106,7 @@ public class BookDao implements Dao<Book, String> {
   }
 
   @Override
-  public void delete(Book book) throws SQLException {
+  public void delete(BookSuper book) throws SQLException {
     Connection connection = DriverManager.getConnection(url);
 
     // Remove book from database, based on combination of fields title and author.
@@ -97,8 +120,8 @@ public class BookDao implements Dao<Book, String> {
   }
 
   @Override
-  public List<Book> list() throws SQLException {
-    List<Book> list = new ArrayList<>();
+  public List<BookSuper> list() throws SQLException {
+    List<BookSuper> list = new ArrayList<>();
     Connection connection = DriverManager.getConnection(url);
     PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Books");
     ResultSet resultSet = stmt.executeQuery();
@@ -107,6 +130,17 @@ public class BookDao implements Dao<Book, String> {
       String author = resultSet.getString("author");
       Book book = new Book(title, author);
       list.add(book);
+    }
+    
+    stmt = connection.prepareStatement("SELECT * FROM AUDIOBOOKS");
+    resultSet = stmt.executeQuery();
+    while (resultSet.next()) {
+        String title = resultSet.getString("title");
+        String author = resultSet.getString("author");
+        String url = resultSet.getString("url");
+        
+        Audiobook book = new Audiobook(title, author, new File(url));
+        list.add(book);
     }
     return list;
   }
