@@ -248,9 +248,9 @@ public class BookList extends GridPane {
     
     private void undoDeletion(Event e) {
         if (deletedBook != null) {
-            bookmarks.addBookmark(deletedBook);
+            checkBook(deletedBook);
             refreshBookmarks();
-        }
+        }  
     }
 
     private void clearBookInput() {
