@@ -1,5 +1,7 @@
 package ohtu.app;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import ohtu.app.components.BookList;
 import ohtu.dao.BookDao;
@@ -29,6 +31,5 @@ public class UI {
         stage.setHeight(500);
         stage.setWidth(700);
         stage.show();
-
     }
 }

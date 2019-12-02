@@ -37,6 +37,8 @@ public class BookList extends GridPane {
     private FileSelector fileSelector;
     private MediaPlayer mediaPlayer;
 
+    private Label durationLabel;
+
     public BookList(Bookmarks bookmarks, FileSelector fileSelector) {
 
         this.bookmarks = bookmarks;
@@ -85,32 +87,22 @@ public class BookList extends GridPane {
 
         playButton.setMinSize(40, 40);
         playButton.setMaxSize(40, 40);
-        playButton.setOnAction(e -> {
-            if (mediaPlayer != null) {
-                if (mediaPlayer.statusProperty().getValue() == MediaPlayer.Status.PLAYING) {
-                    mediaPlayer.pause();
-                } else {
-                    mediaPlayer.play();
-                }
-            }
-        });
+        playButton.setOnAction(this::mediaPlayerPlayAction);
 
         stopButton.setShape(new Circle(20));
         stopButton.setMinSize(40, 40);
         stopButton.setMaxSize(40, 40);
-        stopButton.setOnAction(e -> {
-            if (mediaPlayer != null) {
-                mediaPlayer.stop();
-            }
+        stopButton.setOnAction(this::mediaPlayerStopAction);
 
-        });
+        durationLabel = new Label();
+        Button saveTimestamp = new Button("Timestamp");
 
-        audioControls.getChildren().addAll(playButton, stopButton);
+        audioControls.getChildren().addAll(playButton, stopButton, saveTimestamp, durationLabel);
 
-        selectedBookDisplay.add(new Label("Author"), 0, 0);
-        selectedBookDisplay.add(new Label("Title"), 0, 1);
-        selectedBookDisplay.add(editAuthorField, 1, 0);
-        selectedBookDisplay.add(editTitleField, 1, 1);
+        selectedBookDisplay.add(new Label("Title"), 0, 0);
+        selectedBookDisplay.add(new Label("Author"), 0, 1);
+        selectedBookDisplay.add(editTitleField, 1, 0);
+        selectedBookDisplay.add(editAuthorField, 1, 1);
         selectedBookDisplay.add(deleteBookButton, 0, 2);
         selectedBookDisplay.add(editBookButton, 1, 2);
         selectedBookDisplay.add(undoDeletionButton, 2, 2);
@@ -146,8 +138,30 @@ public class BookList extends GridPane {
         editBookButton.setOnAction(this::editBookAction);
         bookListView.setOnMouseClicked(this::bookSelectedAction);
         undoDeletionButton.setOnMouseClicked(this::undoDeletion);
+        saveTimestamp.setOnAction(this::saveTimeStampAction);
 
         refreshBookmarks();
+    }
+
+    private void saveTimeStampAction(ActionEvent e){
+        if (mediaPlayer == null) return;
+        durationLabel.setText(""+mediaPlayer.currentTimeProperty().get().toSeconds()+" / "+mediaPlayer.getMedia().durationProperty().get().toSeconds()+" sec");
+    }
+
+    private void mediaPlayerStopAction(ActionEvent e){
+        if (mediaPlayer == null) return;
+
+        mediaPlayer.stop();
+    }
+
+    private void mediaPlayerPlayAction(ActionEvent e){
+        if (mediaPlayer == null) return;
+
+        if (mediaPlayer.statusProperty().getValue() == MediaPlayer.Status.PLAYING) {
+            mediaPlayer.pause();
+        } else {
+            mediaPlayer.play();
+        }
     }
 
     private void bookSelectedAction(javafx.scene.input.MouseEvent e) {
@@ -179,6 +193,13 @@ public class BookList extends GridPane {
         Media hit = new Media(mp3.toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
 
+
+        /*mediaPlayer.currentTimeProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                System.out.println("Test");
+            }
+        });*/
     }
 
     private void addBookAction(Event e) {
@@ -210,7 +231,6 @@ public class BookList extends GridPane {
             editBook(selectedBook, newBook);
             refreshBookmarks();
             setBookInfoText(newBook.getAuthor(), newBook.getTitle());
-            // clearBookEditInput();
         }
     }
 
@@ -230,11 +250,6 @@ public class BookList extends GridPane {
             refreshBookmarks();
         }
     }
-
-    // private void clearBookEditInput() {
-    // editAuthorField.setText("");
-    // editTitleField.setText("");
-    // }
 
     private void clearBookInput() {
         authorInput.setText("");
