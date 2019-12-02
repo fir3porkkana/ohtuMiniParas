@@ -180,6 +180,7 @@ public class BookList extends GridPane {
 
     private void addAudiobookAction(Event e) {
         File mp3 = fileSelector.openFileBrowser();
+        System.out.println(mp3);
         Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3);
         if (!audiobook.isEmpty()) {
             System.out.println("yes lol");

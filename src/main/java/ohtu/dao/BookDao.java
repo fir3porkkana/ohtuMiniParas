@@ -3,6 +3,7 @@ package ohtu.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
 
 import ohtu.interfaces.*;
 import ohtu.objects.*;
@@ -129,6 +130,17 @@ public class BookDao implements Dao<BookSuper, String> {
       String author = resultSet.getString("author");
       Book book = new Book(title, author);
       list.add(book);
+    }
+    
+    stmt = connection.prepareStatement("SELECT * FROM AUDIOBOOKS");
+    resultSet = stmt.executeQuery();
+    while (resultSet.next()) {
+        String title = resultSet.getString("title");
+        String author = resultSet.getString("author");
+        String url = resultSet.getString("url");
+        
+        Audiobook book = new Audiobook(title, author, new File(url));
+        list.add(book);
     }
     return list;
   }
