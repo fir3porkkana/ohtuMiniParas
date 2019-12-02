@@ -2,7 +2,6 @@ package ohtu.app.components;
 
 import java.io.File;
 
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -211,7 +210,7 @@ public class BookList extends GridPane {
     private void addBookAction(Event e) {
         Book book = new Book(titleInput.getText(), authorInput.getText());
         if (!book.isEmpty()) {
-            if (checkBook(book)) {
+            if (addBook(book)) {
                 refreshBookmarks();
                 clearBookInput();
             } else {
@@ -233,9 +232,13 @@ public class BookList extends GridPane {
             String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
             Book newBook = new Book(newTitle, newAuthor);
 
-            editBook(selectedBook, newBook);
-            refreshBookmarks();
-            setBookInfoText(newBook.getAuthor(), newBook.getTitle());
+            if(editBook(selectedBook, newBook)){
+                refreshBookmarks();
+                setBookInfoText(newBook.getAuthor(), newBook.getTitle());
+            } else {
+                showNewAlert("Book conflict", "A book exists with that information already");
+            }
+
         }
     }
 
@@ -252,7 +255,7 @@ public class BookList extends GridPane {
     
     private void undoDeletion(Event e) {
         if (deletedBook != null) {
-            checkBook(deletedBook);
+            addBook(deletedBook);
             refreshBookmarks();
             undoDeletionButton.setVisible(false);
         }  
@@ -285,7 +288,7 @@ public class BookList extends GridPane {
         bookListView.getItems().addAll(bookmarks.getBookmarks());
     }
 
-    private Boolean checkBook(BookSuper book) {
+    private Boolean addBook(BookSuper book) {
         if (!bookmarks.contains(book)) {
             bookmarks.addBookmark(book);
             return true;
@@ -301,11 +304,14 @@ public class BookList extends GridPane {
         }
         return false;
     }
-    
-    
 
-    private void editBook(BookSuper selectedBook, Book updatedBook) {
-        bookmarks.updateBookmark(selectedBook, updatedBook);
+    private Boolean editBook(BookSuper selectedBook, Book updatedBook) {
+        if(!bookmarks.contains(updatedBook)){
+            bookmarks.updateBookmark(selectedBook, updatedBook);
+            return true;
+        }
+
+        return false;
     }
 
     public Bookmarks getBookmarks() {
