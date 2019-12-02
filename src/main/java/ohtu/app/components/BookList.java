@@ -237,7 +237,7 @@ public class BookList extends GridPane {
 
             if(editBook(selectedBook, newBook)){
                 refreshBookmarks();
-                setBookInfoText(newBook.getAuthor(), newBook.getTitle());
+                setBookInfoText("", "");
             } else {
                 showNewAlert("Book conflict", "A book exists with that information already");
             }
