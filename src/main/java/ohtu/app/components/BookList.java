@@ -22,6 +22,7 @@ import ohtu.objects.Bookmarks;
 public class BookList extends GridPane {
 
     private Bookmarks bookmarks;
+    private BookSuper deletedBook;
 
     private TextField authorInput = new TextField();
     private TextField titleInput = new TextField();
@@ -65,6 +66,8 @@ public class BookList extends GridPane {
         deleteBookButton.setId("delete_button");
         Button editBookButton = new Button("Save change");
         editBookButton.setId("edit_button");
+        Button undoDeletionButton = new Button("Undo");
+        undoDeletionButton.setId("undo_button");
 
         editAuthorField.setPromptText("Set new Author");
         editAuthorField.setId("edit_author");
@@ -110,7 +113,7 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(editTitleField, 1, 1);
         selectedBookDisplay.add(deleteBookButton, 0, 2);
         selectedBookDisplay.add(editBookButton, 1, 2);
-        selectedBookDisplay.add(audioControls, 0, 3);
+        selectedBookDisplay.add(undoDeletionButton, 2, 2);
 
         // Setting size for the pane
         this.setMinSize(400, 200);
@@ -132,6 +135,7 @@ public class BookList extends GridPane {
         this.add(addButtons, 0, 2);
         this.add(bookListView, 0, 3);
         this.add(selectedBookDisplay, 1, 3);
+        this.add(audioControls, 1, 4);
 
         // Set actions for buttons and listview
         addBookButton.setOnAction(this::addBookAction);
@@ -141,6 +145,7 @@ public class BookList extends GridPane {
         deleteBookButton.setOnAction(this::deleteBookAction);
         editBookButton.setOnAction(this::editBookAction);
         bookListView.setOnMouseClicked(this::bookSelectedAction);
+        undoDeletionButton.setOnMouseClicked(this::undoDeletion);
 
         refreshBookmarks();
     }
@@ -163,6 +168,7 @@ public class BookList extends GridPane {
         Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3);
         if (!audiobook.isEmpty()) {
             System.out.println("yes lol");
+            
             // if (checkBook(audiobook)) {
             // refreshBookmarks();
             // clearBookInput();
@@ -172,7 +178,6 @@ public class BookList extends GridPane {
         }
         Media hit = new Media(mp3.toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
-        titleInput.setText(mp3.getName());
 
     }
 
@@ -218,6 +223,13 @@ public class BookList extends GridPane {
             setBookInfoText("", "");
         }
     }
+    
+    private void undoDeletion(Event e) {
+        if (deletedBook != null) {
+            bookmarks.addBookmark(deletedBook);
+            refreshBookmarks();
+        }
+    }
 
     // private void clearBookEditInput() {
     // editAuthorField.setText("");
@@ -261,11 +273,14 @@ public class BookList extends GridPane {
 
     private Boolean deleteBook(BookSuper selectedBook) {
         if (bookmarks.contains(selectedBook)) {
+            deletedBook = selectedBook;
             bookmarks.removeBookmark(selectedBook);
             return true;
         }
         return false;
     }
+    
+    
 
     private void editBook(BookSuper selectedBook, Book updatedBook) {
         bookmarks.updateBookmark(selectedBook, updatedBook);
