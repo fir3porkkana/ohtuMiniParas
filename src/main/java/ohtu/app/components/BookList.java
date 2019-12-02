@@ -2,6 +2,8 @@ package ohtu.app.components;
 
 import java.io.File;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Insets;
@@ -13,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import ohtu.app.FileSelector;
 import ohtu.objects.Audiobook;
 import ohtu.objects.Book;
@@ -27,9 +30,6 @@ public class BookList extends GridPane {
     private TextField titleInput = new TextField();
 
     private ListView<BookSuper> bookListView = new ListView<>();
-
-    // private Label bookInfoAuthor = new Label("");
-    // private Label bookInfoTitle = new Label("");
 
     private TextField editAuthorField = new TextField();
     private TextField editTitleField = new TextField();
@@ -140,7 +140,8 @@ public class BookList extends GridPane {
 
     private void saveTimeStampAction(ActionEvent e){
         if (mediaPlayer == null) return;
-        durationLabel.setText(""+mediaPlayer.currentTimeProperty().get().toSeconds()+" / "+mediaPlayer.getMedia().durationProperty().get().toSeconds()+" sec");
+
+        System.out.println("Timestamp: "+beautifyDuration(mediaPlayer.currentTimeProperty().get()));
     }
 
     private void mediaPlayerStopAction(ActionEvent e){
@@ -188,13 +189,15 @@ public class BookList extends GridPane {
         mediaPlayer = new MediaPlayer(hit);
         titleInput.setText(mp3.getName());
 
+        mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
+    }
 
-        /*mediaPlayer.currentTimeProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                System.out.println("Test");
-            }
-        });*/
+    private void onMediaPlayerTimeChange(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue){
+        setDurationLabelValues(newValue, mediaPlayer.getMedia().durationProperty().get());
+    }
+
+    private void setDurationLabelValues(Duration current, Duration max){
+        durationLabel.setText(beautifyDuration(current)+" / " + beautifyDuration(max));
     }
 
     private void addBookAction(Event e) {
@@ -219,8 +222,7 @@ public class BookList extends GridPane {
         } else {
             // If a field is empty, old value is kept
             String newTitle = !editTitleField.getText().isBlank() ? editTitleField.getText() : selectedBook.getTitle();
-            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText()
-                    : selectedBook.getAuthor();
+            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
             Book newBook = new Book(newTitle, newAuthor);
 
             editBook(selectedBook, newBook);
@@ -288,5 +290,10 @@ public class BookList extends GridPane {
 
     public Bookmarks getBookmarks() {
         return bookmarks;
+    }
+
+    private String beautifyDuration(Duration duration){
+        long seconds = (long)duration.toSeconds();
+        return String.format("%d:%02d:%02d", seconds/3600, (seconds%3600)/60, (seconds%60));
     }
 }
