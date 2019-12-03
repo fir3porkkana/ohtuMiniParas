@@ -182,12 +182,16 @@ public class BookList extends GridPane {
         if (mediaPlayer == null)
             return;
 
-        System.out.println("Timestamp: " + Timestamp.durationToString(mediaPlayer.currentTimeProperty().get()));
+        //System.out.println("Timestamp: " + Timestamp.durationToString(mediaPlayer.currentTimeProperty().get()));
         BookSuper book = getSelectedBook();
         if(!(book instanceof Audiobook)) return;
 
-        ((Audiobook) book).addTimestamp(new Timestamp(mediaPlayer.currentTimeProperty().get()));
-        refreshTimeStampList((Audiobook) book);
+        Audiobook aBook = (Audiobook)book;
+        Timestamp t = new Timestamp(mediaPlayer.currentTimeProperty().get());
+        if(addTimestamp(aBook,t)){
+            aBook.addTimestamp(t);
+            refreshTimeStampList(aBook);
+        }
     }
 
     private void mediaPlayerStopAction(ActionEvent e) {
@@ -377,6 +381,12 @@ public class BookList extends GridPane {
             return true;
         }
         return false;
+    }
+
+    private Boolean addTimestamp(BookSuper book, Timestamp timestamp){
+        if(!(book instanceof Audiobook) || timestamp == null) return false;
+        bookmarks.addTimestamp((Audiobook) book, timestamp);
+        return true;
     }
 
     private Boolean deleteBook(BookSuper selectedBook) {

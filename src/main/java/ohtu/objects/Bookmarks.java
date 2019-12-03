@@ -1,5 +1,6 @@
 package ohtu.objects;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -45,6 +46,17 @@ public class Bookmarks {
         System.out.println("Error adding book to database: " + e);
       }
     }
+  }
+
+  public void addTimestamp(Audiobook audiobook, Timestamp timestamp){
+      //Fix later for dao
+      if(!(dao instanceof BookDao)) throw new Error("timestamp logic not implemented in dao yet");
+      BookDao bookDao = (BookDao)dao;
+      try {
+          bookDao.addTimestamp(audiobook, timestamp);
+      } catch (SQLException e){
+          System.out.println("Error adding timestamp to database " + e.getMessage());
+      }
   }
 
   public boolean contains(BookSuper book) {

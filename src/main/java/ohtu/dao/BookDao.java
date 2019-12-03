@@ -7,6 +7,7 @@ import java.io.File;
 
 import ohtu.interfaces.*;
 import ohtu.objects.*;
+import ohtu.objects.Timestamp;
 
 public class BookDao implements Dao<BookSuper, String> {
 
@@ -41,19 +42,19 @@ public class BookDao implements Dao<BookSuper, String> {
     // create a new table
     stmt.execute();
     stmt.close();
-    conn.close();
 
-    sql = "CREATE TABLE IF NOT EXISTS TIMESTAMPS" +
-            " (" +
-                "id integer PRIMARY KEY, " +
-                "stamp text NOT NULL" +
-                "title text NOT NULL" +
-                "author text NOT NULL" +
+    sql = "CREATE TABLE IF NOT EXISTS Timestamps" +
+            "(" +
+                "id integer PRIMARY KEY," +
+                "stamp text NOT NULL," +
+                "title text NOT NULL," +
+                "author text NOT NULL," +
                 "FOREIGN KEY (title, author) REFERENCES AUDIOBOOKS (title, author)" +
-            ")";
+            ");";
       conn = DriverManager.getConnection(url);
       stmt = conn.prepareStatement(sql);
       stmt.execute();
+
       stmt.close();
       conn.close();
   }
@@ -97,8 +98,17 @@ public class BookDao implements Dao<BookSuper, String> {
     }
   }
 
-  public void addTimestamp(){
+  public void addTimestamp(Audiobook book, Timestamp timestamp) throws SQLException{
+      Connection connection = DriverManager.getConnection(url);
 
+      PreparedStatement stmt = connection.prepareStatement("INSERT INTO Timestamps (stamp, title, author) VALUES (?, ?, ?)");
+      stmt.setString(1, timestamp.getTimestampString());
+      stmt.setString(2, book.getTitle());
+      stmt.setString(3, book.getAuthor());
+
+      stmt.executeUpdate();
+      stmt.close();
+      connection.close();
   }
 
   @Override
@@ -188,9 +198,35 @@ public class BookDao implements Dao<BookSuper, String> {
         String url = resultSet.getString("url");
         
         Audiobook book = new Audiobook(title, author, new File(url));
+
+        book.addTimestamps(getTimestamps(connection, book));
+
         list.add(book);
     }
+
+    stmt.close();
+    connection.close();
     return list;
   }
+
+  private List<Timestamp> getTimestamps(Connection connection, Audiobook audiobook) throws SQLException{
+      List<Timestamp> list = new ArrayList<>();
+
+      PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Timestamps WHERE title = ? AND author= ?");
+      stmt.setString(1, audiobook.getTitle());
+      stmt.setString(2, audiobook.getAuthor());
+
+      ResultSet resultSet = stmt.executeQuery();
+      while (resultSet.next()) {
+          String TimeString = resultSet.getString("stamp");
+
+          Timestamp timestamp = new Timestamp(TimeString);
+          list.add(timestamp);
+      }
+
+      stmt.close();
+      return list;
+  }
+
 
 }

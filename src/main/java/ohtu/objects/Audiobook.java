@@ -36,6 +36,10 @@ public class Audiobook extends BookSuper {
         timestampList.add(timestamp);
     }
 
+    public void addTimestamps(List<Timestamp> timestamps){
+        timestampList.addAll(timestamps);
+    }
+
     public List<Timestamp> getTimestampList(){
         return timestampList;
     }
