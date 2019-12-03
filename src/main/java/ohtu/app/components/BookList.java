@@ -36,7 +36,9 @@ public class BookList extends GridPane {
     private ListView<Timestamp> timestampListView = new ListView<>();
 
     private FileSelector fileSelector;
+    private Label mediaFile = new Label("");
     private MediaPlayer mediaPlayer;
+    private Audiobook mediaBook;
 
     private Label durationLabel;
     private Slider progressBar;
@@ -81,6 +83,9 @@ public class BookList extends GridPane {
         editTitleField.setPromptText("Set new Title");
         editTitleField.setId("edit_title");
 
+        timestampListView.setVisible(false);
+        timestampListView.managedProperty().bind(timestampListView.visibleProperty());
+
         // Display for audio controls
         GridPane audioControls = new GridPane();
         Button playButton = new Button("▶▮▮");
@@ -115,6 +120,7 @@ public class BookList extends GridPane {
         audioControls.add(saveTimestamp, 2, 0);
         audioControls.add(progressBar, 0, 1);
         audioControls.add(durationLabel, 1, 1);
+        audioControls.add(mediaFile, 0,2, 2, 1);
 
         // audioControls.getChildren().addAll(playButton, stopButton, saveTimestamp,
         // durationLabel, progressBar);
@@ -202,8 +208,9 @@ public class BookList extends GridPane {
     }
 
     private void mediaPlayerPlayAction(ActionEvent e) {
-        if (mediaPlayer == null)
-            return;
+        if (mediaPlayer == null || mediaBook != getSelectedBook()){
+            createNewMediaPlayer((Audiobook)getSelectedBook());
+        }
 
         if (mediaPlayer.statusProperty().getValue() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
@@ -226,11 +233,12 @@ public class BookList extends GridPane {
 
         setBookInfoText(selectedBook);
         if (selectedBook instanceof Audiobook){
-            createNewMediaPlayer((Audiobook) selectedBook);
+            //createNewMediaPlayer((Audiobook) selectedBook);
             refreshTimeStampList((Audiobook) selectedBook);
         }
 
         timestampListView.setVisible(selectedBook instanceof Audiobook);
+        timestampListView.managedProperty().bind(timestampListView.visibleProperty());
 
         System.out.println(bookmarks.getBookmarks());
     }
@@ -255,7 +263,7 @@ public class BookList extends GridPane {
             refreshBookmarks();
             clearBookInput();
 
-            createNewMediaPlayer(audiobook);
+            //createNewMediaPlayer(audiobook);
         }
     }
 
@@ -414,8 +422,12 @@ public class BookList extends GridPane {
     }
 
     private void createNewMediaPlayer(Audiobook audiobook) {
-        if (mediaPlayer != null)
+        if (mediaPlayer != null){
             mediaPlayer.stop();
+        }
+
+        mediaBook = audiobook;
+        mediaFile.setText("Playing: "+mediaBook.toString());
 
         Media hit = new Media(audiobook.getMp3().toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
