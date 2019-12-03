@@ -4,9 +4,9 @@
 
 - Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä
   - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
-  - Äänikirjoja voidaan lisätä, kuunnella, muokata ja poistaa
-    - Äänikirjan kuuntelu voidaan katkaista ja kuuntelua voidaan jatkaa edelleen
-    - Äänikirjaan voidaan lisätä aikaleima, johon voidaan siirtyä myöhemmin
+ - Lukuvinkkeihin voi sisällyttää sovelluksessa kuunneltavia äänikirjoja
+    - Äänikirjan kuuntelu voidaan keskeyttää ja kuuntelua voidaan jatkaa keskeytetystä kohdasta
+    - Äänikirjaan voidaan lisätä aikaleima, joka jää muistiin ja johon voidaan siirtyä myöhempänä ajankohtana
 - Toteutuskieli: Java
 - Käyttöliittymä: Paikallinen komentoriviltä suoritettava, graafinen (ks. kuva alla)
 
