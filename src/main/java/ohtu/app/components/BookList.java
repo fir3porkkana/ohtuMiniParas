@@ -382,6 +382,15 @@ public class BookList extends GridPane {
         mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
     }
 
+    private void progressBarDragDropAction(MouseDragEvent e) {
+        double dx = e.getX();
+        double dwidth = this.getWidth();
+        double progression = (dx / dwidth);
+        int milliseconds = (int) (progression * mediaPlayer.getTotalDuration().toMillis());
+        Duration duration = new Duration(milliseconds);
+        mediaPlayer.seek(duration);
+    }
+
     private void progressBarOnChangeAction(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
         double value = (double) new_val;
         int milliseconds = (int) (value * mediaPlayer.getTotalDuration().toMillis());
