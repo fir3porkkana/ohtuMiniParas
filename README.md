@@ -12,6 +12,7 @@
 - Toteutuskieli: Java
 
 - Käyttöliittymä: Paikallinen komentoriviltä suoritettava, graafinen:
+
 ![](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/UI.png)
 
 
