@@ -13,6 +13,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
@@ -44,6 +45,7 @@ public class BookList extends GridPane {
     private MediaPlayer mediaPlayer;
 
     private Label durationLabel;
+    private Slider progressBar;
 
     public BookList(Bookmarks bookmarks, FileSelector fileSelector) {
 
@@ -87,7 +89,7 @@ public class BookList extends GridPane {
         GridPane audioControls = new GridPane();
         Button playButton = new Button("▶▮▮");
         Button stopButton = new Button("■");
-        Slider progressBar = new Slider();
+        this.progressBar = new Slider();
 
         playButton.setStyle("-fx-text-alignment: right");
         playButton.setShape(new Circle(20));
@@ -105,7 +107,10 @@ public class BookList extends GridPane {
         progressBar.setMin(0);
         progressBar.setMax(1);
         progressBar.setPadding(new Insets(10, 5, 10, 5));
-        progressBar.valueProperty().addListener(this::progressBarOnChangeAction);
+        // progressBar.valueChangingProperty().addListener(this::progressBarOnChangeAction);
+
+        progressBar.setOnMousePressed(this::progressBarMousePress);
+        progressBar.setOnMouseReleased(this::progressBarMouseRelease);
 
         durationLabel = new Label();
         Button saveTimestamp = new Button("Timestamp");
@@ -162,6 +167,29 @@ public class BookList extends GridPane {
         saveTimestamp.setOnAction(this::saveTimeStampAction);
 
         refreshBookmarks();
+    }
+
+    private void progressBarMousePress(MouseEvent event) {
+        if (mediaPlayer == null) {
+            return;
+        }
+        System.out.println("Entered");
+        System.out.println(event);
+        System.out.println("value: " + progressBar.getValue());
+
+    }
+
+    private void progressBarMouseRelease(MouseEvent event) {
+        if (mediaPlayer == null) {
+            return;
+        }
+        System.out.println("Exited");
+        System.out.println(event);
+        System.out.println("value: " + progressBar.getValue());
+        int milliseconds = (int) (progressBar.getValue() * mediaPlayer.getTotalDuration().toMillis());
+        Duration duration = new Duration(milliseconds);
+        mediaPlayer.seek(duration);
+
     }
 
     private void saveTimeStampAction(ActionEvent e) {
@@ -223,7 +251,12 @@ public class BookList extends GridPane {
 
     private void onMediaPlayerTimeChange(ObservableValue<? extends Duration> observable, Duration oldValue,
             Duration newValue) {
-        setDurationLabelValues(newValue, mediaPlayer.getMedia().durationProperty().get());
+        Duration length = mediaPlayer.getMedia().durationProperty().get();
+        setDurationLabelValues(newValue, length);
+
+        if (!progressBar.isPressed()) {
+            progressBar.setValue(newValue.toMillis() / length.toMillis());
+        }
     }
 
     private void setDurationLabelValues(Duration current, Duration max) {
@@ -379,14 +412,18 @@ public class BookList extends GridPane {
         });
 
         mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
+
     }
 
-    private void progressBarOnChangeAction(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-        double value = (double) new_val;
-        int milliseconds = (int) (value * mediaPlayer.getTotalDuration().toMillis());
-        Duration duration = new Duration(milliseconds);
-        mediaPlayer.seek(duration);
-    }
+    // private void progressBarOnChangeAction(ObservableValue<? extends Boolean> ov,
+    // Boolean old_val, Boolean new_val) {
+    // System.out.println(ov);
+    // System.out.println("old: " + old_val + ",new: " + new_val);
+    // double value = progressBar.getValue();
+    // int milliseconds = (int) (value * mediaPlayer.getTotalDuration().toMillis());
+    // Duration duration = new Duration(milliseconds);
+    // mediaPlayer.seek(duration);
+    // }
 
     private String beautifyDuration(Duration duration) {
         if (duration == null)
