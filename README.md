@@ -19,7 +19,7 @@ Lataa uusin release [**bookmark_2.0**](https://github.com/fir3porkkana/ohtuMiniP
 
 Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
 
-`java -jar bookmark_2.0.jar`
+  `java -jar bookmark_2.0.jar`
 
 ## Seuranta
 
