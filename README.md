@@ -17,7 +17,7 @@
 
 Lataa uusin release [**bookmark_2.0**](https://github.com/fir3porkkana/ohtuMiniParas/releases/tag/2.0)
 
-Suorita ladattu jar joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
+Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
 
 `java -jar bookmark_2.0.jar`
 
