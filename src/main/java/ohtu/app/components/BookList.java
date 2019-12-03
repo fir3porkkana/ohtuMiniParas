@@ -33,7 +33,7 @@ public class BookList extends GridPane {
     private TextField editTitleField = new TextField();
     private TextField editAuthorField = new TextField();
     private Label audiobookName = new Label();
-    private ListView<Timestamp> timestampListView = new ListView<Timestamp>();
+    private ListView<Timestamp> timestampListView = new ListView<>();
 
     private FileSelector fileSelector;
     private MediaPlayer mediaPlayer;
@@ -101,10 +101,8 @@ public class BookList extends GridPane {
         progressBar.setMin(0);
         progressBar.setMax(1);
         progressBar.setPadding(new Insets(10, 5, 10, 5));
-        // progressBar.valueChangingProperty().addListener(this::progressBarOnChangeAction);
         progressBar.setPickOnBounds(false);
 
-        progressBar.setOnMousePressed(this::progressBarMousePress);
         progressBar.setOnMouseReleased(this::progressBarMouseRelease);
 
         durationLabel = new Label();
@@ -166,23 +164,10 @@ public class BookList extends GridPane {
         refreshBookmarks();
     }
 
-    private void progressBarMousePress(MouseEvent event) {
-        if (mediaPlayer == null) {
-            return;
-        }
-        System.out.println("Entered");
-        System.out.println(event);
-        System.out.println("value: " + progressBar.getValue());
-
-    }
-
     private void progressBarMouseRelease(MouseEvent event) {
         if (mediaPlayer == null) {
             return;
         }
-        System.out.println("Exited");
-        System.out.println(event);
-        System.out.println("value: " + progressBar.getValue());
         int milliseconds = (int) (progressBar.getValue() * mediaPlayer.getTotalDuration().toMillis());
         Duration duration = new Duration(milliseconds);
         mediaPlayer.seek(duration);
@@ -425,16 +410,4 @@ public class BookList extends GridPane {
         mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
 
     }
-
-    // private void progressBarOnChangeAction(ObservableValue<? extends Boolean> ov,
-    // Boolean old_val, Boolean new_val) {
-    // System.out.println(ov);
-    // System.out.println("old: " + old_val + ",new: " + new_val);
-    // if (old_val) {
-    // double value = progressBar.getValue();
-    // int milliseconds = (int) (value * mediaPlayer.getTotalDuration().toMillis());
-    // Duration duration = new Duration(milliseconds);
-    // mediaPlayer.seek(duration);
-    // }
-    // }
 }
