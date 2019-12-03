@@ -108,6 +108,7 @@ public class BookList extends GridPane {
         progressBar.setMax(1);
         progressBar.setPadding(new Insets(10, 5, 10, 5));
         // progressBar.valueChangingProperty().addListener(this::progressBarOnChangeAction);
+        progressBar.setPickOnBounds(false);
 
         progressBar.setOnMousePressed(this::progressBarMousePress);
         progressBar.setOnMouseReleased(this::progressBarMouseRelease);
@@ -419,10 +420,12 @@ public class BookList extends GridPane {
     // Boolean old_val, Boolean new_val) {
     // System.out.println(ov);
     // System.out.println("old: " + old_val + ",new: " + new_val);
+    // if (old_val) {
     // double value = progressBar.getValue();
     // int milliseconds = (int) (value * mediaPlayer.getTotalDuration().toMillis());
     // Duration duration = new Duration(milliseconds);
     // mediaPlayer.seek(duration);
+    // }
     // }
 
     private String beautifyDuration(Duration duration) {
