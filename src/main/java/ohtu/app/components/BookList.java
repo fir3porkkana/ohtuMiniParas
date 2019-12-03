@@ -88,8 +88,9 @@ public class BookList extends GridPane {
 
         // Display for audio controls
         GridPane audioControls = new GridPane();
-        Button playButton = new Button("▶▮▮");
-        Button stopButton = new Button("■");
+        Button playButton = new Button("\u25b6\u25ae\u25ae");
+
+        Button stopButton = new Button("\u25a0");
         this.progressBar = new Slider();
 
         playButton.setStyle("-fx-text-alignment: right");
@@ -208,9 +209,10 @@ public class BookList extends GridPane {
     }
 
     private void mediaPlayerPlayAction(ActionEvent e) {
-        if (mediaPlayer == null || mediaBook != getSelectedBook()){
+        if (mediaBook != getSelectedBook() && getSelectedBook() instanceof Audiobook){
             createNewMediaPlayer((Audiobook)getSelectedBook());
         }
+        if(mediaPlayer == null) return;
 
         if (mediaPlayer.statusProperty().getValue() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
