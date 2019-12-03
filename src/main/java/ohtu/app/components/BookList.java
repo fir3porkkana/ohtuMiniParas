@@ -247,6 +247,7 @@ public class BookList extends GridPane {
 
     private void onMediaPlayerTimeChange(ObservableValue<? extends Duration> observable, Duration oldValue,
             Duration newValue) {
+        if(mediaPlayer == null || mediaPlayer.getMedia() == null) return;
         Duration length = mediaPlayer.getMedia().durationProperty().get();
         setDurationLabelValues(newValue, length);
 
@@ -398,16 +399,7 @@ public class BookList extends GridPane {
 
         Media hit = new Media(audiobook.getMp3().toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
-        mediaPlayer.setOnReady(new Runnable() {
-
-            @Override
-            public void run() {
-                setDurationLabelValues(Duration.ZERO, hit.durationProperty().get());
-
-            }
-        });
-
+        mediaPlayer.setOnReady(()->setDurationLabelValues(Duration.ZERO, hit.durationProperty().get()));
         mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
-
     }
 }
