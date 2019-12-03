@@ -22,6 +22,14 @@ public class Timestamp {
         return timestampString;
     }
 
+    public String getTimestampString() {
+        return timestampString;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
     public static Duration stringToDuration(String durString){
         String[] arr = durString.split(":");
         if(arr.length != 3) return null;

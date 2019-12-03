@@ -68,8 +68,10 @@ public class BookList extends GridPane {
 
         Button deleteBookButton = new Button("Delete book");
         deleteBookButton.setId("delete_button");
+        deleteBookButton.setMinWidth(85);
         Button editBookButton = new Button("Save change");
         editBookButton.setId("edit_button");
+        editBookButton.setMinWidth(85);
         undoDeletionButton = new Button("Undo");
         undoDeletionButton.setId("undo_button");
         undoDeletionButton.setVisible(false);
@@ -139,6 +141,7 @@ public class BookList extends GridPane {
         this.setHgap(5);
 
         bookListView.setId("bookList");
+        bookListView.setMinWidth(250);
 
         // Arranging all the nodes in the grid
         this.add(titleLabel, 0, 0);
@@ -158,6 +161,7 @@ public class BookList extends GridPane {
         deleteBookButton.setOnAction(this::deleteBookAction);
         editBookButton.setOnAction(this::editBookAction);
         bookListView.setOnMouseClicked(this::bookSelectedAction);
+        timestampListView.setOnMouseClicked(this::timeStampSelectedAction);
         undoDeletionButton.setOnMouseClicked(this::undoDeletion);
         saveTimestamp.setOnAction(this::saveTimeStampAction);
 
@@ -204,7 +208,14 @@ public class BookList extends GridPane {
         }
     }
 
-    private void bookSelectedAction(javafx.scene.input.MouseEvent e) {
+    private void timeStampSelectedAction(MouseEvent e){
+        Timestamp selectedStamp = timestampListView.getSelectionModel().getSelectedItem();
+        if(selectedStamp == null || mediaPlayer == null ) return;
+
+        mediaPlayer.seek(selectedStamp.getDuration());
+    }
+
+    private void bookSelectedAction(MouseEvent e) {
         BookSuper selectedBook = getSelectedBook();
         if (selectedBook == null)
             return;
@@ -213,10 +224,9 @@ public class BookList extends GridPane {
         if (selectedBook instanceof Audiobook){
             createNewMediaPlayer((Audiobook) selectedBook);
             refreshTimeStampList((Audiobook) selectedBook);
-            timestampListView.setVisible(true);
-        } else{
-            timestampListView.setVisible(false);
         }
+
+        timestampListView.setVisible(selectedBook instanceof Audiobook);
 
         System.out.println(bookmarks.getBookmarks());
     }
@@ -251,7 +261,7 @@ public class BookList extends GridPane {
         Duration length = mediaPlayer.getMedia().durationProperty().get();
         setDurationLabelValues(newValue, length);
 
-        if (!progressBar.isPressed()) {
+        if (newValue != null && length != null  && !progressBar.isPressed()) {
             progressBar.setValue(newValue.toMillis() / length.toMillis());
         }
     }
