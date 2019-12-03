@@ -31,6 +31,7 @@ Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hake
 
 ## Testaus
 
-Konfiguraatio CircleCI:ssä: [![CircleCI](https://circleci.com/gh/fir3porkkana/ohtuMiniParas.svg?style=svg)](https://circleci.com/gh/fir3porkkana/ohtuMiniParas)
-
-Testikattavuus CodeCov:ssa (ei-rajattu): [![codecov](https://codecov.io/gh/fir3porkkana/ohtuMiniParas/branch/master/graph/badge.svg)](https://codecov.io/gh/fir3porkkana/ohtuMiniParas)
+Toimeksianto | Raportti 
+-----------|----------
+Konfiguraatio CircleCI:ssä | [![CircleCI](https://circleci.com/gh/fir3porkkana/ohtuMiniParas.svg?style=svg)](https://circleci.com/gh/fir3porkkana/ohtuMiniParas) 
+Testikattavuus CodeCov:ssa (ei-rajattu) | [![codecov](https://codecov.io/gh/fir3porkkana/ohtuMiniParas/branch/master/graph/badge.svg)](https://codecov.io/gh/fir3porkkana/ohtuMiniParas)
