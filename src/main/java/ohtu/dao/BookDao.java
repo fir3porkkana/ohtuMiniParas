@@ -26,7 +26,7 @@ public class BookDao implements Dao<BookSuper, String> {
 
     // SQL statement for creating a new table
     String sql = "CREATE TABLE IF NOT EXISTS BOOKS "
-        + "( id integer PRIMARY KEY, title text NOT NULL,  author text NOT NULL );";
+        + "( title text NOT NULL,  author text NOT NULL, PRIMARY KEY (title, author) );";
 
     Connection conn = DriverManager.getConnection(url);
     PreparedStatement stmt = conn.prepareStatement(sql);
@@ -35,13 +35,27 @@ public class BookDao implements Dao<BookSuper, String> {
     stmt.close();
     
     sql = "CREATE TABLE IF NOT EXISTS AUDIOBOOKS"
-            + "(id integer PRIMARY KEY, title text NOT NULL, author text NOT NULL, url text NOT NULL);";
+            + "(title text NOT NULL, author text NOT NULL, url text NOT NULL, PRIMARY KEY (title, author));";
     conn = DriverManager.getConnection(url);
     stmt = conn.prepareStatement(sql);
     // create a new table
     stmt.execute();
     stmt.close();
     conn.close();
+
+    sql = "CREATE TABLE IF NOT EXISTS TIMESTAMPS" +
+            " (" +
+                "id integer PRIMARY KEY, " +
+                "stamp text NOT NULL" +
+                "title text NOT NULL" +
+                "author text NOT NULL" +
+                "FOREIGN KEY (title, author) REFERENCES AUDIOBOOKS (title, author)" +
+            ")";
+      conn = DriverManager.getConnection(url);
+      stmt = conn.prepareStatement(sql);
+      stmt.execute();
+      stmt.close();
+      conn.close();
   }
 
   public void emptyTable() throws SQLException {
@@ -81,6 +95,10 @@ public class BookDao implements Dao<BookSuper, String> {
         stmt.close();
         connection.close();
     }
+  }
+
+  public void addTimestamp(){
+
   }
 
   @Override

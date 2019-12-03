@@ -2,17 +2,13 @@ package ohtu.app.components;
 
 import java.io.File;
 
-import javafx.beans.value.ChangeListener;
-
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -21,10 +17,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import ohtu.app.FileSelector;
-import ohtu.objects.Audiobook;
-import ohtu.objects.Book;
-import ohtu.objects.BookSuper;
-import ohtu.objects.Bookmarks;
+import ohtu.objects.*;
 
 public class BookList extends GridPane {
 
@@ -36,10 +29,11 @@ public class BookList extends GridPane {
 
     private ListView<BookSuper> bookListView = new ListView<>();
 
+    private Button undoDeletionButton;
     private TextField editTitleField = new TextField();
     private TextField editAuthorField = new TextField();
     private Label audiobookName = new Label();
-    private Button undoDeletionButton;
+    private ListView<Timestamp> timestampListView = new ListView<Timestamp>();
 
     private FileSelector fileSelector;
     private MediaPlayer mediaPlayer;
@@ -125,14 +119,16 @@ public class BookList extends GridPane {
         // audioControls.getChildren().addAll(playButton, stopButton, saveTimestamp,
         // durationLabel, progressBar);
 
-        selectedBookDisplay.add(new Label("Title"), 0, 0);
-        selectedBookDisplay.add(new Label("Author"), 0, 1);
-        selectedBookDisplay.add(editTitleField, 1, 0);
-        selectedBookDisplay.add(editAuthorField, 1, 1);
-        selectedBookDisplay.add(audiobookName, 1, 2);
-        selectedBookDisplay.add(deleteBookButton, 0, 3);
-        selectedBookDisplay.add(editBookButton, 1, 3);
-        selectedBookDisplay.add(undoDeletionButton, 2, 3);
+        selectedBookDisplay.add(deleteBookButton, 0, 0);
+        selectedBookDisplay.add(editBookButton, 1, 0);
+        selectedBookDisplay.add(undoDeletionButton, 2, 0);
+
+        selectedBookDisplay.add(new Label("Title"), 0, 1);
+        selectedBookDisplay.add(new Label("Author"), 0, 2);
+        selectedBookDisplay.add(editTitleField, 1, 1);
+        selectedBookDisplay.add(editAuthorField, 1, 2);
+        selectedBookDisplay.add(audiobookName, 1, 3);
+        selectedBookDisplay.add(timestampListView, 0, 4, 2, 1);
 
         // Setting size for the pane
         this.setMinSize(400, 200);
@@ -197,7 +193,12 @@ public class BookList extends GridPane {
         if (mediaPlayer == null)
             return;
 
-        System.out.println("Timestamp: " + beautifyDuration(mediaPlayer.currentTimeProperty().get()));
+        System.out.println("Timestamp: " + Timestamp.durationToString(mediaPlayer.currentTimeProperty().get()));
+        BookSuper book = getSelectedBook();
+        if(!(book instanceof Audiobook)) return;
+
+        ((Audiobook) book).addTimestamp(new Timestamp(mediaPlayer.currentTimeProperty().get()));
+        refreshTimeStampList((Audiobook) book);
     }
 
     private void mediaPlayerStopAction(ActionEvent e) {
@@ -224,11 +225,20 @@ public class BookList extends GridPane {
             return;
 
         setBookInfoText(selectedBook);
-
-        if (selectedBook instanceof Audiobook)
+        if (selectedBook instanceof Audiobook){
             createNewMediaPlayer((Audiobook) selectedBook);
+            refreshTimeStampList((Audiobook) selectedBook);
+            timestampListView.setVisible(true);
+        } else{
+            timestampListView.setVisible(false);
+        }
 
         System.out.println(bookmarks.getBookmarks());
+    }
+
+    private void refreshTimeStampList(Audiobook book){
+        timestampListView.getItems().clear();
+        timestampListView.getItems().addAll(book.getTimestampList());
     }
 
     private void onEnterKeyPress(KeyEvent e) {
@@ -261,7 +271,7 @@ public class BookList extends GridPane {
     }
 
     private void setDurationLabelValues(Duration current, Duration max) {
-        durationLabel.setText(beautifyDuration(current) + " / " + beautifyDuration(max));
+        durationLabel.setText(Timestamp.durationToString(current) + " / " + Timestamp.durationToString(max));
     }
 
     private void addBookAction(Event e) {
@@ -427,12 +437,4 @@ public class BookList extends GridPane {
     // mediaPlayer.seek(duration);
     // }
     // }
-
-    private String beautifyDuration(Duration duration) {
-        if (duration == null)
-            return "0:00:00";
-
-        long seconds = (long) duration.toSeconds();
-        return String.format("%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, (seconds % 60));
-    }
 }
