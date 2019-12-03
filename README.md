@@ -6,6 +6,8 @@
 
   - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
   - Äänikirjoja voidaan lisätä, kuunnella, muokata ja poistaa
+    - Kuuntelu voidaan katkaista ja kuuntelua voidaan jatkaa edelleen
+    - Äänikirjaan voidaan lisätä aikaleima, johon voidaan siirtyä myöhemmin sovelluksen sulkemisenkin jälkeen
 
 - Toteutuskieli: Java
 
