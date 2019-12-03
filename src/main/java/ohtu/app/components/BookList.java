@@ -370,24 +370,22 @@ public class BookList extends GridPane {
 
         Media hit = new Media(audiobook.getMp3().toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
-        mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
-    }
+        mediaPlayer.setOnReady(new Runnable() {
 
-    private void progressBarDragDropAction(MouseDragEvent e) {
-        double dx = e.getX();
-        double dwidth = this.getWidth();
-        double progression = (dx / dwidth);
-        int milliseconds = (int) (progression * mediaPlayer.getTotalDuration().toMillis());
-        Duration duration = new Duration(milliseconds);
-        System.out.println("ASDDASFGDASFDGASDASFGDAS" + duration);
-        mediaPlayer.seek(duration);
+            @Override
+            public void run() {
+                setDurationLabelValues(Duration.ZERO, hit.durationProperty().get());
+
+            }
+        });
+
+        mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
     }
 
     private void progressBarOnChangeAction(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
         double value = (double) new_val;
         int milliseconds = (int) (value * mediaPlayer.getTotalDuration().toMillis());
         Duration duration = new Duration(milliseconds);
-        System.out.println("ASDDASFGDASFDGASDASFGDAS" + duration);
         mediaPlayer.seek(duration);
     }
 
