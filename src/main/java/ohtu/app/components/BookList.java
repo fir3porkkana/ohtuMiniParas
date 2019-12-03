@@ -2,13 +2,17 @@ package ohtu.app.components;
 
 import java.io.File;
 
+import javafx.beans.value.ChangeListener;
+
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
@@ -80,9 +84,10 @@ public class BookList extends GridPane {
         editTitleField.setId("edit_title");
 
         // Display for audio controls
-        HBox audioControls = new HBox(10);
+        GridPane audioControls = new GridPane();
         Button playButton = new Button("▶▮▮");
         Button stopButton = new Button("■");
+        Slider progressBar = new Slider();
 
         playButton.setStyle("-fx-text-alignment: right");
         playButton.setShape(new Circle(20));
@@ -97,16 +102,29 @@ public class BookList extends GridPane {
         stopButton.setMaxSize(40, 40);
         stopButton.setOnAction(this::mediaPlayerStopAction);
 
+        progressBar.setMin(0);
+        progressBar.setMax(1);
+        progressBar.setPadding(new Insets(10, 5, 10, 5));
+        progressBar.setOnMouseDragExited(this::progressBarDragDropAction);
+        progressBar.valueProperty().addListener(this::progressBarOnChangeAction);
+
         durationLabel = new Label();
         Button saveTimestamp = new Button("Timestamp");
 
-        audioControls.getChildren().addAll(playButton, stopButton, saveTimestamp, durationLabel);
+        audioControls.add(playButton, 0, 0);
+        audioControls.add(stopButton, 1, 0);
+        audioControls.add(saveTimestamp, 2, 0);
+        audioControls.add(progressBar, 0, 1);
+        audioControls.add(durationLabel, 1, 1);
+
+        // audioControls.getChildren().addAll(playButton, stopButton, saveTimestamp,
+        // durationLabel, progressBar);
 
         selectedBookDisplay.add(new Label("Title"), 0, 0);
         selectedBookDisplay.add(new Label("Author"), 0, 1);
         selectedBookDisplay.add(editTitleField, 1, 0);
         selectedBookDisplay.add(editAuthorField, 1, 1);
-        selectedBookDisplay.add(audiobookName, 1,2);
+        selectedBookDisplay.add(audiobookName, 1, 2);
         selectedBookDisplay.add(deleteBookButton, 0, 3);
         selectedBookDisplay.add(editBookButton, 1, 3);
         selectedBookDisplay.add(undoDeletionButton, 2, 3);
@@ -147,20 +165,23 @@ public class BookList extends GridPane {
         refreshBookmarks();
     }
 
-    private void saveTimeStampAction(ActionEvent e){
-        if (mediaPlayer == null) return;
+    private void saveTimeStampAction(ActionEvent e) {
+        if (mediaPlayer == null)
+            return;
 
-        System.out.println("Timestamp: "+beautifyDuration(mediaPlayer.currentTimeProperty().get()));
+        System.out.println("Timestamp: " + beautifyDuration(mediaPlayer.currentTimeProperty().get()));
     }
 
-    private void mediaPlayerStopAction(ActionEvent e){
-        if (mediaPlayer == null) return;
+    private void mediaPlayerStopAction(ActionEvent e) {
+        if (mediaPlayer == null)
+            return;
 
         mediaPlayer.stop();
     }
 
-    private void mediaPlayerPlayAction(ActionEvent e){
-        if (mediaPlayer == null) return;
+    private void mediaPlayerPlayAction(ActionEvent e) {
+        if (mediaPlayer == null)
+            return;
 
         if (mediaPlayer.statusProperty().getValue() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
@@ -171,12 +192,13 @@ public class BookList extends GridPane {
 
     private void bookSelectedAction(javafx.scene.input.MouseEvent e) {
         BookSuper selectedBook = getSelectedBook();
-        if (selectedBook == null) return;
+        if (selectedBook == null)
+            return;
 
         setBookInfoText(selectedBook);
 
-        if(selectedBook instanceof Audiobook)
-            createNewMediaPlayer((Audiobook)selectedBook);
+        if (selectedBook instanceof Audiobook)
+            createNewMediaPlayer((Audiobook) selectedBook);
 
         System.out.println(bookmarks.getBookmarks());
     }
@@ -192,7 +214,7 @@ public class BookList extends GridPane {
         System.out.println(mp3);
         Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3);
 
-        if(!audiobook.isEmpty() && addBook(audiobook)){
+        if (!audiobook.isEmpty() && addBook(audiobook)) {
             refreshBookmarks();
             clearBookInput();
 
@@ -200,12 +222,13 @@ public class BookList extends GridPane {
         }
     }
 
-    private void onMediaPlayerTimeChange(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue){
+    private void onMediaPlayerTimeChange(ObservableValue<? extends Duration> observable, Duration oldValue,
+            Duration newValue) {
         setDurationLabelValues(newValue, mediaPlayer.getMedia().durationProperty().get());
     }
 
-    private void setDurationLabelValues(Duration current, Duration max){
-        durationLabel.setText(beautifyDuration(current)+" / " + beautifyDuration(max));
+    private void setDurationLabelValues(Duration current, Duration max) {
+        durationLabel.setText(beautifyDuration(current) + " / " + beautifyDuration(max));
     }
 
     private void addBookAction(Event e) {
@@ -231,17 +254,18 @@ public class BookList extends GridPane {
         } else {
             // If a field is empty, old value is kept
             String newTitle = !editTitleField.getText().isBlank() ? editTitleField.getText() : selectedBook.getTitle();
-            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText() : selectedBook.getAuthor();
+            String newAuthor = !editAuthorField.getText().isBlank() ? editAuthorField.getText()
+                    : selectedBook.getAuthor();
 
             BookSuper sBook;
             if (selectedBook instanceof Audiobook)
-                sBook = new Audiobook(newTitle, newAuthor, ((Audiobook)selectedBook).getMp3());
+                sBook = new Audiobook(newTitle, newAuthor, ((Audiobook) selectedBook).getMp3());
             else if (selectedBook instanceof Book)
                 sBook = new Book(newTitle, newAuthor);
             else
                 throw new Error("Selected book is not of any known book type");
 
-            if(editBook(selectedBook, sBook)){
+            if (editBook(selectedBook, sBook)) {
                 refreshBookmarks();
                 clearBookInfoText();
             } else {
@@ -260,7 +284,7 @@ public class BookList extends GridPane {
             undoDeletionButton.setVisible(true);
         }
     }
-    
+
     private void undoDeletion(Event e) {
         if (deletedBook == null)
             return;
@@ -326,8 +350,10 @@ public class BookList extends GridPane {
     }
 
     private Boolean editBook(BookSuper selectedBook, BookSuper updatedBook) {
-        //2 duplicates can't exist even if they have different casing, but a books case can be edited
-        if(!bookmarks.contains(updatedBook) || (selectedBook.equals(updatedBook) && !selectedBook.equalsCaseSensitive(updatedBook))) {
+        // 2 duplicates can't exist even if they have different casing, but a books case
+        // can be edited
+        if (!bookmarks.contains(updatedBook)
+                || (selectedBook.equals(updatedBook) && !selectedBook.equalsCaseSensitive(updatedBook))) {
             bookmarks.updateBookmark(selectedBook, updatedBook);
             return true;
         }
@@ -338,8 +364,8 @@ public class BookList extends GridPane {
         return bookmarks;
     }
 
-    private void createNewMediaPlayer(Audiobook audiobook){
-        if(mediaPlayer != null)
+    private void createNewMediaPlayer(Audiobook audiobook) {
+        if (mediaPlayer != null)
             mediaPlayer.stop();
 
         Media hit = new Media(audiobook.getMp3().toURI().toString());
@@ -347,10 +373,29 @@ public class BookList extends GridPane {
         mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
     }
 
-    private String beautifyDuration(Duration duration){
-        if(duration == null) return "0:00:00";
+    private void progressBarDragDropAction(MouseDragEvent e) {
+        double dx = e.getX();
+        double dwidth = this.getWidth();
+        double progression = (dx / dwidth);
+        int milliseconds = (int) (progression * mediaPlayer.getTotalDuration().toMillis());
+        Duration duration = new Duration(milliseconds);
+        System.out.println("ASDDASFGDASFDGASDASFGDAS" + duration);
+        mediaPlayer.seek(duration);
+    }
 
-        long seconds = (long)duration.toSeconds();
-        return String.format("%d:%02d:%02d", seconds/3600, (seconds%3600)/60, (seconds%60));
+    private void progressBarOnChangeAction(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+        double value = (double) new_val;
+        int milliseconds = (int) (value * mediaPlayer.getTotalDuration().toMillis());
+        Duration duration = new Duration(milliseconds);
+        System.out.println("ASDDASFGDASFDGASDASFGDAS" + duration);
+        mediaPlayer.seek(duration);
+    }
+
+    private String beautifyDuration(Duration duration) {
+        if (duration == null)
+            return "0:00:00";
+
+        long seconds = (long) duration.toSeconds();
+        return String.format("%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, (seconds % 60));
     }
 }
