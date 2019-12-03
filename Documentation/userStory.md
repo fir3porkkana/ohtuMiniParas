@@ -22,6 +22,8 @@
 
 #### Pystyn muokkaamaan kirjaa tai äänikirjaa ilman, että tietoja tarvitsee kirjoittaa kokonaan uudestaan
 
+#### Pystyn perumaan viimeisimmän lukuvinkin poistamisen
+
 ---
 
 #### Pystyn lisäämään lukuvinkkeihin aiheeseen liittyviä opintojaksoja 
