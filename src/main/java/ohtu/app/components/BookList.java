@@ -416,6 +416,7 @@ public class BookList extends GridPane {
         if (!bookmarks.contains(updatedBook)
                 || (selectedBook.equals(updatedBook) && !selectedBook.equalsCaseSensitive(updatedBook))) {
             bookmarks.updateBookmark(selectedBook, updatedBook);
+
             return true;
         }
         return false;

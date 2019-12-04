@@ -146,6 +146,8 @@ public class Bookmarks {
       try {
         dao.update(audiobook, updatedAudioBook);
         int index = bookmarks.indexOf(book);
+        //Update timestamps to the ui
+        ((Audiobook) updatedBook).addTimestamps(((Audiobook) book).getTimestampList());
         bookmarks.set(index, updatedBook);
       } catch (Exception e) {
         System.out.println("Error updating book: 2 " + e);
