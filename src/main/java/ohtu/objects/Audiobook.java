@@ -3,6 +3,7 @@ package ohtu.objects;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * Audiobook
@@ -41,6 +42,7 @@ public class Audiobook extends BookSuper {
     }
 
     public List<Timestamp> getTimestampList(){
+        java.util.Collections.sort(timestampList);
         return timestampList;
     }
 

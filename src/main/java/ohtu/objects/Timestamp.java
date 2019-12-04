@@ -2,7 +2,7 @@ package ohtu.objects;
 
 import javafx.util.Duration;
 
-public class Timestamp {
+public class Timestamp implements Comparable<Timestamp> {
     //private int id;
     private String timestampString; //"HH:MM:SS"
     private Duration duration;
@@ -47,5 +47,10 @@ public class Timestamp {
 
         long seconds = (long) duration.toSeconds();
         return String.format("%02d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, (seconds % 60));
+    }
+    
+    @Override
+    public int compareTo(Timestamp timestamp) {
+        return this.timestampString.compareTo(timestamp.getTimestampString());
     }
 }

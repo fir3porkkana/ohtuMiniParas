@@ -39,6 +39,7 @@ public class BookList extends GridPane {
     private Label mediaFile = new Label("");
     private MediaPlayer mediaPlayer;
     private Audiobook mediaBook;
+    private Audiobook bookCurrentlyPlaying;
 
     private Label durationLabel;
     private Slider progressBar;
@@ -188,16 +189,16 @@ public class BookList extends GridPane {
     private void saveTimeStampAction(ActionEvent e) {
         if (mediaPlayer == null)
             return;
-
+        
         //System.out.println("Timestamp: " + Timestamp.durationToString(mediaPlayer.currentTimeProperty().get()));
         BookSuper book = getSelectedBook();
-        if(!(book instanceof Audiobook)) return;
-
-        Audiobook aBook = (Audiobook)book;
+        
         Timestamp t = new Timestamp(mediaPlayer.currentTimeProperty().get());
-        if(addTimestamp(aBook,t)){
-            aBook.addTimestamp(t);
-            refreshTimeStampList(aBook);
+        if(addTimestamp(bookCurrentlyPlaying,t)){
+            bookCurrentlyPlaying.addTimestamp(t);
+            if (getSelectedBook().equals(bookCurrentlyPlaying)) {
+                refreshTimeStampList(bookCurrentlyPlaying);
+            }
         }
     }
 
@@ -211,9 +212,10 @@ public class BookList extends GridPane {
     private void mediaPlayerPlayAction(ActionEvent e) {
         if (mediaBook != getSelectedBook() && getSelectedBook() instanceof Audiobook){
             createNewMediaPlayer((Audiobook)getSelectedBook());
+            bookCurrentlyPlaying = (Audiobook)getSelectedBook();
         }
         if(mediaPlayer == null) return;
-
+        
         if (mediaPlayer.statusProperty().getValue() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
         } else {
