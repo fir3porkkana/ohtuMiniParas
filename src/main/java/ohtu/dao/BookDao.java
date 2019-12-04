@@ -116,6 +116,20 @@ public class BookDao implements Dao<BookSuper, String> {
     // TODO Auto-generated method stub
     return null;
   }
+  
+  
+  public void updateTimeStamps(Audiobook book, Audiobook newBook) throws SQLException  {
+      Connection connection = DriverManager.getConnection(url);
+      PreparedStatement stmt = connection.prepareStatement("UPDATE Timestamps SET title = ?, author = ? "
+              + "WHERE title = ? AND author = ?");
+      stmt.setString(1, newBook.getTitle());
+      stmt.setString(2, newBook.getAuthor());
+      stmt.setString(3, book.getTitle());
+      stmt.setString(4, book.getAuthor());
+      stmt.executeUpdate();
+      stmt.close();
+      connection.close();
+  }
 
   @Override
   public void update(BookSuper book, BookSuper updatedBook) throws SQLException {
@@ -136,6 +150,7 @@ public class BookDao implements Dao<BookSuper, String> {
         Audiobook updateBook = (Audiobook) updatedBook;
         PreparedStatement stmt = connection
         .prepareStatement("UPDATE Audiobooks SET title = ? , author = ? WHERE title = ? AND author = ?");
+        updateTimeStamps((Audiobook) book, updateBook);
         stmt.setString(1, updateBook.getTitle());
         stmt.setString(2, updateBook.getAuthor());
         stmt.setString(3, book.getTitle());

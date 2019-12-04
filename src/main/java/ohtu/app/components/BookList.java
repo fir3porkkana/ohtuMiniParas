@@ -196,9 +196,9 @@ public class BookList extends GridPane {
         Timestamp t = new Timestamp(mediaPlayer.currentTimeProperty().get());
         if(addTimestamp(bookCurrentlyPlaying,t)){
             bookCurrentlyPlaying.addTimestamp(t);
-            if (getSelectedBook().equals(bookCurrentlyPlaying)) {
+            
                 refreshTimeStampList(bookCurrentlyPlaying);
-            }
+            
         }
     }
 
