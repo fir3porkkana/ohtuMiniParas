@@ -31,16 +31,15 @@ public class Audiobook extends BookSuper {
         this.author = author.trim();
         this.mp3 = mp3;
     }*/
-
-    public void addTimestamp(Timestamp timestamp){
+    public void addTimestamp(Timestamp timestamp) {
         timestampList.add(timestamp);
     }
 
-    public void addTimestamps(List<Timestamp> timestamps){
+    public void addTimestamps(List<Timestamp> timestamps) {
         timestampList.addAll(timestamps);
     }
 
-    public List<Timestamp> getTimestampList(){
+    public List<Timestamp> getTimestampList() {
         return timestampList;
     }
 
@@ -50,10 +49,7 @@ public class Audiobook extends BookSuper {
 
     @Override
     public boolean isEmpty() {
-        if (this.author.isEmpty() || this.title.isEmpty() || this.mp3 == null) {
-            return true;
-        }
-        return false;
+        return this.author.isEmpty() || this.title.isEmpty() || this.mp3 == null;
     }
 
     @Override
