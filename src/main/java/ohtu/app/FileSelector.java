@@ -12,9 +12,16 @@ public class FileSelector {
 
   public FileSelector(Stage stage) {
     this.stage = stage;
-    fileChooser.setTitle("Open Resource File");
-    fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Audio Files", "*.mp3"));
 
+  }
+
+  public void setTitle(String title) {
+    fileChooser.setTitle(title);
+
+  }
+
+  public void addFilter(ExtensionFilter filter) {
+    fileChooser.getExtensionFilters().addAll(filter);
   }
 
   public File openFileBrowser() {

@@ -8,6 +8,7 @@ import ohtu.dao.BookDao;
 import ohtu.objects.Bookmarks;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class UI {
 
@@ -21,9 +22,11 @@ public class UI {
 
     public void start(Stage stage) {
 
-        FileSelector fileSelector = new FileSelector(stage);
+        FileSelector audioSelector = new FileSelector(stage);
+        audioSelector.setTitle("Choose audio file");
+        audioSelector.addFilter(new ExtensionFilter("Audio Files", "*.mp3"));
 
-        BookList gridPane = new BookList(bookmarks, fileSelector);
+        BookList gridPane = new BookList(bookmarks, audioSelector);
 
         Scene bookList = new Scene(gridPane);
 
