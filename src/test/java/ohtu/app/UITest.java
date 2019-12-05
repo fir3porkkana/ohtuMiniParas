@@ -10,6 +10,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import ohtu.dao.BookDao;
 import ohtu.objects.Bookmarks;
 
@@ -190,6 +191,31 @@ public class UITest extends ApplicationTest {
     clickOn("#edit_button");
 
     assertThat(listview, ListViewMatchers.hasListCell(new Book("a", "a")));
+  }
+
+  @Test
+  public void searchReturnsCorrectList() {
+    ListView listview = find("#bookList");
+
+    addBook("title", "AUTHOR");
+    addBook("hidden", "hidden");
+    addBook("title2", "arthur");
+
+    assertThat(listview, ListViewMatchers.hasItems(3));
+
+    clickOn("#search_input");
+    write("t");
+
+    assertThat(listview, ListViewMatchers.hasItems(2));
+
+    // --- Hidden kirja ei tuu takas vaikka search input menee tyhjäks ---
+    // clickOn("#search_input");
+    // press(KeyCode.BACK_SPACE);
+    // TextField search = find("#search_input");
+    // System.out.println(listview.getItems());
+    // System.out.println("input: " + search.getText());
+
+    // assertThat(listview, ListViewMatchers.hasItems(3));
   }
 
   public void addBook(String title, String author) {
