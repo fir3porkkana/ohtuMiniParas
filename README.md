@@ -38,3 +38,4 @@ Konfiguraatio CircleCI:ssä | [![CircleCI](https://circleci.com/gh/fir3porkkana/
 Testikattavuus CodeCov:ssa (ei-rajattu) | [![codecov](https://codecov.io/gh/fir3porkkana/ohtuMiniParas/branch/master/graph/badge.svg)](https://codecov.io/gh/fir3porkkana/ohtuMiniParas)
 
 
+
