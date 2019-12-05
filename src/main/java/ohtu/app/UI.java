@@ -26,6 +26,11 @@ public class UI {
         audioSelector.setTitle("Choose audio file");
         audioSelector.addFilter(new ExtensionFilter("Audio Files", "*.mp3"));
 
+        // FileSelector photoSelector = new FileSelector(stage);
+        // photoSelector.setTitle("Choose book cover");
+        // photoSelector.addFilter(new ExtensionFilter("Picture files", "*.jpg",
+        // "*.png"));
+
         BookList gridPane = new BookList(bookmarks, audioSelector);
 
         Scene bookList = new Scene(gridPane);
