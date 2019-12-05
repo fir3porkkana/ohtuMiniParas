@@ -3,9 +3,11 @@ package ohtu.objects;
 import ohtu.dao.*;
 import ohtu.interfaces.*;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNoException;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -166,6 +168,33 @@ public class BookmarksTest {
         Book anotherTestBook = new Book("Democracy for the Few", "Michael Parenti");
 
         assertFalse(bookmarks.contains(anotherTestBook));
+    }
+
+    @Test
+    public void searchingBookmarksReturnsCorrectList() {
+        // Books in correct order 1,2,3,4
+        Book book1 = new Book("Ants", "Adam");
+        Book book2 = new Book("Bears", "Adam");
+        Book book3 = new Book("WTF", "Bert");
+        Book book4 = new Book("ABC", "Charlie");
+        // Added in wrong order
+        bookmarks.addBookmark(book4);
+        bookmarks.addBookmark(book3);
+        bookmarks.addBookmark(book2);
+        bookmarks.addBookmark(book1);
+
+        List<BookSuper> result = bookmarks.searchBookmarks("be");
+
+        // Books in expected order
+        List<BookSuper> expected = new ArrayList<>();
+        expected.add(book2);
+        expected.add(book3);
+
+        assertEquals(expected, result);
+
+        assertFalse(result.contains(book1));
+        assertFalse(result.contains(book4));
+
     }
 
 }

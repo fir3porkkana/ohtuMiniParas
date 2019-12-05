@@ -112,4 +112,12 @@ public class BookTest {
 
         assertEquals(true, book.equals(anotherBook));
     }
+
+    @Test
+    public void comparingWorksAuthorFirst() {
+        Book first = new Book(1, "Kirja", "Aatami");
+        Book second = new Book(2, "Kirja", "Bert");
+
+        assertEquals(-1, first.compareTo(second));
+    }
 }

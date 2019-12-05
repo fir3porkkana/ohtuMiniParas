@@ -2,7 +2,9 @@ package ohtu.objects;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Iterator;
 
 import ohtu.dao.*;
@@ -48,15 +50,16 @@ public class Bookmarks {
     }
   }
 
-  public void addTimestamp(Audiobook audiobook, Timestamp timestamp){
-      //Fix later for dao
-      if(!(dao instanceof BookDao)) throw new Error("timestamp logic not implemented in dao yet");
-      BookDao bookDao = (BookDao)dao;
-      try {
-          bookDao.addTimestamp(audiobook, timestamp);
-      } catch (SQLException e){
-          System.out.println("Error adding timestamp to database " + e.getMessage());
-      }
+  public void addTimestamp(Audiobook audiobook, Timestamp timestamp) {
+    // Fix later for dao
+    if (!(dao instanceof BookDao))
+      throw new Error("timestamp logic not implemented in dao yet");
+    BookDao bookDao = (BookDao) dao;
+    try {
+      bookDao.addTimestamp(audiobook, timestamp);
+    } catch (SQLException e) {
+      System.out.println("Error adding timestamp to database " + e.getMessage());
+    }
   }
 
   public boolean contains(BookSuper book) {
@@ -70,27 +73,27 @@ public class Bookmarks {
     }
     return false;
   }
-  
+
   public boolean containsBook(Book book) {
-      for (BookSuper normalBook: bookmarks) {
-          if (normalBook instanceof Book) {
-              if (normalBook.equals(book)) {
-                  return true;
-              }
-          }
+    for (BookSuper normalBook : bookmarks) {
+      if (normalBook instanceof Book) {
+        if (normalBook.equals(book)) {
+          return true;
+        }
       }
-      return false;
+    }
+    return false;
   }
-  
+
   public boolean containsAudioBook(Audiobook book) {
-      for (BookSuper audiobook: bookmarks) {
-          if (audiobook instanceof Audiobook) {
-              if (audiobook.equals(book)) {
-                  return true;
-              }
-          }
+    for (BookSuper audiobook : bookmarks) {
+      if (audiobook instanceof Audiobook) {
+        if (audiobook.equals(book)) {
+          return true;
+        }
       }
-      return false;
+    }
+    return false;
   }
 
   public void removeBookmark(BookSuper book) {
@@ -100,12 +103,12 @@ public class Bookmarks {
       try {
         dao.delete(book);
         while (iterator.hasNext()) {
-            BookSuper nextBook = iterator.next();
-            if (nextBook instanceof Book) {
-                if (book.equals(nextBook)) {
-                    iterator.remove();
-                }
+          BookSuper nextBook = iterator.next();
+          if (nextBook instanceof Book) {
+            if (book.equals(nextBook)) {
+              iterator.remove();
             }
+          }
         }
       } catch (Exception e) {
         System.out.println("Error removing book from database: " + e);
@@ -116,17 +119,27 @@ public class Bookmarks {
       try {
         dao.delete(audiobook);
         while (iterator.hasNext()) {
-            BookSuper nextBook = iterator.next();
-            if (nextBook instanceof Audiobook) {
-                if (book.equals(nextBook)) {
-                    iterator.remove();
-                }
+          BookSuper nextBook = iterator.next();
+          if (nextBook instanceof Audiobook) {
+            if (book.equals(nextBook)) {
+              iterator.remove();
             }
+          }
         }
       } catch (Exception e) {
         System.out.println("Error removing book from database: " + e);
       }
     }
+  }
+
+  public List<BookSuper> searchBookmarks(String search) {
+    List<BookSuper> result = bookmarks.stream()
+        .filter(bookSuper -> bookSuper.getAuthor().toLowerCase().contains(search.toLowerCase())
+            || bookSuper.getTitle().toLowerCase().contains(search.toLowerCase()))
+        .collect(Collectors.toList());
+
+    Collections.sort(result);
+    return result;
   }
 
   public void updateBookmark(BookSuper book, BookSuper updatedBook) {
@@ -146,14 +159,13 @@ public class Bookmarks {
       try {
         dao.update(audiobook, updatedAudioBook);
         int index = bookmarks.indexOf(book);
-        //Update timestamps to the ui
+        // Update timestamps to the ui
         ((Audiobook) updatedBook).addTimestamps(((Audiobook) book).getTimestampList());
         bookmarks.set(index, updatedBook);
       } catch (Exception e) {
         System.out.println("Error updating book: 2 " + e);
       }
     }
-
   }
 
   public void emptyBookmarks() {

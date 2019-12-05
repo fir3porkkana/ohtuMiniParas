@@ -1,9 +1,11 @@
 package ohtu.objects;
 
+import java.util.Comparator;
+
 /**
  * BookSuper
  */
-public abstract class BookSuper {
+public abstract class BookSuper implements Comparable<BookSuper> {
 
     protected int id;
     protected String author;
@@ -35,6 +37,11 @@ public abstract class BookSuper {
             return false;
         BookSuper book = (BookSuper) b;
         return ((book.getAuthor()).equalsIgnoreCase(author) && book.getTitle().equalsIgnoreCase(title));
+    }
+
+    @Override
+    public int compareTo(BookSuper book) {
+        return Comparator.comparing(BookSuper::getAuthor).thenComparing(BookSuper::getTitle).compare(this, book);
     }
 
     public boolean equalsCaseSensitive(Object b) {
