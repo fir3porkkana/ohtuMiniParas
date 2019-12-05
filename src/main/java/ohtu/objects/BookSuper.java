@@ -41,7 +41,11 @@ public abstract class BookSuper implements Comparable<BookSuper> {
 
     @Override
     public int compareTo(BookSuper book) {
-        return Comparator.comparing(BookSuper::getAuthor).thenComparing(BookSuper::getTitle).compare(this, book);
+        return Comparator.comparing(BookSuper::getAuthor, (a1, a2) -> {
+            return a1.toLowerCase().compareTo(a2.toLowerCase());
+        }).thenComparing(BookSuper::getTitle, (a1, a2) -> {
+            return a1.toLowerCase().compareTo(a2.toLowerCase());
+        }).compare(this, book);
     }
 
     public boolean equalsCaseSensitive(Object b) {
