@@ -120,4 +120,14 @@ public class BookTest {
 
         assertEquals(-1, first.compareTo(second));
     }
+
+    @Test
+    public void equalsCaseSensitiveWorks() {
+        Book first = new Book("Kirja", "Aatami");
+        Book second = new Book("kirja", "Aatami");
+        Book third = new Book("kirja", "Aatami");
+
+        assertFalse(first.equalsCaseSensitive(second));
+        assertTrue(third.equalsCaseSensitive(second));
+    }
 }

@@ -13,16 +13,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookmarksTest {
     Bookmarks bookmarks;
 
-    Dao fakeDao = new Dao<Book, String>() {
-        ArrayList<Book> books = new ArrayList<>();
+    Dao fakeDao = new Dao<BookSuper, String>() {
+        ArrayList<BookSuper> books = new ArrayList<>();
 
-        public void create(Book book) {
+        public void create(BookSuper book) {
             books.add(book);
         }
 
@@ -30,16 +32,16 @@ public class BookmarksTest {
             return new Book(s, null);
         }
 
-        public void update(Book b, Book updatedBook) {
+        public void update(BookSuper b, BookSuper updatedBook) {
             int index = books.indexOf(b);
             books.set(index, updatedBook);
         }
 
-        public void delete(Book b) {
+        public void delete(BookSuper b) {
             books.remove(b);
         }
 
-        public List<Book> list() {
+        public List<BookSuper> list() {
             return books;
         }
     };
@@ -171,13 +173,31 @@ public class BookmarksTest {
     }
 
     @Test
+    public void containsAudioBook() {
+        Book testBook1 = new Book("The Conquest of Bread", "Peter Kropotkin");
+        Audiobook testBook2 = new Audiobook("Audio", "tester", new File(""));
+        Book testBook3 = new Book("Useless testbook", "some tester");
+        Audiobook testBook4 = new Audiobook("Corrupt", "Hobo", new File(""));
+
+        bookmarks.addBookmark(testBook1);
+        bookmarks.addBookmark(testBook2);
+        bookmarks.addBookmark(testBook3);
+
+        assertTrue(bookmarks.containsAudioBook(testBook2));
+
+        assertFalse(bookmarks.containsAudioBook(testBook4));
+    }
+
+    @Test
     public void searchingBookmarksReturnsCorrectList() {
         // Books in correct order 1,2,3,4
         Book book1 = new Book("Ants", "Adam");
         Book book2 = new Book("Bears", "Adam");
-        Book book3 = new Book("WTF", "Bert");
-        Book book4 = new Book("ABC", "Charlie");
+        Book book3 = new Book("First", "Bert");
+        Book book4 = new Book("Second", "Bert");
+        Book book5 = new Book("ABC", "Charlie");
         // Added in wrong order
+        bookmarks.addBookmark(book5);
         bookmarks.addBookmark(book4);
         bookmarks.addBookmark(book3);
         bookmarks.addBookmark(book2);
@@ -189,11 +209,12 @@ public class BookmarksTest {
         List<BookSuper> expected = new ArrayList<>();
         expected.add(book2);
         expected.add(book3);
+        expected.add(book4);
 
         assertEquals(expected, result);
 
         assertFalse(result.contains(book1));
-        assertFalse(result.contains(book4));
+        assertFalse(result.contains(book5));
 
     }
 
