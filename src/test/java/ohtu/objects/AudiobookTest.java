@@ -33,7 +33,7 @@ public class AudiobookTest {
   @Test
   public void constructorWorksAsExpectedWithTimestamps() {
 
-    Audiobook book = new Audiobook("Kirja", "Jaska J", new File(""), new ArrayList<Timestamp>());
+    Audiobook book = new Audiobook("Kirja", "Jaska J", new File(""), new ArrayList<Timestamp>(), new File(""));
     assertEquals("Kirja", book.getTitle());
     assertEquals("Jaska J", book.getAuthor());
     assertEquals(new ArrayList<Timestamp>(), book.getTimestampList());

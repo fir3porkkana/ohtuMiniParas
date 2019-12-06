@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -44,6 +46,8 @@ public class BookList extends GridPane {
     private Audiobook bookCurrentlyPlaying; // Potentially same purpose
 
     private Label durationLabel;
+    private File selectedCover;
+    ImageView imageView = new ImageView();
     private Slider progressBar;
 
     public BookList(Bookmarks bookmarks, FileSelector fileSelector) {
@@ -58,6 +62,8 @@ public class BookList extends GridPane {
         Label titleLabel = new Label("Title");
         titleInput.setId("title_input");
         titleInput.setPromptText("Title");
+
+        Button addCoverButton = new Button("Add book cover");
 
         searchInput.setId("search_input");
         searchInput.setPromptText("Search Books");
@@ -123,6 +129,9 @@ public class BookList extends GridPane {
         durationLabel = new Label();
         Button saveTimestamp = new Button("Timestamp");
 
+        imageView.setFitWidth(120);
+        imageView.setFitHeight(160);
+
         audioControls.add(playButton, 0, 0);
         audioControls.add(stopButton, 1, 0);
         audioControls.add(saveTimestamp, 2, 0);
@@ -142,6 +151,8 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(editTitleField, 1, 1);
         selectedBookDisplay.add(editAuthorField, 1, 2);
         selectedBookDisplay.add(audiobookName, 1, 3);
+
+        selectedBookDisplay.add(imageView, 2, 2, 1, 3);
         selectedBookDisplay.add(timestampListView, 0, 4, 2, 1);
 
         // Setting size for the pane
@@ -160,6 +171,7 @@ public class BookList extends GridPane {
         // Arranging all the nodes in the grid
         this.add(titleLabel, 0, 0);
         this.add(titleInput, 1, 0);
+        this.add(addCoverButton, 1, 2);
         this.add(authorLabel, 0, 1);
         this.add(authorInput, 1, 1);
         this.add(addButtons, 0, 2);
@@ -179,6 +191,7 @@ public class BookList extends GridPane {
         timestampListView.setOnMouseClicked(this::timeStampSelectedAction);
         undoDeletionButton.setOnMouseClicked(this::undoDeletion);
         saveTimestamp.setOnAction(this::saveTimeStampAction);
+        addCoverButton.setOnAction(this::selectCoverAction);
 
         refreshBookmarks();
     }
@@ -255,6 +268,8 @@ public class BookList extends GridPane {
             return;
 
         setBookInfoText(selectedBook);
+        setBookCoverToDisplay(selectedBook);
+
         if (selectedBook instanceof Audiobook) {
             // createNewMediaPlayer((Audiobook) selectedBook);
 
@@ -281,7 +296,7 @@ public class BookList extends GridPane {
     private void addAudiobookAction(Event e) {
         File mp3 = fileSelector.openFileBrowser();
         System.out.println(mp3);
-        Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3);
+        Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3, selectedCover);
 
         if (!audiobook.isEmpty() && addBook(audiobook)) {
             refreshBookmarks();
@@ -308,13 +323,14 @@ public class BookList extends GridPane {
     }
 
     private void addBookAction(Event e) {
-        Book book = new Book(titleInput.getText(), authorInput.getText());
+        Book book = new Book(titleInput.getText(), authorInput.getText(), selectedCover);
         if (book.isEmpty())
             return;
 
         if (addBook(book)) {
             refreshBookmarks();
             clearBookInput();
+            selectedCover = null;
         } else {
             showNewAlert("Book exists", "The database already contains this book");
         }
@@ -391,6 +407,15 @@ public class BookList extends GridPane {
         audiobookName.setText(audiobookInfo);
     }
 
+    private void setBookCoverToDisplay(BookSuper book) {
+        File cover = book.getCover();
+        Image bookCover = null;
+        if (cover != null) {
+            bookCover = new Image(cover.toURI().toString());
+        }
+        imageView.setImage(bookCover);
+    }
+
     private BookSuper getSelectedBook() {
         return bookListView.getSelectionModel().getSelectedItem();
     }
@@ -446,6 +471,10 @@ public class BookList extends GridPane {
 
     public Bookmarks getBookmarks() {
         return bookmarks;
+    }
+
+    private void selectCoverAction(ActionEvent e) {
+        selectedCover = this.fileSelector.openImageBrowser();
     }
 
     private void createNewMediaPlayer(Audiobook audiobook) {

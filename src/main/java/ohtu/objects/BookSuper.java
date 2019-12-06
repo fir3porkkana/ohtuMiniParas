@@ -1,5 +1,6 @@
 package ohtu.objects;
 
+import java.io.File;
 import java.util.Comparator;
 
 /**
@@ -10,9 +11,14 @@ public abstract class BookSuper implements Comparable<BookSuper> {
     protected int id;
     protected String author;
     protected String title;
+    protected File cover;
 
     public String getAuthor() {
         return author;
+    }
+
+    public File getCover() {
+        return cover;
     }
 
     public String getTitle() {

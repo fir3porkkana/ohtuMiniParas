@@ -13,7 +13,7 @@ public class Audiobook extends BookSuper {
     private List<Timestamp> timestampList = new ArrayList<>();
     private File mp3;
 
-    public Audiobook(String title, String author, File mp3, List<Timestamp> timestamps) {
+    public Audiobook(String title, String author, File mp3, List<Timestamp> timestamps, File cover) {
         this.title = title.trim();
         this.author = author.trim();
         this.mp3 = mp3;
@@ -26,28 +26,37 @@ public class Audiobook extends BookSuper {
         this.mp3 = mp3;
     }
 
-    /*public Audiobook(int id, String title, String author, File mp3) {
-        this.id = id;
+    public Audiobook(String title, String author, File mp3, File cover) {
         this.title = title.trim();
         this.author = author.trim();
         this.mp3 = mp3;
-    }*/
+        this.cover = cover;
+    }
 
-    public void addTimestamp(Timestamp timestamp){
+    /*
+     * public Audiobook(int id, String title, String author, File mp3) { this.id =
+     * id; this.title = title.trim(); this.author = author.trim(); this.mp3 = mp3; }
+     */
+
+    public void addTimestamp(Timestamp timestamp) {
         timestampList.add(timestamp);
     }
 
-    public void addTimestamps(List<Timestamp> timestamps){
+    public void addTimestamps(List<Timestamp> timestamps) {
         timestampList.addAll(timestamps);
     }
 
-    public List<Timestamp> getTimestampList(){
+    public List<Timestamp> getTimestampList() {
         java.util.Collections.sort(timestampList);
         return timestampList;
     }
 
     public File getMp3() {
         return mp3;
+    }
+
+    public File getCover() {
+        return cover;
     }
 
     @Override

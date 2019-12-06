@@ -12,16 +12,18 @@ public class FileSelector {
 
   public FileSelector(Stage stage) {
     this.stage = stage;
-
   }
 
   public void setTitle(String title) {
     fileChooser.setTitle(title);
-
   }
 
   public void addFilter(ExtensionFilter filter) {
     fileChooser.getExtensionFilters().addAll(filter);
+  }
+
+  public void removeFilter(ExtensionFilter filter) {
+    fileChooser.getExtensionFilters().removeAll(filter);
   }
 
   public File openFileBrowser() {
@@ -29,5 +31,14 @@ public class FileSelector {
     File selectedFile = fileChooser.showOpenDialog(stage);
     return selectedFile;
 
+  }
+
+  public File openImageBrowser() {
+    ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("PNG files", "*.png");
+    addFilter(imageFilter);
+    File selectedFile = fileChooser.showOpenDialog(stage);
+    removeFilter(imageFilter);
+
+    return selectedFile;
   }
 }
