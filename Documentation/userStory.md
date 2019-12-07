@@ -24,6 +24,14 @@
 
 #### Pystyn perumaan viimeisimmän lukuvinkin poistamisen
 
+#### Pystyn etsimään listasta hakukentän avulla
+
+#### Pystyn lisäämään kuvan kirjan oheen
+
+#### Pystyn kuuntelemaan useita kirjoja/lukuja putkeen
+
+#### En pysty editoimaan on kirjaa ellei sitä ole valittu
+
 ---
 
 #### Pystyn lisäämään lukuvinkkeihin aiheeseen liittyviä opintojaksoja 
