@@ -38,26 +38,26 @@ public abstract class BookSuper implements Comparable<BookSuper> {
     }
 
     @Override
-    public boolean equals(Object b) {
-        if (!(b instanceof BookSuper))
+    public boolean equals(Object bookToCompare) {
+        if (!(bookToCompare instanceof BookSuper))
             return false;
-        BookSuper book = (BookSuper) b;
+        BookSuper book = (BookSuper) bookToCompare;
         return ((book.getAuthor()).equalsIgnoreCase(author) && book.getTitle().equalsIgnoreCase(title));
     }
 
     @Override
     public int compareTo(BookSuper book) {
-        return Comparator.comparing(BookSuper::getAuthor, (a1, a2) -> {
-            return a1.toLowerCase().compareTo(a2.toLowerCase());
-        }).thenComparing(BookSuper::getTitle, (a1, a2) -> {
-            return a1.toLowerCase().compareTo(a2.toLowerCase());
+        return Comparator.comparing(BookSuper::getAuthor, (author1, author2) -> {
+            return author1.toLowerCase().compareTo(author2.toLowerCase());
+        }).thenComparing(BookSuper::getTitle, (title1, title2) -> {
+            return title1.toLowerCase().compareTo(title2.toLowerCase());
         }).compare(this, book);
     }
 
-    public boolean equalsCaseSensitive(Object b) {
-        if (!(b instanceof BookSuper))
+    public boolean equalsCaseSensitive(Object bookToCompare) {
+        if (!(bookToCompare instanceof BookSuper))
             return false;
-        BookSuper book = (BookSuper) b;
+        BookSuper book = (BookSuper) bookToCompare;
         return ((book.getAuthor()).equals(author) && book.getTitle().equals(title));
     }
 }
