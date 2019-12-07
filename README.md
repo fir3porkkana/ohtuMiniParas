@@ -30,6 +30,7 @@ Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hake
 
 [Definition of Done](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/definitionOfDone.md)
 
+
 ## Testaus
 
 Toimeksianto | Raportti 
