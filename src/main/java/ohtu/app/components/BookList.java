@@ -295,10 +295,8 @@ public class BookList extends GridPane {
     }
 
     private void addAudiobookAction(Event e) {
-        fileSelector.setTitle("Choose audio file");
-        fileSelector.addFilter(new ExtensionFilter("Audio Files", "*.mp3"));
 
-        File mp3 = fileSelector.openFileBrowser();
+        File mp3 = fileSelector.openAudioBrowser();
         System.out.println(mp3);
         Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3, selectedCover);
 
@@ -479,8 +477,6 @@ public class BookList extends GridPane {
 
     private void selectCoverAction(ActionEvent e) {
 
-        fileSelector.setTitle("Choose book cover");
-        fileSelector.addFilter(new ExtensionFilter("Picture files", "*.jpg", "*.png"));
         selectedCover = this.fileSelector.openImageBrowser();
     }
 

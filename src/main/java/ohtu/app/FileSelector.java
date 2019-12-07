@@ -9,35 +9,31 @@ public class FileSelector {
 
   private Stage stage;
   FileChooser fileChooser = new FileChooser();
+  ExtensionFilter audioFilter = new ExtensionFilter("Audio Files", "*.mp3");
+  ExtensionFilter pictureFilter = new ExtensionFilter("Picture files", "*.jpg", "*.png");
 
   public FileSelector(Stage stage) {
     this.stage = stage;
   }
 
-  public void setTitle(String title) {
-    fileChooser.setTitle(title);
-  }
+  public File openAudioBrowser() {
 
-  public void addFilter(ExtensionFilter filter) {
-    fileChooser.getExtensionFilters().addAll(filter);
-  }
-
-  public void removeFilter(ExtensionFilter filter) {
-    fileChooser.getExtensionFilters().removeAll(filter);
-  }
-
-  public File openFileBrowser() {
+    fileChooser.setTitle("Choose audio file");
+    fileChooser.getExtensionFilters().add(audioFilter);
 
     File selectedFile = fileChooser.showOpenDialog(stage);
+    fileChooser.getExtensionFilters().remove(audioFilter);
+
     return selectedFile;
 
   }
 
   public File openImageBrowser() {
-    ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("PNG files", "*.png");
-    addFilter(imageFilter);
+    fileChooser.getExtensionFilters().add(pictureFilter);
+    fileChooser.setTitle("Choose picure file");
+
     File selectedFile = fileChooser.showOpenDialog(stage);
-    removeFilter(imageFilter);
+    fileChooser.getExtensionFilters().remove(pictureFilter);
 
     return selectedFile;
   }
