@@ -1,6 +1,7 @@
 package ohtu.app.components;
 
 import java.io.File;
+import java.util.List;
 
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -195,6 +196,22 @@ public class BookList extends GridPane {
         addCoverButton.setOnAction(this::selectCoverAction);
 
         refreshBookmarks();
+    }
+
+    private void autoPlayNextAudio() {
+        int current = bookListView.getSelectionModel().getSelectedIndex();
+        List<BookSuper> list = bookListView.getItems();
+
+        for (int i = current + 1; i < list.size(); i++) {
+            BookSuper book = list.get(i);
+            if (book instanceof Audiobook) {
+                bookListView.getSelectionModel().select(i);
+                createNewMediaPlayer((Audiobook) book);
+                mediaPlayer.play();
+                break;
+            }
+        }
+
     }
 
     private void onSearchInput(Event e) {
@@ -493,5 +510,7 @@ public class BookList extends GridPane {
         mediaPlayer = new MediaPlayer(hit);
         mediaPlayer.setOnReady(() -> setDurationLabelValues(Duration.ZERO, hit.durationProperty().get()));
         mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
+        mediaPlayer.setOnEndOfMedia(this::autoPlayNextAudio);
+
     }
 }
