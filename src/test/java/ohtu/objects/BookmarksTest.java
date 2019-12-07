@@ -211,6 +211,9 @@ public class BookmarksTest {
         expected.add(book3);
         expected.add(book4);
 
+        System.out.println("expected: " + expected);
+        System.out.println("res: " + result);
+
         assertEquals(expected, result);
 
         assertFalse(result.contains(book1));

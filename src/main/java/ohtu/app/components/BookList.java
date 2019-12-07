@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ohtu.app.FileSelector;
 import ohtu.objects.*;
@@ -294,6 +295,9 @@ public class BookList extends GridPane {
     }
 
     private void addAudiobookAction(Event e) {
+        fileSelector.setTitle("Choose audio file");
+        fileSelector.addFilter(new ExtensionFilter("Audio Files", "*.mp3"));
+
         File mp3 = fileSelector.openFileBrowser();
         System.out.println(mp3);
         Audiobook audiobook = new Audiobook(titleInput.getText(), authorInput.getText(), mp3, selectedCover);
@@ -474,6 +478,9 @@ public class BookList extends GridPane {
     }
 
     private void selectCoverAction(ActionEvent e) {
+
+        fileSelector.setTitle("Choose book cover");
+        fileSelector.addFilter(new ExtensionFilter("Picture files", "*.jpg", "*.png"));
         selectedCover = this.fileSelector.openImageBrowser();
     }
 

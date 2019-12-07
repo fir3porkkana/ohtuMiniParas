@@ -138,7 +138,25 @@ public class Bookmarks {
             || bookSuper.getTitle().toLowerCase().contains(search.toLowerCase()))
         .collect(Collectors.toList());
 
+    // List<BookSuper> res = bookmarks.stream().map(bookSuper -> {
+    // int author =
+    // bookSuper.getAuthor().toLowerCase().indexOf(search.toLowerCase());
+    // int title = bookSuper.getTitle().toLowerCase().indexOf(search.toLowerCase());
+
+    // if (author == -1 && title == -1) {
+    // return null;
+    // }
+    // if (author >= 0) {
+
+    // }
+    // if ( title >= 0) {
+
+    // }
+
+    // return bookSuper;
+    // }).collect(Collectors.toList());
     Collections.sort(result);
+
     return result;
   }
 

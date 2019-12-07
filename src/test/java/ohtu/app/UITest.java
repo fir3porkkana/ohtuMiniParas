@@ -151,7 +151,7 @@ public class UITest extends ApplicationTest {
 
   @Test
   public void authorTextGetsInputCorrectlyOnSelectingBook() {
-    ListView listview = find("#bookList");
+    // ListView listview = find("#bookList");
     addBook("a", "b");
     clickOn("a by: b");
 

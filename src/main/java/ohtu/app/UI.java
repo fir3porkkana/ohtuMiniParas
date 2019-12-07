@@ -22,16 +22,9 @@ public class UI {
 
     public void start(Stage stage) {
 
-        FileSelector audioSelector = new FileSelector(stage);
-        audioSelector.setTitle("Choose audio file");
-        audioSelector.addFilter(new ExtensionFilter("Audio Files", "*.mp3"));
+        FileSelector fileSelector = new FileSelector(stage);
 
-        // FileSelector photoSelector = new FileSelector(stage);
-        // photoSelector.setTitle("Choose book cover");
-        // photoSelector.addFilter(new ExtensionFilter("Picture files", "*.jpg",
-        // "*.png"));
-
-        BookList gridPane = new BookList(bookmarks, audioSelector);
+        BookList gridPane = new BookList(bookmarks, fileSelector);
 
         Scene bookList = new Scene(gridPane);
 
