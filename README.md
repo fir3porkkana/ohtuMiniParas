@@ -3,14 +3,15 @@
 ## Sovelluksen määrittely
 
 - Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä
-  - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
+    - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
+    - Viimeinen poisto voidaan perua painamalla `Undo`-nappia
  - Lukuvinkkeihin voi sisällyttää sovelluksessa kuunneltavia äänikirjoja
     - Äänikirjan kuuntelu voidaan keskeyttää ja kuuntelua voidaan jatkaa keskeytetystä kohdasta
     - Äänikirjaan voidaan lisätä aikaleima, joka jää muistiin ja johon voidaan siirtyä myöhempänä ajankohtana
 - Toteutuskieli: Java
 - Käyttöliittymä: Paikallinen komentoriviltä suoritettava, graafinen (ks. kuva alla)
 
-![](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/UI3.png)
+![](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/UI4.png)
 
 
 ## Asennusohjeet
