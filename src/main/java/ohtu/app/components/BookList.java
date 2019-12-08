@@ -177,6 +177,8 @@ public class BookList extends GridPane {
                 super.updateItem(item, empty);
 
                 if (!empty && item != null) {
+
+                    //might highlight words used in toString() that are not supposed to be, like "by" or "audio"
                     setText(Book.getStylizedString(item.toString(), searchInput.getText()));
 
                 } else {
@@ -230,13 +232,15 @@ public class BookList extends GridPane {
     }
 
     private void onSearchInput(Event e) {
-        //Book.setHighlight(searchInput.getText());
-        if (searchInput.getText().isEmpty()) {
+        //Moved filtering to refreshBookmarks, so the filter stays after actions that refresh list like editing a book
+        refreshBookmarks();
+
+        /*if (searchInput.getText().isEmpty()) {
             refreshBookmarks();
         } else {
             bookListView.getItems().clear();
             bookListView.getItems().addAll(bookmarks.searchBookmarks(searchInput.getText()));
-        }
+        }*/
     }
 
     private void progressBarMouseRelease(MouseEvent event) {
@@ -465,7 +469,11 @@ public class BookList extends GridPane {
 
     private void refreshBookmarks() {
         bookListView.getItems().clear();
-        bookListView.getItems().addAll(bookmarks.getBookmarks());
+        if(searchInput.getText().isEmpty()){
+            bookListView.getItems().addAll(bookmarks.getBookmarks());
+        } else {
+            bookListView.getItems().addAll(bookmarks.searchBookmarks(searchInput.getText()));
+        }
     }
 
     private Boolean addBook(BookSuper book) {

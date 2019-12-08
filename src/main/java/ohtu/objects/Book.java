@@ -60,29 +60,22 @@ public class Book extends BookSuper {
         if(indexes.size() == 0) return masterString;
 
         StringBuilder newString = new StringBuilder(masterString.substring(0, indexes.get(0)));
-
         newString.append(highlightReplacement(masterString.substring(indexes.get(0), indexes.get(0)+highlight.length())));
 
         for( int i = 1; i < indexes.size(); i++ ){
             newString.append(masterString, indexes.get(i - 1) + highlight.length(), indexes.get(i));
-
             newString.append(highlightReplacement(masterString.substring(indexes.get(i), indexes.get(i)+highlight.length())));
         }
 
-
-        int dou = indexes.get(indexes.size() - 1) + highlight.length();
-        if(dou < masterString.length() ){
-            newString.append(
-                    masterString.substring(dou)
-            );
+        int endIndexOfLastHighlight = indexes.get(indexes.size() - 1) + highlight.length();
+        if(endIndexOfLastHighlight < masterString.length() ){
+            newString.append( masterString.substring(endIndexOfLastHighlight) );
         }
-
 
         return newString.toString();
     }
 
     private static String highlightReplacement(String highlight){
-        // We can replace each highlighted character with a bolded unicode version for example
         String s = "";
 
         for(int i = 0; i < highlight.length(); i++){
