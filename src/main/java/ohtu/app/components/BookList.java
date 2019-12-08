@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ohtu.app.FileSelector;
@@ -170,6 +171,20 @@ public class BookList extends GridPane {
         bookListView.setId("bookList");
         bookListView.setMinWidth(250);
 
+        bookListView.setCellFactory(param -> new ListCell<BookSuper>() {
+            @Override
+            protected void updateItem(BookSuper item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!empty && item != null) {
+                    setText(Book.getStylizedString(item.toString(), searchInput.getText()));
+
+                } else {
+                    setText(null);
+                }
+            }
+        });
+
         // Arranging all the nodes in the grid
         this.add(titleLabel, 0, 0);
         this.add(titleInput, 1, 0);
@@ -215,6 +230,7 @@ public class BookList extends GridPane {
     }
 
     private void onSearchInput(Event e) {
+        //Book.setHighlight(searchInput.getText());
         if (searchInput.getText().isEmpty()) {
             refreshBookmarks();
         } else {
