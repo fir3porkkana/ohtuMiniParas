@@ -11,7 +11,7 @@
 - Toteutuskieli: Java
 - Käyttöliittymä: Paikallinen komentoriviltä suoritettava, graafinen (ks. kuva alla)
 
-![](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/UI4.png)
+![](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/UI7.png)
 
 
 ## Asennusohjeet
