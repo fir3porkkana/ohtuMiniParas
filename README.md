@@ -3,7 +3,8 @@
 ## Sovelluksen määrittely
 
 - Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä
-  - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
+    - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
+    - Viimeinen poisto voidaan perua painamalla `undo`-nappia
  - Lukuvinkkeihin voi sisällyttää sovelluksessa kuunneltavia äänikirjoja
     - Äänikirjan kuuntelu voidaan keskeyttää ja kuuntelua voidaan jatkaa keskeytetystä kohdasta
     - Äänikirjaan voidaan lisätä aikaleima, joka jää muistiin ja johon voidaan siirtyä myöhempänä ajankohtana
