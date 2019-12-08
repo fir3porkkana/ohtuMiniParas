@@ -27,4 +27,13 @@ public class TimestampTest {
         Assert.assertEquals(d, t.getDuration());
     }
 
+    @Test
+    public void NullDurationToStringWorks(){
+        Duration d = null;
+        String s = Timestamp.durationToString(d);
+
+        Assert.assertEquals("00:00:00", s);
+    }
+
+
 }
