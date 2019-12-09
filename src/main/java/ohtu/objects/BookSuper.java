@@ -25,6 +25,20 @@ public abstract class BookSuper implements Comparable<BookSuper> {
         return title;
     }
 
+    /**
+     * @param author the author to set
+     */
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public boolean isEmpty() {
         if (this.author.isEmpty() || this.title.isEmpty()) {
             return true;
