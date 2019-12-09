@@ -29,7 +29,7 @@ public class UI {
         Scene bookList = new Scene(gridPane);
 
         stage.setScene(bookList);
-        stage.setHeight(600);
+        stage.setHeight(650);
         stage.setWidth(700);
         stage.show();
     }
