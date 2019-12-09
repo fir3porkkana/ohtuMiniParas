@@ -415,6 +415,8 @@ public class BookList extends GridPane {
             if (editBook(selectedBook, sBook)) {
                 refreshBookmarks();
                 clearBookInfoText();
+                editBookButton.setDisable(true);
+                deleteBookButton.setDisable(true);
             } else {
                 showNewAlert("Book conflict", "A book exists with that information already");
             }
@@ -428,6 +430,8 @@ public class BookList extends GridPane {
         } else if (deleteBook(selectedBook)) {
             refreshBookmarks();
             clearBookInfoText();
+            editBookButton.setDisable(true);
+            deleteBookButton.setDisable(true);
             undoDeletionButton.setVisible(true);
         }
     }
