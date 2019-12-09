@@ -330,6 +330,9 @@ public class BookList extends GridPane {
 
         selectedBookDisplay.setDisable(false);
 
+        deleteBookButton.setDisable(false);
+        editBookButton.setDisable(false);
+
         setBookInfoText(selectedBook);
         setBookCoverToDisplay(selectedBook);
         if (selectedBook instanceof Audiobook) {
