@@ -26,6 +26,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ohtu.app.FileSelector;
 import ohtu.objects.*;
+import javafx.beans.binding.*;
 
 public class BookList extends GridPane {
 
@@ -85,6 +86,8 @@ public class BookList extends GridPane {
         HBox addButtons = new HBox(10);
         Button addBookButton = new Button("Add book");
         Button addAudiobookButton = new Button("Add audiobook");
+        addBinding(addBookButton,titleInput, authorInput);
+        addBinding(addAudiobookButton, titleInput, authorInput);
         addBookButton.setId("submit_button");
         addButtons.getChildren().addAll(addBookButton, addAudiobookButton);
 
@@ -220,6 +223,18 @@ public class BookList extends GridPane {
         addCoverButton.setOnAction(this::selectCoverAction);
 
         refreshBookmarks();
+    }
+
+    private void addBinding(Button addBookButton, TextField titleInput, TextField authorInput) {
+        BooleanBinding titleInputValid = Bindings.createBooleanBinding(()-> {
+           return !titleInput.getText().isEmpty();
+        }, titleInput.textProperty());
+
+        BooleanBinding authorInputValid = Bindings.createBooleanBinding(() -> {
+            return !authorInput.getText().isEmpty();
+        }, authorInput.textProperty());
+
+        addBookButton.disableProperty().bind(titleInputValid.not().or(authorInputValid.not()));
     }
 
     private void autoPlayNextAudio() {
