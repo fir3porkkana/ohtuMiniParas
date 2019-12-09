@@ -19,8 +19,15 @@ import java.util.ArrayList;
  */
 public class AudiobookTest {
 
+  private File testFile;
+
   public AudiobookTest() {
 
+  }
+
+  @Before
+  public void init() {
+    this.testFile = new File("yuribajstestfilexd");
   }
 
   @Test
@@ -37,6 +44,53 @@ public class AudiobookTest {
     assertEquals("Kirja", book.getTitle());
     assertEquals("Jaska J", book.getAuthor());
     assertEquals(new ArrayList<Timestamp>(), book.getTimestampList());
+  }
+
+  @Test
+  public void isEmptyWorksWithEmptyAuthor() {
+    Audiobook audiobook = new Audiobook("Kirja", "", testFile);
+    assertEquals(true, audiobook.isEmpty());
+  }
+
+  @Test
+  public void isEmptyWorksWithEmptyTitle() {
+    Audiobook audiobook = new Audiobook("", "Joosu J", testFile);
+    assertEquals(true, audiobook.isEmpty());
+  }
+
+  @Test
+  public void isEmptyWorksWithEmptyFile() {
+    Audiobook audiobook = new Audiobook("Kirja", "Joosu J", null);
+    assertEquals(true, audiobook.isEmpty());
+  }
+
+  @Test
+  public void isEmptyWorksWhenNotEmpty() {
+    Audiobook audiobook = new Audiobook("Kirja", "Joosu J", testFile);
+    assertFalse(audiobook.isEmpty());
+  }
+
+  @Test
+  public void equalsWorksWhenNotEqual() {
+    Audiobook book = new Audiobook("Kirja", "Jaska J", testFile);
+    Audiobook anotherBook = new Audiobook("Kirja", "Jaska", testFile);
+
+    assertFalse(book.equals(anotherBook));
+  }
+
+  @Test
+  public void equalsWorksWhenEqual() {
+    Audiobook book = new Audiobook("Kirja", "Joosu J", testFile);
+    Audiobook anotherBook = new Audiobook("Kirja", "Joosu J", testFile);
+
+    assertTrue(book.equals(anotherBook));
+  }
+
+  @Test
+  public void constructorWorksAsExpectedId() {
+    Audiobook book = new Audiobook("Kirja", "Jaska J", testFile);
+    assertEquals("Kirja", book.getTitle());
+    assertEquals("Jaska J", book.getAuthor());
   }
 
   @Test
