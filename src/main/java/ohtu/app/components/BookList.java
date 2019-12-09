@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -62,6 +63,7 @@ public class BookList extends GridPane {
     private Slider progressBar;
 
     public BookList(Bookmarks bookmarks, FileSelector fileSelector) {
+
 
         this.bookmarks = bookmarks;
         this.fileSelector = fileSelector;
@@ -147,7 +149,7 @@ public class BookList extends GridPane {
 
         HBox audioButtons = new HBox(10, playButton, stopButton, saveTimestamp, mediaFile);
         HBox audioSlider = new HBox(10, progressBar, durationLabel);
-        this.audioControls = new VBox(10, audioButtons, audioSlider);
+        this.audioControls = new VBox(10, audioButtons, audioSlider, timestampListView);
         audioButtons.setAlignment(Pos.CENTER_LEFT);
 
         audioControls.setDisable(true);
@@ -163,7 +165,7 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(audiobookName, 0, 3, 2, 1);
 
         selectedBookDisplay.add(imageView, 2, 2, 1, 3);
-        selectedBookDisplay.add(timestampListView, 0, 4, 2, 1);
+        //selectedBookDisplay.add(timestampListView, 0, 4, 2, 1);
 
         // Setting size for the pane
         // this.setMinSize(400, 200);
@@ -180,6 +182,9 @@ public class BookList extends GridPane {
 
         bookListView.setCellFactory(this::highlightCellFactory);
 
+        Separator separator = new Separator(Orientation.HORIZONTAL);
+        separator.setPadding(new Insets(5));
+
         // Arranging all the nodes in the grid
         this.add(titleLabel, 0, 0);
         this.add(titleInput, 1, 0);
@@ -190,7 +195,8 @@ public class BookList extends GridPane {
         this.add(searchInput, 0, 3);
         this.add(bookListView, 0, 4);
         this.add(selectedBookDisplay, 1, 4);
-        this.add(audioControls, 0, 5, 2, 1);
+        this.add(separator, 0, 5, 2, 1);
+        this.add(audioControls, 0, 6, 2, 1);
 
         // Set actions for buttons and listview
         addBookButton.setOnAction(this::addBookAction);
@@ -206,6 +212,7 @@ public class BookList extends GridPane {
         addCoverButton.setOnAction(this::selectCoverAction);
 
         refreshBookmarks();
+
     }
 
     private ListCell<BookSuper> highlightCellFactory(ListView<BookSuper> bookSuperListView) {

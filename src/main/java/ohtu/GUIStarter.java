@@ -21,6 +21,7 @@ public class GUIStarter extends Application {
   @Override
   public void start(Stage stage) throws Exception {
     UI ui = new UI(bookmarks);
+
     ui.start(stage);
   }
 }
