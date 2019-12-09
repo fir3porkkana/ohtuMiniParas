@@ -218,6 +218,17 @@ public class UITest extends ApplicationTest {
     // assertThat(listview, ListViewMatchers.hasItems(3));
   }
 
+  @Test
+  public void undoButtonWorks() {
+    ListView listview = find("#bookList");
+    addBook("title", "arthour");
+    clickOn("title by: arthour");
+    clickOn("#delete_button");
+    clickOn("#undo_button");
+
+    assertThat(listview, ListViewMatchers.hasListCell(new Book("title", "arthour")));
+  }
+
   public void addBook(String title, String author) {
     TextField titleText = find("#title_input");
     titleText.setText(title);
