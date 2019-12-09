@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,6 +16,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
@@ -36,7 +39,14 @@ public class BookList extends GridPane {
 
     private ListView<BookSuper> bookListView = new ListView<>();
 
+    private GridPane selectedBookDisplay;
     private Button undoDeletionButton;
+    private Button editBookButton;
+    private Button deleteBookButton;
+
+    private Button playButton;
+
+    private VBox audioControls;
     private TextField editTitleField = new TextField();
     private TextField editAuthorField = new TextField();
     private Label audiobookName = new Label();
@@ -79,17 +89,19 @@ public class BookList extends GridPane {
         addButtons.getChildren().addAll(addBookButton, addAudiobookButton);
 
         // Display for selected book
-        GridPane selectedBookDisplay = new GridPane();
+        this.selectedBookDisplay = new GridPane();
         selectedBookDisplay.setPadding(new Insets(10, 10, 10, 10));
         selectedBookDisplay.setVgap(5);
         selectedBookDisplay.setHgap(5);
+        selectedBookDisplay.setDisable(true);
 
-        Button deleteBookButton = new Button("Delete book");
+        this.deleteBookButton = new Button("Delete book");
         deleteBookButton.setId("delete_button");
         deleteBookButton.setMinWidth(85);
-        Button editBookButton = new Button("Save change");
+        this.editBookButton = new Button("Save changes");
         editBookButton.setId("edit_button");
         editBookButton.setMinWidth(85);
+
         undoDeletionButton = new Button("Undo");
         undoDeletionButton.setId("undo_button");
         undoDeletionButton.setVisible(false);
@@ -103,11 +115,13 @@ public class BookList extends GridPane {
         // timestampListView.managedProperty().bind(timestampListView.visibleProperty());
 
         // Display for audio controls
-        GridPane audioControls = new GridPane();
-        Button playButton = new Button("\u25b6\u25ae\u25ae");
+
+        this.playButton = new Button("\u25b6");
 
         Button stopButton = new Button("\u25a0");
-        this.progressBar = new Slider();
+        this.progressBar = new Slider(0, 1, 0);
+        progressBar.setPickOnBounds(false);
+        progressBar.setMinWidth(500);
 
         playButton.setStyle("-fx-text-alignment: right");
         playButton.setShape(new Circle(20));
@@ -122,11 +136,6 @@ public class BookList extends GridPane {
         stopButton.setMaxSize(40, 40);
         stopButton.setOnAction(this::mediaPlayerStopAction);
 
-        progressBar.setMin(0);
-        progressBar.setMax(1);
-        progressBar.setPadding(new Insets(10, 5, 10, 5));
-        progressBar.setPickOnBounds(false);
-
         progressBar.setOnMouseReleased(this::progressBarMouseRelease);
 
         durationLabel = new Label();
@@ -135,15 +144,12 @@ public class BookList extends GridPane {
         imageView.setFitWidth(120);
         imageView.setFitHeight(160);
 
-        audioControls.add(playButton, 0, 0);
-        audioControls.add(stopButton, 1, 0);
-        audioControls.add(saveTimestamp, 2, 0);
-        audioControls.add(progressBar, 0, 1);
-        audioControls.add(durationLabel, 1, 1);
-        audioControls.add(mediaFile, 0, 2, 2, 1);
+        HBox audioButtons = new HBox(10, playButton, stopButton, saveTimestamp, mediaFile);
+        HBox audioSlider = new HBox(10, progressBar, durationLabel);
+        this.audioControls = new VBox(10, audioButtons, audioSlider);
+        audioButtons.setAlignment(Pos.CENTER_LEFT);
 
-        // audioControls.getChildren().addAll(playButton, stopButton, saveTimestamp,
-        // durationLabel, progressBar);
+        audioControls.setDisable(true);
 
         selectedBookDisplay.add(deleteBookButton, 0, 0);
         selectedBookDisplay.add(editBookButton, 1, 0);
@@ -153,13 +159,13 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(new Label("Author"), 0, 2);
         selectedBookDisplay.add(editTitleField, 1, 1);
         selectedBookDisplay.add(editAuthorField, 1, 2);
-        selectedBookDisplay.add(audiobookName, 1, 3);
+        selectedBookDisplay.add(audiobookName, 0, 3, 2, 1);
 
         selectedBookDisplay.add(imageView, 2, 2, 1, 3);
         selectedBookDisplay.add(timestampListView, 0, 4, 2, 1);
 
         // Setting size for the pane
-        this.setMinSize(400, 200);
+        // this.setMinSize(400, 200);
 
         // Setting the padding
         this.setPadding(new Insets(10, 10, 10, 10));
@@ -178,7 +184,8 @@ public class BookList extends GridPane {
 
                 if (!empty && item != null) {
 
-                    //might highlight words used in toString() that are not supposed to be, like "by" or "audio"
+                    // might highlight words used in toString() that are not supposed to be, like
+                    // "by" or "audio"
                     setText(Book.getStylizedString(item.toString(), searchInput.getText()));
 
                 } else {
@@ -197,7 +204,7 @@ public class BookList extends GridPane {
         this.add(searchInput, 0, 3);
         this.add(bookListView, 0, 4);
         this.add(selectedBookDisplay, 1, 4);
-        this.add(audioControls, 1, 5);
+        this.add(audioControls, 0, 5, 2, 1);
 
         // Set actions for buttons and listview
         addBookButton.setOnAction(this::addBookAction);
@@ -232,15 +239,16 @@ public class BookList extends GridPane {
     }
 
     private void onSearchInput(Event e) {
-        //Moved filtering to refreshBookmarks, so the filter stays after actions that refresh list like editing a book
+        // Moved filtering to refreshBookmarks, so the filter stays after actions that
+        // refresh list like editing a book
         refreshBookmarks();
 
-        /*if (searchInput.getText().isEmpty()) {
-            refreshBookmarks();
-        } else {
-            bookListView.getItems().clear();
-            bookListView.getItems().addAll(bookmarks.searchBookmarks(searchInput.getText()));
-        }*/
+        /*
+         * if (searchInput.getText().isEmpty()) { refreshBookmarks(); } else {
+         * bookListView.getItems().clear();
+         * bookListView.getItems().addAll(bookmarks.searchBookmarks(searchInput.getText(
+         * ))); }
+         */
     }
 
     private void progressBarMouseRelease(MouseEvent event) {
@@ -287,8 +295,10 @@ public class BookList extends GridPane {
 
         if (mediaPlayer.statusProperty().getValue() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
+            playButton.setText("\u25b6");
         } else {
             mediaPlayer.play();
+            playButton.setText("\u25ae\u25ae");
         }
     }
 
@@ -305,13 +315,19 @@ public class BookList extends GridPane {
         if (selectedBook == null)
             return;
 
+        selectedBookDisplay.setDisable(false);
+
         setBookInfoText(selectedBook);
         setBookCoverToDisplay(selectedBook);
 
         if (selectedBook instanceof Audiobook) {
             // createNewMediaPlayer((Audiobook) selectedBook);
+            audioControls.setDisable(false);
 
             // refreshTimeStampList((Audiobook) selectedBook);
+        } else if (mediaPlayer == null) {
+            audioControls.setDisable(true);
+
         }
 
         // timestampListView.setVisible(selectedBook instanceof Audiobook);
@@ -469,7 +485,7 @@ public class BookList extends GridPane {
 
     private void refreshBookmarks() {
         bookListView.getItems().clear();
-        if(searchInput.getText().isEmpty()){
+        if (searchInput.getText().isEmpty()) {
             bookListView.getItems().addAll(bookmarks.getBookmarks());
         } else {
             bookListView.getItems().addAll(bookmarks.searchBookmarks(searchInput.getText()));
