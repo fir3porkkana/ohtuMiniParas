@@ -1,6 +1,7 @@
 package ohtu.app.components;
 
 import java.io.File;
+import java.util.List;
 
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ohtu.app.FileSelector;
@@ -169,6 +171,22 @@ public class BookList extends GridPane {
         bookListView.setId("bookList");
         bookListView.setMinWidth(250);
 
+        bookListView.setCellFactory(param -> new ListCell<BookSuper>() {
+            @Override
+            protected void updateItem(BookSuper item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!empty && item != null) {
+
+                    //might highlight words used in toString() that are not supposed to be, like "by" or "audio"
+                    setText(Book.getStylizedString(item.toString(), searchInput.getText()));
+
+                } else {
+                    setText(null);
+                }
+            }
+        });
+
         // Arranging all the nodes in the grid
         this.add(titleLabel, 0, 0);
         this.add(titleInput, 1, 0);
@@ -197,13 +215,32 @@ public class BookList extends GridPane {
         refreshBookmarks();
     }
 
+    private void autoPlayNextAudio() {
+        int current = bookListView.getSelectionModel().getSelectedIndex();
+        List<BookSuper> list = bookListView.getItems();
+
+        for (int i = current + 1; i < list.size(); i++) {
+            BookSuper book = list.get(i);
+            if (book instanceof Audiobook) {
+                bookListView.getSelectionModel().select(i);
+                createNewMediaPlayer((Audiobook) book);
+                mediaPlayer.play();
+                break;
+            }
+        }
+
+    }
+
     private void onSearchInput(Event e) {
-        if (searchInput.getText().isEmpty()) {
+        //Moved filtering to refreshBookmarks, so the filter stays after actions that refresh list like editing a book
+        refreshBookmarks();
+
+        /*if (searchInput.getText().isEmpty()) {
             refreshBookmarks();
         } else {
             bookListView.getItems().clear();
             bookListView.getItems().addAll(bookmarks.searchBookmarks(searchInput.getText()));
-        }
+        }*/
     }
 
     private void progressBarMouseRelease(MouseEvent event) {
@@ -432,7 +469,11 @@ public class BookList extends GridPane {
 
     private void refreshBookmarks() {
         bookListView.getItems().clear();
-        bookListView.getItems().addAll(bookmarks.getBookmarks());
+        if(searchInput.getText().isEmpty()){
+            bookListView.getItems().addAll(bookmarks.getBookmarks());
+        } else {
+            bookListView.getItems().addAll(bookmarks.searchBookmarks(searchInput.getText()));
+        }
     }
 
     private Boolean addBook(BookSuper book) {
@@ -493,5 +534,7 @@ public class BookList extends GridPane {
         mediaPlayer = new MediaPlayer(hit);
         mediaPlayer.setOnReady(() -> setDurationLabelValues(Duration.ZERO, hit.durationProperty().get()));
         mediaPlayer.currentTimeProperty().addListener(this::onMediaPlayerTimeChange);
+        mediaPlayer.setOnEndOfMedia(this::autoPlayNextAudio);
+
     }
 }

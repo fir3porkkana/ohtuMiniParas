@@ -8,27 +8,30 @@ import java.util.Collections;
 /**
  * Audiobook
  */
-public class Audiobook extends BookSuper {
+public class Audiobook extends Book {
 
     private List<Timestamp> timestampList = new ArrayList<>();
     private File mp3;
 
     public Audiobook(String title, String author, File mp3, List<Timestamp> timestamps, File cover) {
-        this.title = title.trim();
-        this.author = author.trim();
+        super(title, author, cover);
+        //this.title = title.trim();
+        //this.author = author.trim();
         this.mp3 = mp3;
         this.timestampList = timestamps;
     }
 
     public Audiobook(String title, String author, File mp3) {
-        this.title = title.trim();
-        this.author = author.trim();
+        super(title, author);
+        //this.title = title.trim();
+        //this.author = author.trim();
         this.mp3 = mp3;
     }
 
     public Audiobook(String title, String author, File mp3, File cover) {
-        this.title = title.trim();
-        this.author = author.trim();
+        super(title, author, cover);
+        //this.title = title.trim();
+        //this.author = author.trim();
         this.mp3 = mp3;
         this.cover = cover;
     }
@@ -55,9 +58,6 @@ public class Audiobook extends BookSuper {
         return mp3;
     }
 
-    public File getCover() {
-        return cover;
-    }
 
     @Override
     public boolean isEmpty() {

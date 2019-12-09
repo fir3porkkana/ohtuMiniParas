@@ -103,4 +103,22 @@ public class AudiobookTest {
     assertEquals(1, book.getTimestampList().size());
   }
 
+  @Test
+  public void isEmptyWorksOnEmpty() {
+    Audiobook testBook1 = new Audiobook("1", "2", null);
+    Audiobook testBook2 = new Audiobook("1", "", new File("3"));
+    Audiobook testBook3 = new Audiobook("", "2", new File("3"));
+
+    assertTrue(testBook1.isEmpty());
+    assertTrue(testBook2.isEmpty());
+    assertTrue(testBook3.isEmpty());
+  }
+
+  @Test
+  public void isEmptyWorksOnNotEmpty() {
+    Audiobook testBook = new Audiobook("audio", "book", new File("era"));
+
+    assertFalse(testBook.isEmpty());
+  }
+
 }

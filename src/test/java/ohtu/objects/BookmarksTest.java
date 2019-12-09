@@ -170,12 +170,34 @@ public class BookmarksTest {
         Book anotherTestBook = new Book("Democracy for the Few", "Michael Parenti");
 
         assertFalse(bookmarks.contains(anotherTestBook));
+
+
+    }
+
+    @Test
+    public void deletingAudiobooksWorks() {
+        Audiobook testBook = new Audiobook("audio", "book", new File(""));
+        bookmarks.addBookmark(testBook);
+        bookmarks.removeBookmark(testBook);
+
+        assertFalse(bookmarks.contains(testBook));
+    }
+
+    @Test
+    public void updatingWorksWithAudioBooks() {
+        Audiobook testBook = new Audiobook("audio", "book", new File(""));
+        Audiobook updatedBook = new Audiobook("audao", "bokko", new File(""));
+        bookmarks.addBookmark(testBook);
+        bookmarks.updateBookmark(testBook, updatedBook);
+
+        assertFalse(bookmarks.contains(testBook));
+        assertTrue(bookmarks.contains(updatedBook));
     }
 
     @Test
     public void containsAudioBook() {
         Book testBook1 = new Book("The Conquest of Bread", "Peter Kropotkin");
-        Audiobook testBook2 = new Audiobook("Audio", "tester", new File(""));
+        Audiobook testBook2 = new Audiobook("Audio", "tester", new File("mp3.mp3"));
         Book testBook3 = new Book("Useless testbook", "some tester");
         Audiobook testBook4 = new Audiobook("Corrupt", "Hobo", new File(""));
 
@@ -187,6 +209,9 @@ public class BookmarksTest {
 
         assertFalse(bookmarks.containsAudioBook(testBook4));
     }
+
+
+
 
     @Test
     public void searchingBookmarksReturnsCorrectList() {
