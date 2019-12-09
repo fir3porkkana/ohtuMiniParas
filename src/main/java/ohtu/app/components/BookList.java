@@ -16,13 +16,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ohtu.app.FileSelector;
 import ohtu.objects.*;
@@ -181,22 +178,7 @@ public class BookList extends GridPane {
         bookListView.setId("bookList");
         bookListView.setMinWidth(250);
 
-        bookListView.setCellFactory(param -> new ListCell<BookSuper>() {
-            @Override
-            protected void updateItem(BookSuper item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (!empty && item != null) {
-
-                    // might highlight words used in toString() that are not supposed to be, like
-                    // "by" or "audio"
-                    setText(Book.getStylizedString(item.toString(), searchInput.getText()));
-
-                } else {
-                    setText(null);
-                }
-            }
-        });
+        bookListView.setCellFactory(this::highlightCellFactory);
 
         // Arranging all the nodes in the grid
         this.add(titleLabel, 0, 0);
@@ -224,6 +206,21 @@ public class BookList extends GridPane {
         addCoverButton.setOnAction(this::selectCoverAction);
 
         refreshBookmarks();
+    }
+
+    private ListCell<BookSuper> highlightCellFactory(ListView<BookSuper> bookSuperListView) {
+        return new ListCell<BookSuper>() {
+            @Override
+            protected void updateItem(BookSuper item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!empty && item != null) {
+                    setText(Book.getStylizedString(item.toString(), searchInput.getText()));
+                } else {
+                    setText(null);
+                }
+            }
+        };
     }
 
     private void addBinding(Button addBookButton, TextField titleInput, TextField authorInput) {
@@ -539,8 +536,8 @@ public class BookList extends GridPane {
         // can be edited
         if (!bookmarks.contains(updatedBook)
                 || (selectedBook.equals(updatedBook) && !selectedBook.equalsCaseSensitive(updatedBook))) {
-            bookmarks.updateBookmark(selectedBook, updatedBook);
 
+            bookmarks.updateBookmark(selectedBook, updatedBook);
             return true;
         }
         return false;
