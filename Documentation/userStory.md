@@ -14,11 +14,7 @@
 
 #### Pystyn pysäyttämään äänikirjan kuuntelun
 
-#### Pystyn jatkamaan äänikirjan kuuntelua pysäytyskohdasta
-
 #### Pystyn tallentamaan aikaleiman äänikirjasta
-
-#### Pystyn jatkamaan kuuntelua aikaleimasta, kun sovellus on suljettu ja avattu uudelleen
 
 #### Pystyn muokkaamaan kirjaa tai äänikirjaa ilman, että tietoja tarvitsee kirjoittaa kokonaan uudestaan
 
