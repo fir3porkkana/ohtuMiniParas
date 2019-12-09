@@ -229,6 +229,13 @@ public class UITest extends ApplicationTest {
     assertThat(listview, ListViewMatchers.hasListCell(new Book("title", "arthour")));
   }
 
+  @Test
+  public void undoButtonNotVisible() {
+    addBook("title", "arthuar");
+    Button undoButton = find("#undo_button");
+    assertFalse(undoButton.isVisible());
+  }
+
   public void addBook(String title, String author) {
     TextField titleText = find("#title_input");
     titleText.setText(title);

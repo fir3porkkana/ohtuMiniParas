@@ -20,7 +20,7 @@ Lataa uusin release [**Bookmarks_2.1**](https://github.com/fir3porkkana/ohtuMini
 
 Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
 
-`java -jar bookmark_2.0.jar`
+`java -jar Bookmarks_2.1.jar`
 
 
 ## Seuranta
