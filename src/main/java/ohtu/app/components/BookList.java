@@ -338,11 +338,10 @@ public class BookList extends GridPane {
         if (selectedBook instanceof Audiobook) {
             // createNewMediaPlayer((Audiobook) selectedBook);
             audioControls.setDisable(false);
-
+            refreshTimeStampList((Audiobook) selectedBook);
             // refreshTimeStampList((Audiobook) selectedBook);
         } else if (mediaPlayer == null) {
             audioControls.setDisable(true);
-
         }
 
         // timestampListView.setVisible(selectedBook instanceof Audiobook);
