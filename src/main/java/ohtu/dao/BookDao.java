@@ -133,7 +133,7 @@ public class BookDao implements Dao<BookSuper, String> {
 
   @Override
   public void update(BookSuper book, BookSuper updatedBook) throws SQLException {
-    if (book instanceof Book && book instanceof Book) {
+    if (book instanceof Book && updatedBook instanceof Book) {
         Connection connection = DriverManager.getConnection(url);
         PreparedStatement stmt = connection
         .prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
@@ -204,6 +204,8 @@ public class BookDao implements Dao<BookSuper, String> {
       Book book = new Book(title, author);
       list.add(book);
     }
+
+    stmt.close();
     
     stmt = connection.prepareStatement("SELECT * FROM AUDIOBOOKS");
     resultSet = stmt.executeQuery();

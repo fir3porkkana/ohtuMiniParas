@@ -1,5 +1,7 @@
 # Ohjelmistotuotannon miniprojekti
 
+
+
 ## Sovelluksen määrittely
 
 - Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä
