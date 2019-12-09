@@ -89,6 +89,7 @@ public class BookList extends GridPane {
         addBinding(addBookButton,titleInput, authorInput);
         addBinding(addAudiobookButton, titleInput, authorInput);
         addBookButton.setId("submit_button");
+        addAudiobookButton.setId("submit_audio_button");
         addButtons.getChildren().addAll(addBookButton, addAudiobookButton);
 
         // Display for selected book
@@ -334,7 +335,6 @@ public class BookList extends GridPane {
 
         setBookInfoText(selectedBook);
         setBookCoverToDisplay(selectedBook);
-
         if (selectedBook instanceof Audiobook) {
             // createNewMediaPlayer((Audiobook) selectedBook);
             audioControls.setDisable(false);
