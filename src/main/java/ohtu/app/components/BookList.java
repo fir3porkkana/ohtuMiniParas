@@ -281,7 +281,7 @@ public class BookList extends GridPane {
     private void mediaPlayerStopAction(ActionEvent e) {
         if (mediaPlayer == null)
             return;
-
+        playButton.setText("\u25b6");
         mediaPlayer.stop();
     }
 

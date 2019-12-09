@@ -30,6 +30,16 @@ public class Bookmarks {
   }
 
   public void addBookmark(BookSuper book) {
+    if (book instanceof Audiobook) {
+      book = (Audiobook) book;
+      try {
+        dao.create(book);
+        bookmarks.add(book);
+      } catch (Exception e) {
+        System.out.println("Error adding book to database: " + e);
+      }
+      return;
+    }
     if (book instanceof Book) {
       book = (Book) book;
       try {
@@ -39,15 +49,7 @@ public class Bookmarks {
         System.out.println("Error adding book to database: " + e);
       }
     }
-    if (book instanceof Audiobook) {
-      book = (Audiobook) book;
-      try {
-        dao.create(book);
-        bookmarks.add(book);
-      } catch (Exception e) {
-        System.out.println("Error adding book to database: " + e);
-      }
-    }
+
   }
 
   public void addTimestamp(Audiobook audiobook, Timestamp timestamp) {
@@ -161,16 +163,6 @@ public class Bookmarks {
   }
 
   public void updateBookmark(BookSuper book, BookSuper updatedBook) {
-    if (book instanceof Book) {
-      book = (Book) book;
-      try {
-        dao.update(book, updatedBook);
-        int index = bookmarks.indexOf(book);
-        bookmarks.set(index, updatedBook);
-      } catch (Exception e) {
-        System.out.println("Error updating book: 1 " + e);
-      }
-    }
     if (book instanceof Audiobook) {
       Audiobook audiobook = (Audiobook) book;
       Audiobook updatedAudioBook = (Audiobook) updatedBook;
@@ -183,7 +175,19 @@ public class Bookmarks {
       } catch (Exception e) {
         System.out.println("Error updating book: 2 " + e);
       }
+      return;
     }
+    if (book instanceof Book) {
+      book = (Book) book;
+      try {
+        dao.update(book, updatedBook);
+        int index = bookmarks.indexOf(book);
+        bookmarks.set(index, updatedBook);
+      } catch (Exception e) {
+        System.out.println("Error updating book: 1 " + e);
+      }
+    }
+
   }
 
   public void emptyBookmarks() {
