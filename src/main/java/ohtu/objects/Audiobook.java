@@ -15,23 +15,23 @@ public class Audiobook extends Book {
 
     public Audiobook(String title, String author, File mp3, List<Timestamp> timestamps, File cover) {
         super(title, author, cover);
-        //this.title = title.trim();
-        //this.author = author.trim();
+        // this.title = title.trim();
+        // this.author = author.trim();
         this.mp3 = mp3;
         this.timestampList = timestamps;
     }
 
     public Audiobook(String title, String author, File mp3) {
         super(title, author);
-        //this.title = title.trim();
-        //this.author = author.trim();
+        // this.title = title.trim();
+        // this.author = author.trim();
         this.mp3 = mp3;
     }
 
     public Audiobook(String title, String author, File mp3, File cover) {
         super(title, author, cover);
-        //this.title = title.trim();
-        //this.author = author.trim();
+        // this.title = title.trim();
+        // this.author = author.trim();
         this.mp3 = mp3;
         this.cover = cover;
     }
@@ -57,7 +57,6 @@ public class Audiobook extends Book {
     public File getMp3() {
         return mp3;
     }
-
 
     @Override
     public boolean isEmpty() {

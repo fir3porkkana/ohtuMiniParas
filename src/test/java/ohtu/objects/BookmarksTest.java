@@ -18,37 +18,58 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.util.Duration;
+
 public class BookmarksTest {
-    Bookmarks bookmarks;
+    static Bookmarks bookmarks;
 
-    Dao fakeDao = new Dao<BookSuper, String>() {
-        ArrayList<BookSuper> books = new ArrayList<>();
+    static BookDao fakeDao = new BookDao("test.db");
 
-        public void create(BookSuper book) {
-            books.add(book);
-        }
+    // new Dao<BookSuper, String>() {
+    // ArrayList<BookSuper> books = new ArrayList<>();
 
-        public Book read(String s) {
-            return new Book(s, null);
-        }
+    // public void create(BookSuper book) {
+    // books.add(book);
+    // }
 
-        public void update(BookSuper b, BookSuper updatedBook) {
-            int index = books.indexOf(b);
-            books.set(index, updatedBook);
-        }
+    // public Book read(String s) {
+    // return new Book(s, null);
+    // }
 
-        public void delete(BookSuper b) {
-            books.remove(b);
-        }
+    // public void update(BookSuper b, BookSuper updatedBook) {
+    // int index = books.indexOf(b);
+    // books.set(index, updatedBook);
+    // }
 
-        public List<BookSuper> list() {
-            return books;
-        }
-    };
+    // public void delete(BookSuper b) {
+    // books.remove(b);
+    // }
+
+    // public List<BookSuper> list() {
+    // return books;
+    // }
+    // };
+
+    // @Before
+    // public void setUp() {
+    // bookmarks = new Bookmarks(fakeDao);
+    // }
+
+    @BeforeClass
+    public static void setUpClass() {
+
+        bookmarks = new Bookmarks(fakeDao);
+        bookmarks.init();
+    }
 
     @Before
-    public void setUp() {
-        bookmarks = new Bookmarks(fakeDao);
+    public void init() {
+        try {
+            fakeDao.emptyTable();
+            bookmarks.emptyBookmarks();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     /*
@@ -155,7 +176,7 @@ public class BookmarksTest {
         bookmarks.addBookmark(anotherTestBook);
         correctList.add(testBook);
         correctList.add(anotherTestBook);
-        // System.out.println("inBookMarks: " + bookmarks.getBookmarks());
+        System.out.println("inBookMarks: " + bookmarks.getBookmarks());
 
         assertEquals(bookmarks.getBookmarks(), correctList);
     }
@@ -182,16 +203,16 @@ public class BookmarksTest {
         assertFalse(bookmarks.contains(testBook));
     }
 
-    // @Test
-    // public void updatingWorksWithAudioBooks() {
-    // Audiobook testBook = new Audiobook("audio", "book", new File(""));
-    // Audiobook updatedBook = new Audiobook("audao", "bokko", new File(""));
-    // bookmarks.addBookmark(testBook);
-    // bookmarks.updateBookmark(testBook, updatedBook);
+    @Test
+    public void updatingWorksWithAudioBooks() {
+        Audiobook testBook = new Audiobook("audio", "book", new File(""));
+        Audiobook updatedBook = new Audiobook("audao", "bokko", new File(""));
+        bookmarks.addBookmark(testBook);
+        bookmarks.updateBookmark(testBook, updatedBook);
 
-    // assertFalse(bookmarks.contains(testBook));
-    // assertTrue(bookmarks.contains(updatedBook));
-    // }
+        assertFalse(bookmarks.contains(testBook));
+        assertTrue(bookmarks.contains(updatedBook));
+    }
 
     @Test
     public void containsAudioBook() {
@@ -207,6 +228,22 @@ public class BookmarksTest {
         assertTrue(bookmarks.containsAudioBook(testBook2));
 
         assertFalse(bookmarks.containsAudioBook(testBook4));
+    }
+
+    @Test
+    public void addingTimestampsWorksAsIntended() {
+        Audiobook testBook = new Audiobook("Audio", "tester", new File("mp3.mp3"));
+        bookmarks.addBookmark(testBook);
+
+        Duration d = Duration.seconds(0);
+        Timestamp t = new Timestamp(d);
+
+        bookmarks.addTimestamp(testBook, t);
+
+        bookmarks.init();
+
+        Audiobook a = (Audiobook) bookmarks.getBookmarks().get(0);
+        assertEquals(1, a.getTimestampList().size());
     }
 
     @Test

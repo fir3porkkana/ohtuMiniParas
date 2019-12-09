@@ -264,6 +264,16 @@ public class UITest extends ApplicationTest {
     assertTrue(addAudioButton.isDisabled());
   }
 
+  @Test
+  public void mediaPlayerNotVisibleNoAudiobookSelected() {
+    TextField authorText = find("#author_input");
+    authorText.setText("yes");
+    Button addBookButton = find("#submit_button");
+    assertTrue(addBookButton.isDisabled());
+    Button addAudioButton = find("#submit_audio_button");
+    assertTrue(addAudioButton.isDisabled());
+  }
+
   public void addBook(String title, String author) {
     TextField titleText = find("#title_input");
     titleText.setText(title);

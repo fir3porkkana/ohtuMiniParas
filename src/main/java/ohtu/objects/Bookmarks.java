@@ -53,9 +53,6 @@ public class Bookmarks {
   }
 
   public void addTimestamp(Audiobook audiobook, Timestamp timestamp) {
-    // Fix later for dao
-    if (!(dao instanceof BookDao))
-      throw new Error("timestamp logic not implemented in dao yet");
     BookDao bookDao = (BookDao) dao;
     try {
       bookDao.addTimestamp(audiobook, timestamp);
@@ -100,6 +97,24 @@ public class Bookmarks {
 
   public void removeBookmark(BookSuper book) {
     iterator = bookmarks.iterator();
+    if (book instanceof Audiobook) {
+      Audiobook audiobook = (Audiobook) book;
+      try {
+        dao.delete(audiobook);
+        while (iterator.hasNext()) {
+          BookSuper nextBook = iterator.next();
+          if (nextBook instanceof Audiobook) {
+            if (book.equals(nextBook)) {
+              iterator.remove();
+            }
+          }
+        }
+      } catch (Exception e) {
+        System.out.println("Error removing book from database: " + e);
+      }
+      return;
+    }
+
     if (book instanceof Book) {
       book = (Book) book;
       try {
@@ -116,22 +131,6 @@ public class Bookmarks {
         System.out.println("Error removing book from database: " + e);
       }
     }
-    if (book instanceof Audiobook) {
-      Audiobook audiobook = (Audiobook) book;
-      try {
-        dao.delete(audiobook);
-        while (iterator.hasNext()) {
-          BookSuper nextBook = iterator.next();
-          if (nextBook instanceof Audiobook) {
-            if (book.equals(nextBook)) {
-              iterator.remove();
-            }
-          }
-        }
-      } catch (Exception e) {
-        System.out.println("Error removing book from database: " + e);
-      }
-    }
   }
 
   public List<BookSuper> searchBookmarks(String search) {
@@ -139,24 +138,6 @@ public class Bookmarks {
         .filter(bookSuper -> bookSuper.getAuthor().toLowerCase().contains(search.toLowerCase())
             || bookSuper.getTitle().toLowerCase().contains(search.toLowerCase()))
         .collect(Collectors.toList());
-
-    // List<BookSuper> res = bookmarks.stream().map(bookSuper -> {
-    // int author =
-    // bookSuper.getAuthor().toLowerCase().indexOf(search.toLowerCase());
-    // int title = bookSuper.getTitle().toLowerCase().indexOf(search.toLowerCase());
-
-    // if (author == -1 && title == -1) {
-    // return null;
-    // }
-    // if (author >= 0) {
-
-    // }
-    // if ( title >= 0) {
-
-    // }
-
-    // return bookSuper;
-    // }).collect(Collectors.toList());
     Collections.sort(result);
 
     return result;

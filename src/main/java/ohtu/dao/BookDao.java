@@ -63,6 +63,20 @@ public class BookDao implements Dao<BookSuper, String> {
     // create a new table
     stmt.executeUpdate();
     stmt.close();
+
+    sql = "DELETE FROM AudioBooks";
+
+    stmt = conn.prepareStatement(sql);
+    // create a new table
+    stmt.executeUpdate();
+    stmt.close();
+
+    sql = "DELETE FROM TimeStamps";
+
+    stmt = conn.prepareStatement(sql);
+    // create a new table
+    stmt.executeUpdate();
+    stmt.close();
     conn.close();
   }
 
@@ -143,18 +157,7 @@ public class BookDao implements Dao<BookSuper, String> {
 
   @Override
   public void update(BookSuper book, BookSuper updatedBook) throws SQLException {
-    if (book instanceof Book && book instanceof Book) {
-      Connection connection = DriverManager.getConnection(url);
-      PreparedStatement stmt = connection
-          .prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
-      stmt.setString(1, updatedBook.getTitle());
-      stmt.setString(2, updatedBook.getAuthor());
-      stmt.setString(3, book.getTitle());
-      stmt.setString(4, book.getAuthor());
-      stmt.executeUpdate();
-      stmt.close();
-      connection.close();
-    }
+
     if (book instanceof Audiobook && updatedBook instanceof Audiobook) {
       Connection connection = DriverManager.getConnection(url);
       Audiobook updateBook = (Audiobook) updatedBook;
@@ -166,6 +169,19 @@ public class BookDao implements Dao<BookSuper, String> {
       stmt.setString(3, book.getTitle());
       stmt.setString(4, book.getAuthor());
 
+      stmt.executeUpdate();
+      stmt.close();
+      connection.close();
+      return;
+    }
+    if (book instanceof Book && book instanceof Book) {
+      Connection connection = DriverManager.getConnection(url);
+      PreparedStatement stmt = connection
+          .prepareStatement("UPDATE Books SET title = ? , author = ? WHERE title = ? AND author = ?");
+      stmt.setString(1, updatedBook.getTitle());
+      stmt.setString(2, updatedBook.getAuthor());
+      stmt.setString(3, book.getTitle());
+      stmt.setString(4, book.getAuthor());
       stmt.executeUpdate();
       stmt.close();
       connection.close();
