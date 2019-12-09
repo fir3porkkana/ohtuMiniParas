@@ -144,7 +144,7 @@ public class BookList extends GridPane {
         durationLabel = new Label();
         Button saveTimestamp = new Button("Timestamp");
 
-        imageView.setFitWidth(120);
+        imageView.setFitWidth(160);
         imageView.setFitHeight(160);
 
         HBox audioButtons = new HBox(10, playButton, stopButton, saveTimestamp, mediaFile);
@@ -164,7 +164,7 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(editAuthorField, 1, 2);
         selectedBookDisplay.add(audiobookName, 0, 3, 2, 1);
 
-        selectedBookDisplay.add(imageView, 2, 2, 1, 3);
+        selectedBookDisplay.add(imageView, 0, 4, 2, 3);
         //selectedBookDisplay.add(timestampListView, 0, 4, 2, 1);
 
         // Setting size for the pane
