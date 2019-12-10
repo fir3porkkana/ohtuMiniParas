@@ -2,7 +2,7 @@
 
 ## Sovelluksen määrittely
 
-- Tästä tulee sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä
+- Sovellus, jonka avulla käyttäjä voi hallinnoida lukuvinkkejä
     - Lukuvinkkejä voidaan lisätä, selata, muokata ja poistaa
  - Lukuvinkkeihin voi sisällyttää sovelluksessa kuunneltavia äänikirjoja
     - Äänikirjan kuuntelu voidaan keskeyttää ja kuuntelua voidaan jatkaa keskeytetystä kohdasta
@@ -40,4 +40,4 @@ Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hake
 Toimeksianto | Raportti 
 -----------|----------
 Konfiguraatio CircleCI:ssä | [![CircleCI](https://circleci.com/gh/fir3porkkana/ohtuMiniParas.svg?style=svg)](https://circleci.com/gh/fir3porkkana/ohtuMiniParas) 
-Testikattavuus CodeCov:ssa (ei-rajattu) | [![codecov](https://codecov.io/gh/fir3porkkana/ohtuMiniParas/branch/master/graph/badge.svg)](https://codecov.io/gh/fir3porkkana/ohtuMiniParas)
+Testikattavuus CodeCov:ssa | [![codecov](https://codecov.io/gh/fir3porkkana/ohtuMiniParas/branch/master/graph/badge.svg)](https://codecov.io/gh/fir3porkkana/ohtuMiniParas)
