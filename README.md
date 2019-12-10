@@ -23,7 +23,7 @@ Lataa uusin release [**Bookmarks_3**](https://github.com/fir3porkkana/ohtuMiniPa
 
 Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
 
-`java -jar Bookmarks_3.jar`
+`java -jar release3.jar`
 
 
 ## Seuranta
