@@ -30,7 +30,7 @@ public class FileSelector {
 
   public File openImageBrowser() {
     fileChooser.getExtensionFilters().add(pictureFilter);
-    fileChooser.setTitle("Choose picure file");
+    fileChooser.setTitle("Choose picture file");
 
     File selectedFile = fileChooser.showOpenDialog(stage);
     fileChooser.getExtensionFilters().remove(pictureFilter);
