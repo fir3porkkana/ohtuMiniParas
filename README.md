@@ -19,11 +19,11 @@
 
 ## Asennusohjeet
 
-Lataa uusin release [**Bookmarks_2.1**](https://github.com/fir3porkkana/ohtuMiniParas/releases/tag/2.1)
+Lataa uusin release [**Bookmarks_3.0**](https://github.com/fir3porkkana/ohtuMiniParas/releases/tag/3.0)
 
 Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
 
-`java -jar Bookmarks_2.1.jar`
+`java -jar Bookmarks_3.0.jar`
 
 
 ## Seuranta
