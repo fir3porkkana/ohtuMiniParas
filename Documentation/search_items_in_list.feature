@@ -1,11 +1,12 @@
-Feature: Playback of new audiobook begins at end of previous one
+Feature: User can search items in list
 
-    Scenario: Playback of current audiobook is ongoing 
-       Given following audiobook exists
-       When  playback of current audiobook ends 
-       Then  system will respond with playback of following audiobook
+    Scenario: user can find items in list with correct search word 
+       Given command search books is selected
+       When  search word "sinuhe" is entered
+       Then  system will respond with "Sinuhe egyptiläinen by: Mika Waltari"
+
     
-    Scenario: Playback of current audiobook is ongoing 
-       Given following audiobook does not exist
-       When  playback of current audiobook ends 
+    Scenario: user can not find items in list with incorrect search word
+       Given command search books is selected
+       When  username "qwerty" is entered
        Then  system will respond with null
