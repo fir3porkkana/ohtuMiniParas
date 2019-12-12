@@ -19,11 +19,11 @@
 
 ## Asennusohjeet
 
-Lataa uusin release [**Bookmarks_3**](https://github.com/fir3porkkana/ohtuMiniParas/releases/tag/3.0)
+Lataa uusin [release](https://github.com/fir3porkkana/ohtuMiniParas/releases/)
 
 Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
 
-`java -jar release3.jar`
+`java -jar <uusin_release.jar>`
 
 
 ## Seuranta
