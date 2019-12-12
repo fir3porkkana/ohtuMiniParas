@@ -23,8 +23,9 @@ Lataa uusin [**Release**](https://github.com/fir3porkkana/ohtuMiniParas/releases
 
 Suorita ladattu **jar** joko tuplaklikkaamalla tai komentoriviltä oikeassa hakemistossa komennolla
 
-`java -jar <uusin_release_tiedosto>.jar`
+`java -jar <uusin_release_tiedosto win/unix>.jar`
 
+* Saatat joutua asentamaan java version 11
 
 ## Seuranta
 
