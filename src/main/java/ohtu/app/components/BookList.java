@@ -54,8 +54,7 @@ public class BookList extends GridPane {
     private FileSelector fileSelector;
     private Label mediaFile = new Label("");
     private MediaPlayer mediaPlayer;
-    private Audiobook mediaBook; // Potentially same purpose
-    private Audiobook bookCurrentlyPlaying; // Potentially same purpose
+    private Audiobook bookCurrentlyPlaying;
 
     private Label durationLabel;
     private File selectedCover;
@@ -113,10 +112,6 @@ public class BookList extends GridPane {
         editAuthorField.setId("edit_author");
         editTitleField.setPromptText("Set new Title");
         editTitleField.setId("edit_title");
-
-        // timestampListView.setVisible(false);
-        // timestampListView.managedProperty().bind(timestampListView.visibleProperty());
-
         // Display for audio controls
 
         this.playButton = new Button("\u25b6");
@@ -165,10 +160,6 @@ public class BookList extends GridPane {
         selectedBookDisplay.add(audiobookName, 0, 3, 2, 1);
 
         selectedBookDisplay.add(imageView, 0, 4, 2, 3);
-        //selectedBookDisplay.add(timestampListView, 0, 4, 2, 1);
-
-        // Setting size for the pane
-        // this.setMinSize(400, 200);
 
         // Setting the padding
         this.setPadding(new Insets(10, 10, 10, 10));
@@ -306,9 +297,9 @@ public class BookList extends GridPane {
     }
 
     private void mediaPlayerPlayAction(ActionEvent e) {
-        if (mediaBook != getSelectedBook() && getSelectedBook() instanceof Audiobook) {
+        if (bookCurrentlyPlaying != getSelectedBook() && getSelectedBook() instanceof Audiobook) {
             createNewMediaPlayer((Audiobook) getSelectedBook());
-            bookCurrentlyPlaying = (Audiobook) getSelectedBook();
+            //bookCurrentlyPlaying = (Audiobook) getSelectedBook();
         }
         if (mediaPlayer == null)
             return;
@@ -343,16 +334,11 @@ public class BookList extends GridPane {
         setBookInfoText(selectedBook);
         setBookCoverToDisplay(selectedBook);
         if (selectedBook instanceof Audiobook) {
-            // createNewMediaPlayer((Audiobook) selectedBook);
             audioControls.setDisable(false);
-            refreshTimeStampList((Audiobook) selectedBook);
-            // refreshTimeStampList((Audiobook) selectedBook);
+            //refreshTimeStampList((Audiobook) selectedBook); //Timestamplist is now linked to currently playing audio
         } else if (mediaPlayer == null) {
             audioControls.setDisable(true);
         }
-
-        // timestampListView.setVisible(selectedBook instanceof Audiobook);
-        // timestampListView.managedProperty().bind(timestampListView.visibleProperty());
 
         System.out.println(bookmarks.getBookmarks());
     }
@@ -377,8 +363,6 @@ public class BookList extends GridPane {
         if (!audiobook.isEmpty() && addBook(audiobook)) {
             refreshBookmarks();
             clearBookInput();
-
-            // createNewMediaPlayer(audiobook);
         }
     }
 
@@ -567,8 +551,8 @@ public class BookList extends GridPane {
             mediaPlayer.stop();
         }
 
-        mediaBook = audiobook;
-        mediaFile.setText("Playing: " + mediaBook.toString());
+        bookCurrentlyPlaying = audiobook;
+        mediaFile.setText("Playing: " + bookCurrentlyPlaying.toString());
         refreshTimeStampList(audiobook);
 
         Media hit = new Media(audiobook.getMp3().toURI().toString());
