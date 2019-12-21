@@ -42,3 +42,7 @@ Toimeksianto | Raportti
 -----------|----------
 Konfiguraatio CircleCI:ssä | [![CircleCI](https://circleci.com/gh/fir3porkkana/ohtuMiniParas.svg?style=svg)](https://circleci.com/gh/fir3porkkana/ohtuMiniParas) 
 Testikattavuus CodeCov:ssa | [![codecov](https://codecov.io/gh/fir3porkkana/ohtuMiniParas/branch/master/graph/badge.svg)](https://codecov.io/gh/fir3porkkana/ohtuMiniParas)
+
+## Kurssin lopputoimenpiteet
+
+[Raportti](https://github.com/fir3porkkana/ohtuMiniParas/blob/master/Documentation/report.md)
