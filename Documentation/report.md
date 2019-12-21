@@ -17,6 +17,8 @@
 - Valtaosa toiminnallisuuteen liittyvistä tavoitteista saavutettiin
 - Testikattavuus saatiin jälleen hyvälle tasolle
 - Loppupalautukseen tehtävän releasen toimintavarmuudessa oli joitakin ongelmia, joita piti selvittää vielä viimeisenä päivänä
+- Javafx versiossa 11 testeissä testfx:n kanssa tuli vastaan erittäin outo bugi windows koneiden kanssa.
+- Jossain vaiheessa sovellusta buildattaessa ilmeni myös odottamattomia eroja windows ja unix koneiden välillä. Ubuntulla pakattu jar tiedosto ei suostunut pyörimään windows koneilla, vice versa. Sprintin aikarajojen sisällä ongelman paikallistaminen ei ollut mahdollista.
 
 ### Mikä sujui projektissa hyvin, mitä pitäisi parantaa seuraavaa kertaa varten
 - Ryhmätyöskentely sujui hyvässä hengessä ja kaikki olivat aktiivisia
