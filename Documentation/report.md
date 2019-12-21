@@ -25,6 +25,7 @@
 - Sprintien tavoitteet olivat kaikille selviä
 - Yhteydenpito telegram-sovelluksen kautta toimi riittävän hyvin
 - Projektin lyhyyden vuoksi työnjaosta sopiminen ei toiminut vielä optimaalisesti
+- Sprint backlogin taskien sekä niiden työmäärän päivittäminen olisi voinut olla johdonmukaisempaa ja molemmat yleisesti ottaen hieman paremmin jäsenneltyjä
 
 ### Mitä asioita opitte, mitä asioita olisitte halunneet oppia, mikä tuntui turhalta
 - Asiakastapaamiset olivat erityisen hyödyllisiä, koska niissä piti miettiä, miten sekä suhtautua asiakkaan toiveisiin että toimia niiden pohjalta
